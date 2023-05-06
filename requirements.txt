@@ -2,4 +2,6 @@ Flask
 Flask-Login
 Flask-Migrate
 Flask-SQLAlchemy
-Flask-User
+sqlalchemy-utils
+flask-cors
+StrEnum

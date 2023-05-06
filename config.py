@@ -7,7 +7,7 @@ class Config:
 
 
     # Define the database - we are working with
-    SQLALCHEMY_DATABASE_URI = ""
+    SQLALCHEMY_DATABASE_URI = "sqlite:///studySchedulerDB.db"
     DATABASE_CONNECT_OPTIONS = {}
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
