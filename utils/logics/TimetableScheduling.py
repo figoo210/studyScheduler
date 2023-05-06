@@ -18,12 +18,12 @@ class TimetableScheduling():
 
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, year, language, regulation, department, *args, **kwargs):
         super(TimetableScheduling, self).__init__(*args, **kwargs)
-        self.year = 1 # 1 or 2 or 3 or 4
-        self.language = "ar" # 'ar' or 'en' or 'fr'
-        self.regulation = ""
-        self.department = ""
+        self.year = year # 1 or 2 or 3 or 4
+        self.language = language # 'ar' or 'en' or 'fr'
+        self.regulation = regulation
+        self.department = department
         self.num_tables = 0 # the number of tables to be generated
         self.num_instructors = 0 # the number of available instructors
         self.instructors_availability  = {} # all instructors with a sorted list for each one with their available times.
@@ -42,7 +42,7 @@ class TimetableScheduling():
     ### Manual
     #######################################################################################################################
     # Main Functon
-    def manual_scheduling(self):
+    def manual_scheduling(self, num_tables):
         pass
 
 
