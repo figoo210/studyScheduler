@@ -1,10 +1,11 @@
 import os
 from datetime import timedelta
+
+
 class Config:
 
     # Statement for enabling the development environment
     DEBUG = True
-
 
     # Define the database - we are working with
     SQLALCHEMY_DATABASE_URI = "sqlite:///studySchedulerDB.db"
@@ -28,7 +29,7 @@ class Config:
     # Sessions
     SESSION_PERMANENT = True
     SESSION_TYPE = "filesystem"
-    PERMANENT_SESSION_LIFETIME = timedelta(hours = 24)
+    PERMANENT_SESSION_LIFETIME = timedelta(hours=24)
 
     # Secret key for signing cookies
     SECRET_KEY = os.urandom(24)

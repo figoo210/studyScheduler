@@ -11,6 +11,7 @@ def handle_one(id):
     """ get one item or post to update it """
     context = {}
     if request.method == 'POST':
+        # return  changes
         return render_template(f'{PAGE}.html')
     else:
         return render_template(f'{PAGE}.html')
@@ -36,5 +37,3 @@ def update():
 def delete_one(id):
     """ delete item """
     return redirect(f'/{PAGE}')
-
-
