@@ -4,7 +4,7 @@ from flask import Flask, session
 from flask_cors import CORS
 from flask_migrate import Migrate
 # Import SQLAlchemy
-from sqlalchemy_utils import create_database, database_exists
+# from sqlalchemy_utils import create_database, database_exists
 from config import Config
 from database import db
 
@@ -12,23 +12,36 @@ from database import db
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
-    app.app_context().push()
+    # app.app_context().push()
 
     # Check for database existing
-    if not database_exists(app.config.get("SQLALCHEMY_DATABASE_URI")):
-        create_database(app.config.get("SQLALCHEMY_DATABASE_URI"))
+    # if not database_exists(app.config.get("SQLALCHEMY_DATABASE_URI")):
+    #     create_database(app.config.get("SQLALCHEMY_DATABASE_URI"))
 
     # Initialize Flask extensions here
     db.init_app(app)
 
     # Config
-    CORS(app)
-    cors = CORS(app, resources={ r"/*": {"origins": "*"}}, supports_credentials=True)
-    migrate = Migrate(app, db, compare_type=True)
+    # CORS(app)
+    # CORS(app, resources={ r"/*": {"origins": "*"}}, supports_credentials=True)
+    # Migrate(app, db, compare_type=True)
+
+    with app.app_context():
+        from building.model import Building
+        from department.model import Department
+        from regulation.model import Regulation
+        from room.model import Room
+        from instructor.model import Instructor
+        from course.model import Course
+        from instructor_role.model import InstructorRole
+        from instructor_time.model import InstructorTime
+        from lecture.model import Lecture
+        from section.model import Section
+        db.create_all()
+        db.session.commit()
 
     # Import a module / component using its blueprint handler variable
     from course.view import bp as course_view
-    from course.model import Course
 
     # Register blueprint(s)
     app.register_blueprint(course_view)
@@ -46,7 +59,6 @@ def create_app(config_class=Config):
     def test_page():
         return '<h1>Testing the Flask Application Factory Pattern</h1>'
 
-    db.create_all()
 
     return app
 
