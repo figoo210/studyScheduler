@@ -2,6 +2,10 @@
 # Timetable Scheduling Algorithm
 
 from course.model import Course
+from instructor.model import Instructor
+from instructor_time.model import InstructorTime
+from lecture.model import Lecture
+from section.model import Section
 from utils.enums.Language import Language
 from utils.enums.Program import Program
 from utils.enums.Semester import Semester
@@ -93,7 +97,7 @@ class TimetableScheduling():
     def get_instructor_sorted_available_time(self, instructor_id):
         """ Get instructor free time sorted in ascending order """
         # Create a list of all available time slots for each instructor from InstructorTime table
-        return Inst
+        return InstructorTime.query.filter_by(instructor_id=instructor_id).order_by(InstructorTime.start_time).all()
 
 
 

@@ -2,14 +2,14 @@ from database import db
 from utils.enums.WeekDay import WeekDay, WeekDayEnum
 
 
-class Lecture(db.Model):
+class Section(db.Model):
     """
-    argument of relationship must be capital like class name 
+    argument of relationship must be capital like class name
     backref can be small because of the model
     laze prefare to be T
-    in relations 
-    one :make db.relation and add column name s like courses  
-    many: make or put Foreign key on it and name single _id 
+    in relations
+    one :make db.relation and add column name s like courses
+    many: make or put Foreign key on it and name single _id
     Foreign_key=can be small like ("instructor_time.id")
 
     """
