@@ -11,7 +11,24 @@ bp = Blueprint(PAGE, __name__, template_folder='templates')
 =======
 inst = Blueprint(PAGE, __name__, template_folder='templates')
 
+# THIS THE MAIN PAGE
 
+
+@inst.route(f'/{PAGE}/<id>', methods=["GET"])
+def instructorfunc(id):
+    """ get one item or post to update it """
+    return render_template(f'{PAGE}.html')
+
+# THIS FOR POP UP
+
+
+@inst.route(f'/{PAGE}/delete/<id>', methods=["POST"])
+def delete_instrucor_name(id):
+    """ delete item """
+    return redirect(f'/{PAGE}')
+
+
+# ADD INSTRUCTORE
 @inst.route(f'/{PAGE}/<id>', methods=["GET", "POST"])
 >>>>>>> acdd6a4 (create auth and add to view)
 def handle_one(id):
@@ -25,6 +42,8 @@ def handle_one(id):
         return render_template(f'{PAGE}.html')
     else:
         return render_template(f'{PAGE}.html')
+
+# Designation of materials
 
 
 <<<<<<< HEAD
