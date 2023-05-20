@@ -25,7 +25,7 @@ def update_room():
 # Remove room
 
 
-@bp.route(f'/{PAGE}/delete/<id>', methods=["POST"])
+@bp.route(f'/{PAGE}/delete/<id>', methods=["GET"])
 def delete_room(id):
     """ delete item """
     return redirect('/rooms')
