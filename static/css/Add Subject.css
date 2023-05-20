@@ -1,0 +1,500 @@
+body
+{
+    /*Add Subject*/
+    
+position: relative;
+width: 1440px;
+height: 820px;
+
+background: #F9F9F9;
+direction: rtl;
+}
+
+h5
+{
+margin-top: 50px;
+margin-right: 33px;
+height: 7px;
+width: 118px;
+left: 1010px;
+top: 80px;
+
+font-family: PNU;
+font-style: normal;
+font-size: 12px;
+font-weight: 400;
+line-height: 22px;
+/* identical to box height */
+text-align: right;
+/* text/seconddary */
+color: #73788C;
+}
+
+h1
+{
+margin-bottom: 30px;
+margin-right: 33px;
+width: 233px;
+height: 58px;
+
+font-family: PNU;
+font-style: normal;
+font-size: 32px;
+font-weight: 400;
+line-height: 58px;
+/*identical to box hight */
+text-align: right;
+
+/*text/primary */
+color: #313135;
+
+/*inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+}
+
+.flex-container
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#input1
+
+{
+
+    margin-right: 33px;
+
+    /*text filed*/
+    box-sizing: border-box;
+    
+    /*auto layout*/
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-end;
+    align-items: center;
+    padding: 16px 20px;
+
+    width: 300px;
+    height: 44px;
+
+    /*surface/secondary*/
+    background: #fcfcfd;
+
+    /*border/default*/
+    border: 1.5px solid rgba(86, 86, 86, 0.22);
+    border-radius: 6px;
+
+    /*اسم المادة*/
+    width: 300px;
+    height: 44px;
+
+    font-family: pnu;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 25px;
+    text-align: right;
+    color: #888891;
+}
+
+.list1
+{
+    margin-right: 77px;
+
+    /*text filed*/
+    box-sizing: border-box;
+    /*auto layout*/
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 9.5px 20px;
+
+    width: 165px;
+    height: 44px;
+
+    /*surface/secondary*/
+    background: #fcfcfd;
+
+    /*border/default*/
+    border: 1px solid rgba(86, 86, 86, 0.22);
+    border-radius: 6px;
+
+    /*اللائحة*/
+    width: 240px;
+    height: 44px;
+
+    font-family: pnu;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 25px;
+    text-align: right;
+    color: #888891;
+
+    /*icon/secondary*/
+    color: #888891;
+}
+
+.list2
+{
+    margin-right: 77px;
+
+/*text filed*/
+box-sizing: border-box;
+/*auto layout*/
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 9.5px 20px;
+
+width: 260px;
+height: 44px;
+
+/*surface/secondary*/
+background: #fcfcfd;
+
+/*border/default*/
+border: 1.5px solid rgba(86, 86, 86, 0.22);
+border-radius: 6px;
+
+/*القسم*/
+width: 280px;
+height: 44px;
+
+font-family: pnu;
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 25px;
+text-align: right;
+color: #888891;
+
+/*text/secondary*/
+color: #888891;
+}
+
+.list3
+{
+    margin-right: 76px;
+
+    /*text filed*/
+    box-sizing: border-box;
+
+    /*auto layout*/
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 9.5px 20px;
+
+    width: 160px;
+    height: 44px;
+
+    /*surface/secondary*/
+    background: #fcfcfd;
+
+    /*border/default*/
+    border: 1px solid rgba(86, 86, 86, 0.22);
+    border-radius: 6px;
+
+    /*الترم*/
+    width: 230px;
+    height: 44px;
+
+    font-family: pnu;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 25px;
+    text-align: right;
+    color: #888891;
+
+    /*icone/secondary*/
+    color: #888891;
+}
+
+.list4
+{
+    margin-right: 33px;
+
+    /*text filed*/
+    box-sizing: border-box;
+
+    /*auto layput*/
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 9.5px 20px;
+
+    width: 160px;
+    height: 44px;
+
+    /*surface/secondary*/
+    background: #fcfcfd;
+    
+    /*border/default*/
+    border: 1px solid rgba(86, 86, 86, 0.22);
+    border-radius: 6px;
+
+    /*الفرقة*/
+    width: 200px;
+    height: 44px;
+
+    font-family: pnu;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 25px;
+    text-align: right;
+    color: #888891;
+
+    /*icon/secondary*/
+    color: #888891;
+}
+
+.list5
+{
+    margin-right: 70px;
+
+    /*text filed*/
+    box-sizing: border-box;
+
+    /*auto layput*/
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 9.5px 20px;
+
+    width: 124px;
+    height: 44px;
+
+/*surface/secondary*/
+    background: #fcfcfd;
+    
+    /*border/default*/
+    border: 1px solid rgba(86, 86, 86, 0.22);
+    border-radius: 6px;
+
+    /*اللغة*/
+    width: 140px;
+    height: 44px;
+
+    font-family: pnu;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 25px;
+    text-align: right;
+
+    /*icon/secondary*/
+    color: #888891;
+}
+
+.list6
+{
+    margin-right: 70px;
+
+    /*text filed*/
+    box-sizing: border-box;
+
+    /*auto layput*/
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 9.5px 20px;
+
+    width: 122px;
+    height: 44px;
+
+    /*surface/secondary*/
+    background: #fcfcfd;
+
+    /*border/default*/
+    border: 1px solid rgba(86, 86, 86, 0.22);
+    border-radius: 6px;
+
+    /*البرنامج*/
+    width: 170px;
+    height: 44px;
+
+    font-family: pnu;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 25px;
+    text-align: right;
+
+    /*icon/secondary*/
+    color: #888891;
+}
+
+.list7
+{
+    margin-right: 70px;
+
+    /*text filed*/
+    box-sizing: border-box;
+
+    /*auto layput*/
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 9.5px 20px;
+
+    width: 160px;
+    height: 44px;
+
+    /*surface/secondary*/
+    background: #fcfcfd;
+
+    /*border/default*/
+    border: 1px solid rgba(86, 86, 86, 0.22);
+    border-radius: 6px;
+
+    /*عدد ساعات المادة*/
+    width: 190px;
+    height: 44px;
+
+    font-family: pnu;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 25px;
+    text-align: right;
+
+    /*icon/secondary*/
+    color: #888891;
+}
+
+#input2
+
+{
+
+    margin-right: 70px;
+
+    /*text filed*/
+    box-sizing: border-box;
+    
+    /*auto layout*/
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-end;
+    align-items: center;
+    padding: 9.5px 20px;
+
+    width: 300px;
+    height: 44px;
+
+    /*surface/secondary*/
+    background: #fcfcfd;
+    /*border/default*/
+    border: 1.5px solid rgba(86, 86, 86, 0.22);
+    border-radius: 6px;
+
+    /*كود المادة*/
+    width: 300px;
+    height: 44px;
+
+    font-family: pnu;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 25px;
+    text-align: right;
+    color: #888891;
+}
+
+label
+{
+    display: inline-block;
+    margin-right: 33px;
+    direction: ltr;
+}
+
+input[type="checkbox"]
+{
+display: inline-block;
+vertical-align: auto;
+margin-right: 25px;
+}
+
+#save-button
+{
+    /*lable*/
+    width: 27px;
+    height: 25px;
+
+    font-family: PNU;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 25px;
+    text-align: right;
+
+    /*text/on primary*/
+    color: #ffffff;
+
+    /*save*/
+
+    /*auto layout*/
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 30px;
+    gap: 8px;
+
+    width: 77px;
+    height: 40px;
+
+    /*action/default*/
+    background: #4372ea;
+    border-radius: 10px;
+    position: fixed;
+    bottom: 0;
+    left: 33px;
+    border: none;
+
+}
+
+#cancel-button
+{
+    /*lable*/
+    width: 23px;
+    height: 25px;
+
+    font-family: PNU;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 25px;
+    text-align: right;
+
+    /*text/on primary*/
+    color: #f23345;
+
+    /*cancel*/
+
+    /*auto layout*/
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 30px;
+    gap: 8px;
+
+    width: 77px;
+    height: 40px;
+
+    /*action/default*/
+    background: #fcfcfd;
+    border-radius: 10px;
+    position: fixed;
+    bottom: 0;
+    left: 125px;
+    border-color: #f23345;
+    border-width: 1px;
+}

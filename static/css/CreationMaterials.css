@@ -1,0 +1,65 @@
+.indexBg {
+    background-color: #F9F9F9;
+}
+
+
+
+.form-select {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background: url('arrow.svg') no-repeat center left !important;
+    background-size: 25px !important;
+    padding-right: 29px !important;
+    border: 1.5px solid rgba(86, 86, 86, 0.22);
+    border-radius: 6px;
+    background-color: #FCFCFD !important;
+    color: #565656 !important;
+
+}
+
+.form-select:focus,
+input[type="text"] :focus {
+    box-shadow: none !important;
+    border: 1.5px solid rgba(86, 86, 86, 0.22);
+}
+
+input::placeholder,
+.form-select {
+    color: #73788C !important;
+}
+
+input[type="text"] {
+    color: #888891 !important;
+    border: 1.5px solid rgba(86, 86, 86, 0.22);
+    background-color: #FCFCFD !important;
+
+}
+
+input:active,
+input:focus {
+    box-shadow: none !important;
+}
+
+h4,
+h2 {
+    color: #313135;
+}
+
+h4 {
+    font-size: 26px;
+}
+
+.btn-primaryTwo {
+    background-color: transparent !important;
+    border: none !important;
+}
+
+.breadcrumb-item>a {
+    color: #73788C;
+
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+    float: right !important;
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="Add Subject.css">
+</head>
+<body>
+    <form id="my-form">
+        <h5>المواد/اضافة مادة جديدة</h5>
+        <h1>اضافة مادة جديدة</h1>
+        <div id="mydiv">
+        <div class="flex-container 1">
+        <input type="text" id="input1" placeholder="اسم المادة" >
+        <select class="list1">
+            <option value="default">اللائحة</option>
+            <option value="1">الساعات المعتمدة</option>
+        </select>
+        <select class="list2">
+            <option value="default">القسم</option>
+            <option value="1">نظم المعلومات</option>
+            <option value="2">محاسبة</option>
+            <option value="3">ادارة الاعمال</option>
+            <option value="4">الاحصاء والرياضة والاتامين</option>
+            <option value="5">جمارك</option>
+        </select>
+        <select class="list3">
+            <option value="default">الترم</option>
+            <option value="1">الترم الاول</option>
+            <option value="2">الترم الثانى</option>
+            <option value="3">الترم المعاكس</option>
+            <option value="4">الفصل الصيفى</option>
+        </select>
+        </div>
+        <br>
+        <div class="flex-container 2">
+        <select class="list4">
+            <option value="default">الفرقة</option>
+            <option value="1">الفرقة الاولى</option>
+            <option value="2">الفرقة الثانية</option>
+            <option value="3">الفرقة الثالثة</option>
+            <option value="4">الفرقة الرابعة</option>
+        </select>
+            <select class="list5">
+            <option value="default">اللغة</option>
+            <option value="1">عربى</option>
+            <option value="2">انجليزى</option>
+            <option value="3">فرنسى</option>
+        </select>
+        <select class="list6">
+            <option value="defualt">البرنامج</option>
+            <option value="1">انتظام</option>
+            <option value="2">انتساب موجه</option>
+            <option value="3">انتساب عادى</option>
+        </select>
+        <select class="list7">
+            <option value="default">عدد ساعات المادة</option>
+            <option value="1">2</option>
+            <option value="2">3</option>
+        </select>
+        <input type="text" id="input2" placeholder="كود المادة">
+        </div>
+        <br>
+        <div class="flex-container 3">
+        <label><input type="checkbox"id="section">اضافة سكشن للمادة</label>
+        <button oncllick="plusbutton()"
+        style="background-color: transparent;border: none;outline: none;font-size: 1.5em;color: #4372ea;margin-right: 62px;">+</button>
+        </div>
+        </div>
+        <div id="duplicatedelementscontainer"></div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+            <button id="save-button">حفظ</button>
+            <button id="cancel-button">الغاء</button>
+            <script src="Add Subject.js" type="text/javascript"></script>
+    </form>
+</body>
+</html>

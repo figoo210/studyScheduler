@@ -42,9 +42,11 @@ def create_app(config_class=Config):
 
     # Import a module / component using its blueprint handler variable
     from course.view import bp as course_view
+    from instructor.view import bp as instructor_view
 
     # Register blueprint(s)
     app.register_blueprint(course_view)
+    app.register_blueprint(instructor_view)
 
     # Sample HTTP error handling
     @app.errorhandler(404)
