@@ -1,38 +1,31 @@
 from flask import Blueprint, redirect, render_template, request
 
 
-PAGE = 'room'
+PAGE = 'report'
 
-ro = Blueprint(PAGE, __name__, template_folder='templates')
+bp = Blueprint(PAGE, __name__, template_folder='templates')
+
+# THIS THE MAIN PAGE (ROOM)
 
 
-@ro.route(f'/{PAGE}/<id>', methods=["GET", "POST"])
-def handle_one(id):
-    """ get one item or post to update it """
+@bp.route(f'/rooms', methods=["GET"])
+def get_rooms():
+    """ get all rooms or post to add new """
     context = {}
-    if request.method == 'POST':
-        return render_template(f'{PAGE}.html')
-    else:
-        return render_template(f'{PAGE}.html')
+    return render_template(f'rooms.html')
+
+# add room
 
 
-@ro.route(f'/{PAGE}', methods=["GET", "POST"])
-def handle_mod():
-    """ get all items or post to add new """
-    context = {}
-    if request.method == 'POST':
-        return render_template(f'{PAGE}.html')
-    else:
-        return render_template(f'{PAGE}.html')
-
-
-@ro.route(f'/{PAGE}/update', methods=["POST"])
-def update():
+@bp.route(f'/{PAGE}/update', methods=["POST"])
+def update_room():
     """ post to update """
     return redirect(f'/{PAGE}')
 
+# Remove room
 
-@ro.route(f'/{PAGE}/delete/<id>', methods=["GET"])
-def delete_one(id):
+
+@bp.route(f'/{PAGE}/delete/<id>', methods=["POST"])
+def delete_room(id):
     """ delete item """
-    return redirect(f'/{PAGE}')
+    return redirect('/rooms')
