@@ -14,7 +14,7 @@ def get_rooms():
     context = {}
     return render_template(f'rooms.html')
 
-# add room
+# update room
 
 
 @bp.route(f'/{PAGE}/update', methods=["POST"])
@@ -29,3 +29,16 @@ def update_room():
 def delete_room(id):
     """ delete item """
     return redirect('/rooms')
+
+# Add rooms
+
+
+@bp.route(f'/{PAGE}/new', methods=["GET", "POST"])
+def new_coures(id):
+    """ new room """
+    context = {}
+    if request.method == 'POST':
+        # return  changes
+        return redirect('/rooms')
+    else:
+        return render_template(f'new-{PAGE}.html')
