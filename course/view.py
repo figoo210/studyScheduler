@@ -5,25 +5,16 @@ PAGE = 'course'
 
 bp = Blueprint(PAGE, __name__, template_folder='templates')
 
+# Show courses
 
-@bp.route(f'/{PAGE}/<id>', methods=["GET", "POST"])
-def handle_one(id):
-    """ get one item or post to update it """
+
+@bp.route('/courses', methods=["GET"])
+def get_courses():
+    """ get all courses  """
     context = {}
-    if request.method == 'POST':
-        return render_template(f'{PAGE}.html')
-    else:
-        return render_template(f'{PAGE}.html')
+    return render_template('courses.html')
 
-
-@bp.route(f'/{PAGE}', methods=["GET", "POST"])
-def handle_mod():
-    """ get all items or post to add new """
-    context = {}
-    if request.method == 'POST':
-        return render_template(f'{PAGE}.html')
-    else:
-        return render_template(f'{PAGE}.html')
+# popup
 
 
 @bp.route(f'/{PAGE}/update', methods=["POST"])
@@ -31,10 +22,23 @@ def update():
     """ post to update """
     return redirect(f'/{PAGE}')
 
+# Delete Course
+
 
 @bp.route(f'/{PAGE}/delete/<id>', methods=["GET"])
-def delete_one(id):
-    """ delete item """
-    return redirect(f'/{PAGE}')
+def delete_course(id):
+    """ delete course """
+    return redirect(f'/courses')
+
+# Add courses
 
 
+@bp.route(f'/{PAGE}/new', methods=["GET", "POST"])
+def new_coures(id):
+    """ new course """
+    context = {}
+    if request.method == 'POST':
+        # return  changes
+        return redirect('/courses')
+    else:
+        return render_template(f'new-{PAGE}.html')
