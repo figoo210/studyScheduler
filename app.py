@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session
+from flask import Flask, session, redirect
 from flask_cors import CORS
 from flask_migrate import Migrate
 # Import SQLAlchemy
@@ -51,7 +51,7 @@ def create_app(config_class=Config):
     # Sample HTTP error handling
     @app.errorhandler(404)
     def not_found(error):
-        return 404
+        return redirect('/not-found')
 
     @app.route('/favicon.ico')
     def favicon():
