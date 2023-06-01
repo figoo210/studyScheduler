@@ -3,6 +3,7 @@ import os
 from flask import Flask, session, redirect
 from flask_cors import CORS
 from flask_migrate import Migrate
+from flask_login import LoginManager
 # Import SQLAlchemy
 # from sqlalchemy_utils import create_database, database_exists
 from config import Config
@@ -22,11 +23,11 @@ def create_app(config_class=Config):
     db.init_app(app)
 
     # Config
-    # CORS(app)
-    # CORS(app, resources={ r"/*": {"origins": "*"}}, supports_credentials=True)
-    # Migrate(app, db, compare_type=True)
+    CORS(app)
+    CORS(app, resources={ r"/*": {"origins": "*"}}, supports_credentials=True)
 
     with app.app_context():
+        from auth.model import User
         from building.model import Building
         from department.model import Department
         from regulation.model import Regulation
@@ -39,12 +40,20 @@ def create_app(config_class=Config):
         from section.model import Section
         db.create_all()
         db.session.commit()
+        Migrate(app, db, compare_type=True)
+        User.create_admin_if_not_exist()
 
     # Import a module / component using its blueprint handler variable
+    from dashboard.error_view import bp as error_view
+    from dashboard.main_view import bp as main_view
+    from auth.view import bp as auth_view
     from course.view import bp as course_view
     from instructor.view import bp as instructor_view
 
     # Register blueprint(s)
+    app.register_blueprint(error_view)
+    app.register_blueprint(main_view)
+    app.register_blueprint(auth_view)
     app.register_blueprint(course_view)
     app.register_blueprint(instructor_view)
 
@@ -60,6 +69,15 @@ def create_app(config_class=Config):
     @app.route('/test/')
     def test_page():
         return '<h1>Testing the Flask Application Factory Pattern</h1>'
+
+    # Login Manager
+    login_manager = LoginManager()
+    login_manager.login_view = "auth.login_page"
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
 
 
     return app

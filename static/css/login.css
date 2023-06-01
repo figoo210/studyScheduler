@@ -1,0 +1,133 @@
+:root {
+    --colorLight: #FCFCFD;
+    --bs-modal-width: 651px !important;
+}
+
+@font-face {
+    font-family: "almaraiFontName";
+    src: url("../fonts/Almarai-Regular.ttf");
+}
+
+* {
+    font-family: "almaraiFontName";
+}
+
+img {
+    mix-blend-mode: darken;
+}
+
+.bg-form {
+    background: rgba(244, 244, 244, 0.8);
+    box-shadow: 0px 0px 170px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 40px;
+}
+
+.style-logo {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 800;
+    line-height: 48px;
+    text-align: center;
+    text-transform: uppercase;
+
+    background: linear-gradient(132.27deg, #4372EA 14.02%, #505098 88.31%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+}
+
+.form-control-login {
+    border: none !important;
+    border-bottom: 2px solid #606060 !important;
+    border-radius: 5px !important;
+    background-color: transparent !important;
+}
+
+.form-control-login:focus {
+    box-shadow: none !important;
+    border: 1px solid #4372EA !important;
+    background-color: #d9d9d9 !important;
+}
+
+.form-control-login::placeholder,
+input[type="password"]::placeholder {
+    font-size: 15px !important;
+}
+
+input:focus::placeholder {
+    color: transparent;
+    background-image: url('') !important;
+}
+
+small {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 17px;
+
+    color: #4D58AB;
+}
+
+.submitBtn {
+    background: linear-gradient(92.28deg, #4D58AB 25.84%, #4D58AB 86.7%);
+    border-radius: 10px !important;
+    padding: 8px 39px !important;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 18px;
+    border-color: #4D58AB !important;
+    transition: all .5s ;
+}
+.submitBtn:focus{
+    box-shadow: none !important;
+}
+.submitBtn:hover,
+.submitBtn:focus {
+    border-color: #4372ea !important;
+    background: #4372EA !important;
+}
+.bg-icone{
+background: #F5F5F5 !important;
+border-radius: 8px;
+}
+
+small {
+    cursor: pointer;
+}
+
+.modal-header .py-2 {
+    padding-top: .7rem!important;
+    padding-bottom: 0.7rem!important;
+}
+
+.form-control-remmberpass {
+
+    background-color: #FCFCFD !important;
+    border: 1.5px solid rgba(86, 86, 86, 0.22) !important;
+    border-radius: 6px;
+}
+.form-control-remmberpass:focus {
+    box-shadow: none !important;
+    border: 1px solid #4372EA !important;
+}
+.form-control-remmberpass::placeholder{
+    font-size: 15px !important;
+
+}
+
+
+@media only screen and (min-width: 576px) {
+    .col-5-classRooms {
+        flex: 0 0 auto;
+        width: 46.666667% !important;
+    }
+}
+
+@media only screen and (max-width: 575.98px) {
+    .col-5-classRooms {
+        flex: 0 0 auto;
+        width: 100% !important;
+    }
+}

@@ -15,7 +15,7 @@ def show_error():
 
 
 @bp.route(f'/not-found', methods=['GET'])
-def show_error():
+def error404():
     """ show error to user Go back or Go to dashboard """
     return render_template(f'layout/404.html')
 

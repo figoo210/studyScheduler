@@ -14,6 +14,7 @@ class YearEnum(db.TypeDecorator):
     The default would have stored the enum's *name* (ie the string).
     """
     impl = db.Integer
+    cache_ok = True 
 
     def __init__(self, enumtype, *args, **kwargs):
         super(YearEnum, self).__init__(*args, **kwargs)

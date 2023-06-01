@@ -1,7 +1,9 @@
 from database import db
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
 
     """
     argument of relationship must be capital like class name
@@ -18,18 +20,19 @@ class User(db.Model):
     #one user(admin) have many permissions
     id = db.Column(db.Integer, primary_key=True,
                    autoincrement=True, nullable=False)
-    username = db.Column(db.String(65), unique=False, nullable=False)
-    password = db.Column(db.Integer, unique=True, nullable=False)
+    username = db.Column(db.String(65), unique=True, nullable=False)
+    password = db.Column(db.String(255), unique=False, nullable=False)
     is_admin = db.Column(db.Boolean)
-    premissions = db.relationship(
-        "Permission", backref="permission", lazy=True)
+    pid = db.Column(db.String(14), unique=True, nullable=True)
 
+    def create_admin_if_not_exist():
+        if not User.query.filter_by(username="admin").first():
+            # if admin is not in the table
+            # add admin
+            admin = User(username="admin", password=generate_password_hash("admin", method="scrypt"), is_admin=True)
+            db.session.add(admin)
+            db.session.commit()
 
-class  Permission(db.Model):
-    id =  db.Column(db.Integer, primary_key=True,
-                   autoincrement=True, nullable=False)
-    name = db.Column(db.String(65), unique=False, nullable=False)
-    desription = db.Column(db.Text, unique=False, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    def verify_password(self, password):
+        return check_password_hash(self.password, password)
 
-         

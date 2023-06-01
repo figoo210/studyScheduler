@@ -1,0 +1,112 @@
+{% extends "layout/base.html" %}
+{% block title_block %}الرئيسية{% endblock %}
+{% block content %}
+
+<div class="my-5 py-5">
+  <div class="d-flex flex-wrap justify-content-around">
+    <div
+      class="card col-card card-bg-surface border-0 justify-content-center align-items-center"
+    >
+      <div class="row g-0 justify-content-center align-items-center col-12">
+        <div class="col-sm-3 col-2 img-bg d-flex justify-content-center align-items-center">
+          <img src="{{ url_for('static', filename='img/lecs.svg') }}" class="img-fluid" alt="lecture icon" />
+        </div>
+        <div class="col-sm-8 col-9">
+          <div class="card-body">
+            <p class="card-title">المحاضرين</p>
+            <h5 class="card-text">{{ context.instructors_count }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="card col-card card-bg-surface border-0 justify-content-center align-items-center"
+    >
+      <div class="row g-0 justify-content-center align-items-center col-12">
+        <div
+          class="col-sm-3 col-2 img-bg d-flex justify-content-center align-items-center"
+        >
+          <img src="{{ url_for('static', filename='img/book.svg') }}" class="img-fluid" alt="book icon" />
+        </div>
+        <div class="col-sm-8 col-9">
+          <div class="card-body">
+            <p class="card-title">المواد</p>
+            <h5 class="card-text">{{ context.courses_count }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="card col-card card-bg-surface border-0 justify-content-center align-items-center"
+    >
+      <div class="row g-0 justify-content-center align-items-center col-12">
+        <div
+          class="col-sm-3 col-2 img-bg d-flex justify-content-center align-items-center"
+        >
+          <img src="{{ url_for('static', filename='img/clock.svg') }}" class="img-fluid" alt="clock icon" />
+        </div>
+        <div class="col-sm-8 col-9">
+          <div class="card-body">
+            <p class="card-title">قاعات التدريس</p>
+            <h5 class="card-text">{{ context.rooms_count }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="card col-card card-bg-surface border-0 justify-content-center align-items-center"
+    >
+      <div class="row g-0 justify-content-center align-items-center col-12">
+        <div
+          class="col-sm-3 col-2 img-bg d-flex justify-content-center align-items-center"
+        >
+          <img src="{{ url_for('static', filename='img/Group.svg') }}" class="img-fluid" alt="group icon" />
+        </div>
+        <div class="col-sm-8 col-9">
+          <div class="card-body">
+            <p class="card-title">محاضرات اليوم</p>
+            <h5 class="card-text">{{ context.lectures_count }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row col-12 d-flex flex-wrap justify-content-sm-start pt-4">
+    <div class="col-xl-8 col-md-7 col-12 pb-2 me-md-4">
+      <div class="table-responsive-md col-12 mb-3 table-hover tableWrap">
+        <table class="table table-hover" id="myTable">
+          <thead class="">
+            <tr class="text-nowrap">
+              <th scope="col" class="text-end">الأسم</th>
+              <th scope="col">الرتبة</th>
+              <th scope="col">القسم</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for each in context.instructors_sample %}
+            <tr class="text-nowrap">
+              <td>
+                <figure class="text-end">
+                  <blockquote class="blockquote m-0">
+                    <p class="m-0">{{ each.first_name }}</p>
+                  </blockquote>
+                  <span class="sourcetitle">{{ each.last_name }}</span>
+                </figure>
+              </td>
+              <td>{{ each.role }}</td>
+              <td>{{ each.department }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-lg-3 pb-2 me-md-2">
+      <div id="datepicker"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -5,3 +5,4 @@ Flask-SQLAlchemy
 sqlalchemy-utils
 flask-cors
 StrEnum
+flask-wtf
