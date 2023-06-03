@@ -1,0 +1,513 @@
+{% extends "layout/base.html" %} {% block title_block %}الإعدادات{% endblock %}
+{% block content %}
+
+<section class="container-fluid g-0">
+  <div class="p-5 classRooms-bg">
+    <div class="mb-5 py-3">
+      <h2 class="fw-normal fs-3 mb-5">الإعدادات</h2>
+      <div class="container">
+        <div class="mx-5">
+
+          <!-- Datepicker -->
+          <section class="px-5 py-5 border shadow rounded-3 justify-content-center" id="datepicker">
+            <form class="row justify-content-between" action="{{url_for('settings.add_dates')}}" method="post">
+
+              <div class="col-12 time-bg bg-transparent mt-lg-0 mt-2">
+                <div class="col-12">
+                  <div class="card-body">
+
+                    <h5 class="card-title text-center mb-3">
+                      مـواعـيـد التــرم
+                    </h5>
+
+                    <div class="row input-daterange">
+                      <div class="col-md-4 col-12">
+                        <select
+                          class="form-control placeholderclass bg-transparent"
+                          style="font-family: bootstrap-icons; border: 1px solid; border-radius: 0 3px 3px 0;"
+                          aria-label=".form-select-lg example"
+                          name="semester"
+                        >
+                          {% if not context.semester_dates.semester %}
+                          <option disabled selected>الترم</option>
+                          {% endif %}
+
+                          {% for key in context.semesters %}
+                          <option
+                            value="{{ key }}"
+                            {% if context.semesters[context.semester_dates.semester] == context.semesters[key] %}
+                              selected
+                            {% endif %}
+                          >
+                            {{ context.semesters[key] }}
+                          </option>
+                          {% endfor %}
+
+                        </select>
+                      </div>
+                      <div class="col-md-4 col-12">
+                        <input
+                          type="text"
+                          class="form-control placeholderclass bg-transparent"
+                          style="font-family: bootstrap-icons; border: 1px solid;"
+                          placeholder="&#xF1F6; موعد البدأ"
+                          aria-label="Start time"
+                          readonly
+                          name="semesterStartAt"
+                          value="{% if context.semester_dates.semester_start_date %}{{ context.semester_dates.semester_start_date }}{% endif %}"
+                        />
+                      </div>
+                      <div class="col-md-4 col-12">
+                        <input
+                          type="text"
+                          class="form-control placeholderclass bg-transparent"
+                          style="font-family: bootstrap-icons; border: 1px solid;"
+                          placeholder="&#xF1F6; موعد الانتهاء "
+                          aria-label="End time"
+                          readonly
+                          name="semesterEndAt"
+                          value="{% if context.semester_dates.semester_end_date %}{{ context.semester_dates.semester_end_date }}{% endif %}"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div dir="ltr" class="px-4 mx-3 mt-5">
+                <button type="submit" class="btn btn-primary px-4 me-3">
+                  حفظ
+                </button>
+                <button type="reset" onClick="window.location.reload();" class="btn btn-light px-4 border">
+                  إلغاء
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <!-- Main Classes -->
+          <section class="row my-5 py-5 border shadow rounded-3" id="mainData">
+            <div class="d-flex flex-row justify-content-center align-content-center flex-wrap">
+
+              <!-- Departments -->
+              <div class="col-xl-6 col-12 border-bottom border-start border-black-50 px-5 pb-3" >
+                <h5 class="text-center mb-3 py-3" style="background-color: #ddd;">الاقسام</h5>
+
+                <div class="margin-right">
+                  <!-- List -->
+
+                  {% for department in context.departments %}
+
+                    {% for dd in department.divisions %}
+                    <p>
+                      <i class="bi bi-trash3 text-danger ps-3 deleteIcon" onClick="window.location.href='/department/delete/{{ department.id }}'"></i>
+                      {{ department.name }} - الفرقة {{ dd.name }}
+                    </p>
+                    {% endfor %}
+
+                  {% endfor %}
+
+                  <!-- Insert -->
+                  <p
+                    class="text-primary cursor"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addSec"
+                  >
+                    <i class="bi bi-plus-lg text-primary ps-3"></i> إضافة قسم
+                    جديد
+                  </p>
+                </div>
+              </div>
+
+              <!-- Buildings -->
+              <div class="col-xl-6 col-12 border-bottom border-end border-black-50 px-5 pb-3">
+                <h5 class="text-center mb-3 py-3" style="background-color: #ddd;">المباني</h5>
+
+                <div class="margin-right">
+                  <!-- List -->
+
+                  {% for building in context.buildings %}
+                  <p>
+                    <i class="bi bi-trash3 text-danger ps-3 deleteIcon" onClick="window.location.href='/building/delete/{{ building.id }}'"></i>
+                    {{ building.name }}
+                  </p>
+                  {% endfor %}
+
+                  <!-- Insert -->
+                  <p
+                    class="text-primary cursor"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addSec2"
+                  >
+                    <i class="bi bi-plus-lg text-primary ps-3"></i> إضافة مبنى
+                    جديد
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="d-flex flex-row justify-content-center align-content-center flex-wrap">
+
+              <!-- Role -->
+              <div class="pt-5 col-xl-6 col-12 border-top border-start border-black-50 px-5 pb-3">
+                <h5 class="text-center mb-3 py-3" style="background-color: #ddd;">المسميات الوظيفية</h5>
+
+                <div class="margin-right">
+                  <!-- List -->
+
+                  {% for role in context.roles %}
+                  <p>
+                    <i class="bi bi-trash3 text-danger ps-3 deleteIcon" onClick="window.location.href='/role/delete/{{ role.name }}'"></i>
+                    {{ role.name }}
+                  </p>
+                  {% endfor %}
+
+                  <!-- Insert -->
+                  <p
+                    class="text-primary cursor"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addSec3"
+                  >
+                    <i class="bi bi-plus-lg text-primary ps-3"></i> إضافة رتبة
+                    جديدة
+                  </p>
+                </div>
+              </div>
+
+              <!-- Regulations -->
+              <div class="pt-5 col-xl-6 col-12 border-top border-end border-black-50 px-5 pb-3">
+                <h5 class="text-center mb-3 py-3" style="background-color: #ddd;">الأئحة</h5>
+                <div class="margin-right">
+                  <!-- List -->
+
+                  {% for regulation in context.regulations %}
+                  <p>
+                    <i class="bi bi-trash3 text-danger ps-3 deleteIcon" onClick="window.location.href='/regulation/delete/{{ regulation.id }}'"></i>
+                    {{ regulation.name }}
+                  </p>
+                  {% endfor %}
+
+                  <!-- Insert -->
+                  <p
+                    class="text-primary cursor"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addSec4"
+                  >
+                    <i class="bi bi-plus-lg text-primary ps-3"></i> إضافة لأئحة
+                    جديدة
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </section>
+
+          <!-- Students numbers table -->
+          <section class="row table-responsive-md mt-5 border shadow rounded-3">
+            <form class="p-0 rounded-3" action="{{url_for('department.count_department')}}" method="post">
+              <table class="table mb-0">
+                <thead class="bg-primary text-light">
+                  <tr class="text-nowrap text-center">
+                    <th scope="col">الـفــرقة</th>
+                    <th scope="col">القـســم</th>
+                    <th scope="col">العــدد</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+
+                  {% for key in context.arabic_divisions %}
+                  <tr class="text-nowrap text-center tr-border">
+                    <td class="text-vertical">{{ context.arabic_divisions[key] }}</td>
+                    <td>
+                      <ul class="list-group bg-transparent border-0 px-0 m-0">
+                        {% for d in context.departments %}
+                        {% for x in d.divisions %}
+                        {% if x.name == context.arabic_divisions[key] %}
+                        <li
+                          class="list-group-item border-0 bg-transparent px-0 m-0 pb-4"
+                        >
+                          {{ d.name }}
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                        {% endfor %}
+                      </ul>
+                    </td>
+
+                    <td>
+                      <ul
+                        class="list-group bg-transparent border-0 w-100 p-0 m-0"
+                      >
+                        {% for d in context.departments %}
+                        {% for x in d.divisions %}
+                        {% if x.name == context.arabic_divisions[key] %}
+                          <li
+                            class="list-group-item border-0 bg-transparent w-100 d-flex justify-content-center align-items-center px-0 m-0"
+                          >
+                            <input
+                              type="number"
+                              class="form-control w-50"
+                              id="exampleFormControlInput1"
+                              name="{{ x.id }}-count"
+                              value="{{ x.count }}"
+                              min="0"
+                            />
+                          </li>
+                        {% endif %}
+                        {% endfor %}
+                        {% endfor %}
+                      </ul>
+                    </td>
+                  </tr>
+                  {% endfor %}
+
+                </tbody>
+              </table>
+
+              <div dir="ltr" class="py-3 px-4 mx-4 mt-5">
+                <button type="submit" class="btn btn-primary px-4 me-2">
+                  حفظ
+                </button>
+                <button type="reset" class="btn btn-light px-4 border">
+                  إلغاء
+                </button>
+              </div>
+            </form>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Modal section--->
+<!-- اضافة قسم جديد -->
+<div
+  class="modal fade"
+  id="addSec"
+  aria-hidden="true"
+  aria-labelledby="exampleModalToggleLabel"
+  tabindex="-1"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content px-4 py-2" id="modal-content">
+      <div class="modal-header border-0">
+        <button
+          type="button"
+          class="btn-close rounded-circle"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p class="fs-5 fw-normal mb-4">
+          <span> اضافة قسم جديد </span>
+        </p>
+
+        <form id="departmentForm" action="{{url_for('department.add_department')}}" method="post">
+          <div class="row">
+            <div class="col-12 mb-2">
+              <input
+                type="text"
+                class="form-control form-control-lg col-12"
+                name="name"
+                placeholder="  اسم القسم الجديد  "
+                required
+              />
+            </div>
+            <div class="col-12 mb-2">
+              <select
+                id="choices-multiple-remove-button"
+                class="form-control form-control-lg col-12"
+                dir="rtl"
+                placeholder="اختر الفرق التابع لها القسم"
+                multiple
+                required
+              >
+                {% for key in context.arabic_divisions %}
+                <option value="{{ key }}">{{ context.arabic_divisions[key] }}</option>
+                {% endfor %}
+            </select>
+            <input name="divisions" hidden id="departmentFormDivisions" />
+            </div>
+          </div>
+          <div class="border-0 col-12 d-flex justify-content-between align-items-center">
+            <button
+              type="button"
+              class="btn btn-outline-danger btn-lg col-5-classRooms"
+              data-bs-dismiss="modal"
+            >
+              الغاء
+            </button>
+            <button type="submit" class="btn btn-primary btn-lg col-5-classRooms">
+              اضافة
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- اسم المبنى الجديد -->
+<div
+  class="modal fade"
+  id="addSec2"
+  aria-hidden="true"
+  aria-labelledby="exampleModalToggleLabel"
+  tabindex="-1"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content px-4 py-2" id="modal-content">
+      <div class="modal-header border-0">
+        <button
+          type="button"
+          class="btn-close rounded-circle"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+          <span> اضافة مبنى جديد </span>
+        </p>
+
+        <form action="{{url_for('building.add_building')}}" method="post">
+          <div class="row">
+            <div class="col-12 mb-2">
+              <input
+                type="text"
+                class="form-control form-control-lg col-12"
+                name="name"
+                placeholder="  اسم المبنى الجديد  "
+                required
+              />
+            </div>
+          </div>
+          <div class="border-0 col-12 d-flex justify-content-between align-items-center">
+            <button
+              type="button"
+              class="btn btn-outline-danger btn-lg col-5-classRooms"
+              data-bs-dismiss="modal"
+            >
+              الغاء
+            </button>
+            <button type="submit" class="btn btn-primary btn-lg col-5-classRooms">
+              اضافة
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  اضافة رتبة جديد -->
+<div
+  class="modal fade"
+  id="addSec3"
+  aria-hidden="true"
+  aria-labelledby="exampleModalToggleLabel"
+  tabindex="-1"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content px-4 py-2" id="modal-content">
+      <div class="modal-header border-0">
+        <button
+          type="button"
+          class="btn-close rounded-circle"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+          <span> اضافة رتبة جديدة </span>
+        </p>
+
+        <form action="{{url_for('role.add_role')}}" method="post">
+          <div class="row">
+            <div class="col-12 mb-2">
+              <input
+                type="text"
+                class="form-control form-control-lg col-12"
+                name="name"
+                placeholder="  الرتبة الجديدة  "
+                required
+              />
+            </div>
+          </div>
+          <div class="border-0 col-12 d-flex justify-content-between align-items-center">
+            <button
+              type="button"
+              class="btn btn-outline-danger btn-lg col-5-classRooms"
+              data-bs-dismiss="modal"
+            >
+              الغاء
+            </button>
+            <button type="submit" class="btn btn-primary btn-lg col-5-classRooms">
+              اضافة
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--regulation اضافة لائحة جديد  -->
+<div
+  class="modal fade"
+  id="addSec4"
+  aria-hidden="true"
+  aria-labelledby="exampleModalToggleLabel"
+  tabindex="-1"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content px-4 py-2" id="modal-content">
+      <div class="modal-header border-0">
+        <button
+          type="button"
+          class="btn-close rounded-circle"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+          <span> اضافة لائحة جديدة </span>
+        </p>
+
+        <form action="{{url_for('regulation.add_regulation')}}" method="post">
+          <div class="row">
+            <div class="col-12 mb-2">
+              <input
+                type="text"
+                class="form-control form-control-lg col-12"
+                name="name"
+                placeholder="  اسم الأئحة الجديدة  "
+                required
+              />
+            </div>
+          </div>
+          <div class="border-0 col-12 d-flex justify-content-between align-items-center">
+            <button
+              type="button"
+              class="btn btn-outline-danger btn-lg col-5-classRooms"
+              data-bs-dismiss="modal"
+            >
+              الغاء
+            </button>
+            <button type="submit" class="btn btn-primary btn-lg col-5-classRooms">
+              اضافة
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -221,3 +221,24 @@ html .ui-button.ui-state-disabled:active {
     width: fit-content !important;
 }
 
+/* Settings Page */
+#mainData i,
+#mainData .cursor {
+    cursor: pointer;
+}
+
+
+
+@media only screen and (min-width: 576px) {
+    .col-5-classRooms {
+        flex: 0 0 auto;
+        width: 46.666667% !important;
+    }
+}
+
+@media only screen and (max-width: 575.98px) {
+    .col-5-classRooms {
+        flex: 0 0 auto;
+        width: 100% !important;
+    }
+}

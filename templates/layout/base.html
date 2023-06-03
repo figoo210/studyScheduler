@@ -1,204 +1,278 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title_block %}{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-    <!-- bootstrap link -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
-    </script>
+
     <!-- JQuery link -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
-</head>
+    <!-- bootstrap link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
 
-<body>
+    <!-- bootstrap-select -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
 
+    <!-- style -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/datetime.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"/>
+
+  </head>
+
+  <body>
     <div class="container-fluid bg-light">
-        <div class="row">
-            <nav class="navbar navbar-expand-lg bg-white col-12 col-lg-2 align-items-start min-vh position-sticky top-0 shadow-sm">
-                <div class="d-flex flex-column align-items-start col-12 w-100 h-100">
-                    <div class="d-flex justify-content-between mx-2 mt-lg-5 mb-lg-3 col-12">
-                        <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <a class="navbar-brand py-0 px-2 mx-0 text-lg-end text-start" href="#">
-                            <p class="style-logo fs-1">
-                                <img src="{{ url_for('static', filename='img/Logo (1).png') }}" class="img-fluid mb-1" alt="logo">
-                                Month
-                            </p>
-                        </a>
-                    </div>
-
-                    <div class="collapse navbar-collapse align-items-start w-100 mt-5 flex-column "
-                        id="navbarTogglerDemo01">
-                        <ul class="navbar-nav  flex-column w-100 py-0 px-1 h-75">
-
-                            <li class="mb-2 nav-item px-0">
-                                <a class="nav-link px-3" aria-current="page" href="/">
-                                    <span id="dashboard"></span>
-                                    <span class="pe-2">لوحة التحكم</span>
-                                </a>
-                            </li>
-
-                            <li class="mb-2 nav-item px-0">
-                                <a class="nav-link px-3" href="/instructors">
-                                    <span id="lectuers"></span>
-                                    <span class="pe-2">المحاضرين</span>
-                                </a>
-                            </li>
-
-                            <li class="mb-2 nav-item px-0">
-                                <a class="nav-link px-3" href="/rooms">
-                                    <span id="classroom"></span>
-                                    <span class="pe-2"> قاعات التدريس </span>
-                                </a>
-                            </li>
-
-                            <li class="mb-2 nav-item px-0">
-                                <a class="nav-link px-3" href="/courses">
-                                    <span id="materials"></span>
-                                    <span class="pe-2">المواد</span>
-                                </a>
-                            </li>
-
-                            <li class="mb-2 nav-item px-0">
-                                <a class="nav-link px-3" href="/absence">
-                                    <span class="regs"></span>
-                                    <span class="pe-2">تسجيل الغياب </span>
-                                </a>
-                            </li>
-
-                            <li class="mb-2 nav-item px-0">
-                                <div class="accordion p-0 m-0" id="accordionPanelsStayOpenExample">
-
-                                    <div class="accordion-item border-0 p-0 m-0">
-                                        <h2 class="accordion-header" id="flush-headingThree">
-                                            <button class="accordion-button collapsed px-3 py-2 justify-content-between"
-                                                type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#flush-collapseCreeks" aria-expanded="false"
-                                                aria-controls="flush-collapseCreeks">
-                                                <div class="col-11 text-end"> <span id="creeks"></span>
-
-                                                    <span class="pe-2">
-                                                        الجداول
-
-                                                    </span>
-                                                </div>
-                                            </button>
-                                        </h2>
-                                        <div id="flush-collapseCreeks" class="accordion-collapse collapse col-12"
-                                            aria-labelledby="flush-headingThree"
-                                            data-bs-parent="#accordionFlushExample">
-                                            <div class="accordion-body w-100 col-12">
-                                                <ul
-                                                    class="navbar-nav px-0 flex-column btn-toggle-nav list-unstyled fw-normal pb-1 fs-6 w-100 col-12">
-                                                    <li class=" nav-item">
-                                                        <a href="/exams"
-                                                            class="nav-link  rounded text-decoration-none col-12 pb-1">جدول
-                                                            الامتحانات</a>
-                                                    </li>
-                                                    <li class=" nav-item"><a href="/lectures"
-                                                            class="nav-link  rounded text-decoration-none col-12 pb-1">جدول
-                                                            المحاضرات</a></li>
-                                                    <li class=" nav-item"><a href="/sections"
-                                                            class="nav-link rounded text-decoration-none col-12">جدول
-                                                            السكاشن</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li class="mb-2 nav-item px-0 mb-3">
-                                <div class="accordion p-0 m-0" id="accordionPanelsStayOpenExample">
-
-                                    <div class="accordion-item border-0 p-0 m-0">
-                                        <h2 class="accordion-header" id="flush-headingThree">
-                                            <button class="accordion-button collapsed px-3 py-2 justify-content-between"
-                                                type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#flush-collapseThree" aria-expanded="false"
-                                                aria-controls="flush-collapseThree">
-                                                <div class="col-11 text-end"> <span id="report"></span>
-
-                                                    <span class="pe-2">
-                                                        إنشاء تقارير
-                                                    </span>
-                                                </div>
-                                            </button>
-                                        </h2>
-                                        <div id="flush-collapseThree" class="accordion-collapse collapse"
-                                            aria-labelledby="flush-headingThree"
-                                            data-bs-parent="#accordionFlushExample">
-                                            <div class="accordion-body">
-                                                <ul
-                                                    class="navbar-nav px-0 flex-column btn-toggle-nav list-unstyled fw-normal pb-1 small col-12">
-                                                    <li class=" nav-item"><a href="/instructors-report"
-                                                            class="nav-link  rounded text-decoration-none col-12 pb-1">تقرير
-                                                            اجمالي عن المحاضرين</a>
-                                                    </li>
-                                                    <li class=" nav-item"><a href="/weekly-report"
-                                                            class="nav-link  rounded text-decoration-none col-12 pb-1">تقرير
-                                                            اسبوعي عن المحاضرين</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
-                        </ul>
-                        <!-- logout -->
-                        <ul class="navbar-nav justify-content-end flex-column w-100 py-0 px-1 h-25">
-                            <li class="mb-2 nav-item px-0">
-                                <a class="nav-link px-3" href="/settings">
-                                    <span id="settings_icon"></span>
-                                    <span class="pe-2">الإعدادات</span>
-                                </a>
-                            </li>
-
-                            <li class="mb-2 nav-item px-0 mb-3 mt-lg-0 mt-5">
-                                <a class="nav-link px-3 logout" href="/logout">
-                                    <span id="logout-icone"></span>
-                                    <span class="pe-2">تسجيل الخروج</span>
-                                </a>
-                            </li>
-                        </ul>
-
-                    </div>
+      <div class="row">
+        <div class="col-12 col-lg-2 position-sticky p-0 m-0">
+            <nav
+              class="navbar navbar-expand-lg bg-white col-12 col-lg-2 align-items-start m-0 min-vh position-fixed top-0 shadow-sm"
+            >
+              <div class="d-flex flex-column align-items-start col-12 w-100 min-vh">
+                <!-- LOGO -->
+                <div
+                  class="d-flex justify-content-between mx-2 mt-lg-5 mb-lg-3 col-12"
+                >
+                  <button
+                    class="navbar-toggler me-2"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarTogglerDemo01"
+                    aria-controls="navbarTogglerDemo01"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                  >
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <a
+                    class="navbar-brand py-0 px-2 mx-0 text-lg-end text-start"
+                    href="#"
+                  >
+                    <p class="style-logo fs-1">
+                      <img
+                        src="{{ url_for('static', filename='img/Logo (1).png') }}"
+                        class="img-fluid mb-1"
+                        alt="logo"
+                      />
+                      Month
+                    </p>
+                  </a>
                 </div>
+                <!-- List -->
+                <div
+                  class="collapse navbar-collapse justify-content-between align-items-start w-100 h-100 mt-5 flex-column"
+                  id="navbarTogglerDemo01"
+                >
+                  <ul class="navbar-nav flex-column w-100 py-0 px-1 h-70">
+                    <li class="mb-2 nav-item px-0">
+                      <a class="nav-link px-3" aria-current="page" href="/">
+                        <span id="dashboard"></span>
+                        <span class="pe-2">لوحة التحكم</span>
+                      </a>
+                    </li>
+
+                    <li class="mb-2 nav-item px-0">
+                      <a class="nav-link px-3" href="/instructors">
+                        <span id="lectuers"></span>
+                        <span class="pe-2">المحاضرين</span>
+                      </a>
+                    </li>
+
+                    <li class="mb-2 nav-item px-0">
+                      <a class="nav-link px-3" href="/rooms">
+                        <span id="classroom"></span>
+                        <span class="pe-2"> قاعات التدريس </span>
+                      </a>
+                    </li>
+
+                    <li class="mb-2 nav-item px-0">
+                      <a class="nav-link px-3" href="/courses">
+                        <span id="materials"></span>
+                        <span class="pe-2">المواد</span>
+                      </a>
+                    </li>
+
+                    <li class="mb-2 nav-item px-0">
+                      <a class="nav-link px-3" href="/absence">
+                        <span class="regs"></span>
+                        <span class="pe-2">تسجيل الغياب </span>
+                      </a>
+                    </li>
+
+                    <li class="mb-2 nav-item px-0">
+                      <div
+                        class="accordion p-0 m-0"
+                        id="accordionPanelsStayOpenExample"
+                      >
+                        <div class="accordion-item border-0 p-0 m-0">
+                          <h2 class="accordion-header" id="flush-headingThree">
+                            <button
+                              class="accordion-button collapsed px-3 py-2 justify-content-between"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target="#flush-collapseCreeks"
+                              aria-expanded="false"
+                              aria-controls="flush-collapseCreeks"
+                            >
+                              <div class="col-11 text-end">
+                                <span id="creeks"></span>
+
+                                <span class="pe-2"> الجداول </span>
+                              </div>
+                            </button>
+                          </h2>
+                          <div
+                            id="flush-collapseCreeks"
+                            class="accordion-collapse collapse col-12"
+                            aria-labelledby="flush-headingThree"
+                            data-bs-parent="#accordionFlushExample"
+                          >
+                            <div class="accordion-body w-100 col-12">
+                              <ul
+                                class="navbar-nav px-0 flex-column btn-toggle-nav list-unstyled fw-normal pb-1 fs-6 w-100 col-12"
+                              >
+                                <li class="nav-item">
+                                  <a
+                                    href="/exams"
+                                    class="nav-link rounded text-decoration-none col-12 pb-1"
+                                    >جدول الامتحانات</a
+                                  >
+                                </li>
+                                <li class="nav-item">
+                                  <a
+                                    href="/lectures"
+                                    class="nav-link rounded text-decoration-none col-12 pb-1"
+                                    >جدول المحاضرات</a
+                                  >
+                                </li>
+                                <li class="nav-item">
+                                  <a
+                                    href="/sections"
+                                    class="nav-link rounded text-decoration-none col-12"
+                                    >جدول السكاشن</a
+                                  >
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li class="mb-2 nav-item px-0 mb-3">
+                      <div
+                        class="accordion p-0 m-0"
+                        id="accordionPanelsStayOpenExample"
+                      >
+                        <div class="accordion-item border-0 p-0 m-0">
+                          <h2 class="accordion-header" id="flush-headingThree">
+                            <button
+                              class="accordion-button collapsed px-3 py-2 justify-content-between"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target="#flush-collapseThree"
+                              aria-expanded="false"
+                              aria-controls="flush-collapseThree"
+                            >
+                              <div class="col-11 text-end">
+                                <span id="report"></span>
+
+                                <span class="pe-2"> إنشاء تقارير </span>
+                              </div>
+                            </button>
+                          </h2>
+                          <div
+                            id="flush-collapseThree"
+                            class="accordion-collapse collapse"
+                            aria-labelledby="flush-headingThree"
+                            data-bs-parent="#accordionFlushExample"
+                          >
+                            <div class="accordion-body">
+                              <ul
+                                class="navbar-nav px-0 flex-column btn-toggle-nav list-unstyled fw-normal pb-1 small col-12"
+                              >
+                                <li class="nav-item">
+                                  <a
+                                    href="/instructors-report"
+                                    class="nav-link rounded text-decoration-none col-12 pb-1"
+                                    >تقرير اجمالي عن المحاضرين</a
+                                  >
+                                </li>
+                                <li class="nav-item">
+                                  <a
+                                    href="/weekly-report"
+                                    class="nav-link rounded text-decoration-none col-12 pb-1"
+                                    >تقرير اسبوعي عن المحاضرين</a
+                                  >
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <!-- logout -->
+                  <ul
+                    class="navbar-nav justify-content-end flex-column w-100 py-0 px-1 h-30 mb-3"
+                  >
+                    <li class="mb-2 nav-item px-0">
+                      <a class="nav-link px-3" href="/settings">
+                        <span id="settings_icon"></span>
+                        <span class="pe-2">الإعدادات</span>
+                      </a>
+                    </li>
+
+                    <li class="mb-2 nav-item px-0 mb-3 mt-lg-0 mt-5">
+                      <a class="nav-link px-3 logout" href="/logout">
+                        <span id="logout-icone"></span>
+                        <span class="pe-2">تسجيل الخروج</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </nav>
-
-
-            <div class="col-lg-10 col-12">
-
-                <div class="container">
-                    {% block content %}
-                    {% endblock %}
-                </div>
-
-            </div>
         </div>
+
+        <div class="col-lg-10 col-12">
+          <div class="container">
+            <div class="position-relative w-100">
+              {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                  <div class="position-absolute top-0 m-auto w-100 text-center justify-content-center align-items-center alert alert-{{ messages[0][0] }}">
+                    {{ messages[0][1] }}.
+                  </div>
+                {% endif %}
+              {% endwith %}
+            </div
+            {% block content %} {% endblock %}
+          </div>
+        </div>
+      </div>
     </div>
 
-
-
-
     <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/datetime.js') }}"></script>
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
-</body>
-
+  </body>
 </html>

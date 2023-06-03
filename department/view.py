@@ -1,38 +1,33 @@
 from flask import Blueprint, redirect, render_template, request
-
+from department.controller import delete_department, add_new_department, update_department_count
 
 PAGE = 'department'
 
-dep = Blueprint(PAGE, __name__, template_folder='templates')
+bp = Blueprint(PAGE, __name__, template_folder='templates')
 
 
-@dep.route(f'/{PAGE}/<id>', methods=["GET", "POST"])
-def handle_one(id):
-    """ get one item or post to update it """
+@bp.route(f'/{PAGE}', methods=["POST"])
+def add_department():
+    """ add new """
     context = {}
-    if request.method == 'POST':
-        return render_template(f'{PAGE}.html')
-    else:
-        return render_template(f'{PAGE}.html')
+    req = request.form.to_dict()
+    add_new_department(req)
+    return redirect('/settings')
 
 
-@dep.route(f'/{PAGE}', methods=["GET", "POST"])
-def handle_mod():
-    """ get all items or post to add new """
+@bp.route(f'/{PAGE}/count', methods=["POST"])
+def count_department():
+    """ add new """
     context = {}
-    if request.method == 'POST':
-        return render_template(f'{PAGE}.html')
-    else:
-        return render_template(f'{PAGE}.html')
+    req = request.form.to_dict()
+    update_department_count(req)
+    return redirect('/settings')
 
 
-@dep.route(f'/{PAGE}/update', methods=["POST"])
-def update():
-    """ post to update """
-    return redirect(f'/{PAGE}')
-
-
-@dep.route(f'/{PAGE}/delete/<id>', methods=["GET"])
+@bp.route(f'/{PAGE}/delete/<id>', methods=["GET"])
 def delete_one(id):
     """ delete item """
-    return redirect(f'/{PAGE}')
+    delete_department(id)
+    return redirect(f'/settings')
+
+

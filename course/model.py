@@ -1,7 +1,7 @@
 from database import db
 from utils.enums.Language import Language, LanguageEnum
 from utils.enums.Semester import Semester, SemesterEnum
-from utils.enums.Year import Year, YearEnum
+from utils.enums.Year import Division, DivisionEnum
 from utils.enums.Program import Program, ProgramEnum
 
 
@@ -10,9 +10,8 @@ class Course(db.Model):
     name = db.Column(db.String(120), unique=False, nullable=False)
     code = db.Column(db.String(60), unique=True, nullable=False)
     credit_hrs = db.Column(db.Integer, unique=False, nullable=False)
-    semester = db.Column(SemesterEnum(Semester),
-                         default=Semester.first, nullable=False)
-    year = db.Column(YearEnum(Year), default=Year.first, nullable=False)
+    semester = db.Column(SemesterEnum(Semester), default=Semester.first, nullable=False)
+    year = db.Column(DivisionEnum(Division), default=Division.first, nullable=False)
     language = db.Column(LanguageEnum(Language),
                          default=Language.ar, nullable=False)
     program = db.Column(ProgramEnum(Program),

@@ -1,11 +1,16 @@
+import datetime
+
+from flask import flash
+from database import db
+from dashboard.model import SemesterSettings
 from instructor.model import Instructor
 from instructor_role.model import InstructorRole
 from department.model import Department
 from course.model import Course
 from room.model import Room
 from lecture.model import Lecture
-from utils.date_and_time import get_day_name
-
+from utils.date_and_time import get_day_name, get_date_from_string
+from utils.enums.Semester import Semester
 
 # Get Instructors count
 def get_instructors_count():
@@ -36,5 +41,32 @@ def get_instructors_sample(n):
         }
         instructors_data.append(data)
     return instructors_data
+
+# Get last row of settings table
+def get_semesters_from_settings():
+    return SemesterSettings.query.order_by(SemesterSettings.id.desc()).first()
+
+# Get Semesters dictionary
+def get_semesters_dict():
+    semesters = {
+        Semester.first: "الأول (الخريف)",
+        Semester.second: "الثاني (الربيع)",
+        Semester.summer: "الصيف"
+    }
+    return semesters
+
+# add new semester settings
+def add_semester_settings(data):
+    try:
+        ss = SemesterSettings(
+            semester=data["semester"],
+            semester_start_date=get_date_from_string(data["semesterStartAt"]),
+            semester_end_date=get_date_from_string(data["semesterEndAt"])
+        )
+        db.session.add(ss)
+        db.session.commit()
+        flash("تم تحديث الإعدادات", "success")
+    except Exception as e:
+        print(e)
 
 
