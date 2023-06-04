@@ -19,11 +19,11 @@ class Instructor(db.Model):
     secuirty_code = db.Column(db.Integer, unique=True, nullable=False)
     health_status = db.Column(db.String(20), unique=False, nullable=True)
     date_of_birth = db.Column(db.DateTime, unique=False, nullable=True)
+    date_of_join = db.Column(db.DateTime, unique=False, nullable=True)
     department_id = db.Column(db.Integer, db.ForeignKey(
         "department.id"), nullable=False)
-    instructor_role = db.Column(db.Integer, db.ForeignKey(
+    instructor_role = db.Column(db.String(20), db.ForeignKey(
         "instructor_role.name"), nullable=False)
     lectures = db.relationship("Lecture", backref="lecture", lazy=True)
     sections = db.relationship("Section", backref="section", lazy=True)
-    instructor_times = db.relationship(
-        "InstructorTime", backref="instructor_time", lazy=True)
+    instructor_times = db.relationship("InstructorTime", backref="instructor_time", lazy=True)

@@ -1,0 +1,85 @@
+{% extends "layout/base.html" %} {% block title_block %}المحاضرين{% endblock %}
+{% block content %}
+
+<section class="container-fluid g-0">
+  <div class="p-5 classRooms-bg">
+    <div class="" id="container">
+      <nav aria-label="breadcrumb" dir="rtl" lang="">
+        <ol class="breadcrumb" dir="rtl">
+          <li class="breadcrumb-item">
+            <a href="#" class="fw-normal text-secondary text-decoration-none">
+              المحاضرين
+            </a>
+          </li>
+          <li class="breadcrumb-item active" id="bc-slash" aria-current="page">
+            <span class="px-2 fw-normal text-secondary">اضافة محاضرين</span>
+          </li>
+        </ol>
+      </nav>
+
+      <h1 class="h2 addClassRoomsH1 pt-3 pb-4">اضافة محاضرين</h1>
+
+      <form>
+        <div
+          id="form-container"
+          class="row g-0 justify-content-between-center align-items-start py-4"
+        >
+          <div class="row w-100 g-0 justify-content-between" id="formRow">
+            <div class="col-3 mb-md-0 mb-3">
+              <input
+                type="text"
+                class="form-control form-control-lg col-12"
+                id="textSearchField"
+                onkeyup="searchField('textSearchField')"
+                placeholder="الإسم"
+              />
+              <ul id="searchResultBox">
+              </ul>
+              <input hidden id="{{ 'textSearchField-' + 'data' }}" value='{{ ["Always","azulejo","to","change","an","azo","compound","third"] }}' />
+            </div>
+            <div class="col-3 mb-md-0 mb-3">
+              <input
+                type="text"
+                class="form-control form-control-lg col-12"
+                id="exampleFormControlInput2"
+                placeholder="الرتبة"
+              />
+            </div>
+            <div class="col-3 mb-md-0 mb-3">
+              <input
+                type="text"
+                class="form-control form-control-lg col-12"
+                id="exampleFormControlInput3"
+                placeholder="القسم"
+              />
+            </div>
+            <div class="col-1 mb-md-0 mb-3">
+              <button
+                id="add-form-button"
+                type="button"
+                class="btn btn-primaryTwo text-end col-12"
+                onClick="addForm()"
+              >
+                <i class="bi bi-plus-lg text-primary fs-4"></i>
+              </button>
+            </div>
+            <div class="col-1 mb-md-0 mb-3">
+              <i
+                class="delete-button text-danger btn bi bi-trash col-12 col-md-1 text-center"
+                data-form-id="form-1" onClick="removeForm(this)"></i>
+            </div>
+          </div>
+        </div>
+
+        <div dir="ltr" class="py-3 px-4">
+          <button type="button" class="btn btn-outline-danger px-4">
+            ألغاء
+          </button>
+          <button type="button" class="btn btn-primary px-4">حفظ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,328 @@
+{% extends "layout/base.html" %} {% block title_block %}المستخدمين{% endblock %}
+{% block content %}
+
+<section class="container-fluid g-0" id="users">
+  <div class="p-5 classRooms-bg">
+    <div class="mb-5 pt-3">
+      <h2 class="fw-normal fs-3">المستخدمين</h2>
+    </div>
+
+    <form class="" action="{{url_for('auth.show_users')}}" method="post">
+      <div class="tableWrap table-responsive">
+        <table class="table mt-5" id="myTable">
+          <thead>
+            <tr>
+              <th scope="col" style="font-size: 18px" class="col-2">
+                اسم المستخدم
+              </th>
+              <th scope="col" style="font-size: 18px" class="col-2">
+                تغيير كلمة المرور
+              </th>
+              <th scope="col" style="font-size: 18px">مسؤول؟</th>
+              <th scope="col" style="font-size: 18px"></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for user in context.users %}
+            <tr>
+              <td scope="col" class="text-center">
+                <input
+                  name="{{ user.id }}-username"
+                  type="text"
+                  value="{{ user.username }}"
+                  class="form-control bg-transparent border-0 text-end"
+                  disabled
+                />
+              </td>
+
+              <td
+                scope="col"
+                class="d-flex justify-content-center align-items-center"
+              >
+                <input
+                  name="{{ user.id }}-password"
+                  type="password"
+                  placeholder="********"
+                  class="w-50 form-control bg-transparent border-0 text-end viewPass"
+                />
+                <button
+                  type="button"
+                  class="btn btn-default border-0"
+                  name="dynamic"
+                >
+                  <i class="bi bi-eye"></i>
+                </button>
+              </td>
+
+              <td>
+                <input
+                  class="form-check-input fs-6"
+                  type="checkbox"
+                  name="{{ user.id }}-is_admin"
+                  {% if user.is_admin %}
+                  checked
+                  {% endif %}
+                />
+              </td>
+
+              <!-- Button trigger modal -->
+              <td class="d-flex justify-content-end">
+                <i
+                  class="bi bi-trash text-danger me-2 cursor fs-6"
+                  data-bs-toggle="modal"
+                  data-bs-target="#staticBackdrop"
+                  onClick="window.location.href='/user/delete/{{ user.id }}'"
+                ></i>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div dir="ltr" class="py-3 d-flex justify-content-between">
+        <div class="">
+          <button type="submit" class="btn btn-primary px-4 me-2">حفظ</button>
+          <button type="reset" class="btn btn-light px-4">ألغاء</button>
+        </div>
+        <div class="">
+          <button
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#editUser"
+            class="btn btn-warning px-4 me-2"
+          >
+            تعديل معلومات الامان
+            <i
+              class="bi bi-pencil-square"
+              style="font-size: 18px; margin-left: 5px"
+            ></i>
+          </button>
+          <button
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#addUser"
+            class="btn btn-success px-4"
+          >
+            اضافة مستخدم جديد
+            <i
+              class="bi bi-plus-circle"
+              style="font-size: 18px; margin-left: 5px"
+            ></i>
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Modal add User--->
+    <div
+      class="modal fade"
+      id="addUser"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog">
+        <div class="modal-content px-4 py-2">
+          <div class="modal-header border-0 d-inline">
+            <!-- <small class=" text-classRooms fs-6"> تعديل</small><br> -->
+            <p class="fw-normal fs-3 mt-3">إضافة مستخدم جديد</p>
+          </div>
+          <div class="modal-body">
+            <form action="{{url_for('auth.create_new_user')}}" method="post">
+              <div class="row">
+                <div class="col-12 mb-3">
+                  <input
+                    type="text"
+                    class="form-control form-control-lg col-12"
+                    name="username"
+                    placeholder="اسم المستخدم"
+                  />
+                </div>
+                <div class="col-12 mb-3">
+                  <input
+                    type="password"
+                    class="form-control form-control-lg col-12"
+                    name="password"
+                    placeholder=" الرقم السري "
+                  />
+                </div>
+              </div>
+
+              <div
+                class="modal-footer border-0 col-12 d-flex justify-content-between align-items-center p-0 m-0"
+              >
+                <button
+                  type="button"
+                  class="btn btn-outline-danger btn-lg col-5-classRooms"
+                  data-bs-dismiss="modal"
+                >
+                  الغاء
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-lg col-5-classRooms"
+                >
+                  حفظ
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal edit User--->
+    <div
+      class="modal fade"
+      id="editUser"
+      aria-hidden="true"
+      aria-labelledby="exampleModalToggleLabel"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content px-4 py-2">
+          <div
+            class="modal-header border-0 col-12 justify-content-between align-items-center pb-0"
+          >
+            <div class="col-11"></div>
+            <button
+              type="button"
+              class="btn-close col-1 ms-1"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row justify-content-center flex-wrap">
+              <div class="col-3 col-sm-2 mb-3">
+                <div
+                  class="classRooms-wrring-icone rounded-2 d-flex justify-content-center align-items-center"
+                >
+                  <svg
+                    width="26"
+                    height="26"
+                    viewBox="0 0 26 26"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M14 6.5C14 5.94771 13.5523 5.5 13 5.5C12.4477 5.5 12 5.94771 12 6.5V13.4643C12 14.0166 12.4477 14.4643 13 14.4643C13.5523 14.4643 14 14.0166 14 13.4643V6.5ZM13 17.2C12.4477 17.2 12 17.6477 12 18.2C12 18.7523 12.4477 19.2 13 19.2H13.013C13.5653 19.2 14.013 18.7523 14.013 18.2C14.013 17.6477 13.5653 17.2 13.013 17.2H13ZM25 13C25 19.6274 19.6274 25 13 25C6.37258 25 1 19.6274 1 13C1 6.37258 6.37258 1 13 1C19.6274 1 25 6.37258 25 13Z"
+                      stroke="#4372EA"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <div class="col-8 col-sm-10">
+                <p class="fw-medium fs-4 m-0">تعديل معلومات الامان</p>
+              </div>
+            </div>
+            <form method="post">
+              <div class="row">
+                <div class="col-12 mb-3">
+                  <input
+                    type="text"
+                    class="form-control form-control-lg col-12"
+                    placeholder="اكتب الرقم القومي .... "
+                  />
+                </div>
+                <div class="col-12 mb-3">
+                  <input
+                    type="password"
+                    class="form-control form-control-lg col-12"
+                    placeholder="  اجب على سؤال الامان "
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
+          <div
+            class="modal-footer border-0 col-12 d-flex justify-content-between align-items-center"
+          >
+            <button
+              type="button"
+              class="btn btn-outline-danger btn-lg col-5-classRooms"
+              data-bs-dismiss="modal"
+            >
+              الغاء
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary btn-lg col-5-classRooms"
+              data-bs-target="#exampleModalToggle2"
+              data-bs-toggle="modal"
+            >
+              حفظ
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div
+      class="modal fade"
+      id="exampleModalToggle2"
+      aria-hidden="true"
+      aria-labelledby="exampleModalToggleLabel2"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content py-2">
+          <div
+            class="modal-header border-0 col-12 justify-content-between align-items-center pb-0"
+          >
+            <div class="col-11"></div>
+            <button
+              type="button"
+              class="btn-close col-1 ms-1"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row justify-content-center flex-wrap">
+              <div class="col-3 col-sm-2">
+                <div
+                  class="classRooms-wrring-icone rounded-2 d-flex justify-content-center align-items-center"
+                >
+                  <svg
+                    width="26"
+                    height="26"
+                    viewBox="0 0 26 26"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7.85711 12.2929C7.46658 11.9024 6.83342 11.9024 6.44289 12.2929C6.05237 12.6834 6.05237 13.3166 6.44289 13.7071L10.3429 17.6071C10.7334 17.9976 11.3666 17.9976 11.7571 17.6071L19.5571 9.80711C19.9476 9.41658 19.9476 8.78342 19.5571 8.39289C19.1666 8.00237 18.5334 8.00237 18.1429 8.39289L11.05 15.4858L7.85711 12.2929ZM25 13C25 19.6274 19.6274 25 13 25C6.37258 25 1 19.6274 1 13C1 6.37258 6.37258 1 13 1C19.6274 1 25 6.37258 25 13Z"
+                      stroke="#3D9A50"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <div class="col-8 col-sm-10">
+                <p class="fw-medium fs-4 m-0">تم الحفظ بنجاح!</p>
+                <p class="fw-normal fs-6 text-classRooms m-0">
+                  تم حفظ معلومات الامان بنجاح
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

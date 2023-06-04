@@ -1,4 +1,5 @@
 from flask import Blueprint, redirect, render_template, request
+from instructor.controller import get_instructors_data
 
 
 PAGE = 'instructor'
@@ -6,17 +7,14 @@ PAGE = 'instructor'
 bp = Blueprint(PAGE, __name__, template_folder='templates')
 
 # THIS THE MAIN PAGE
-
-
 @bp.route(f'/instructors', methods=["GET"])
 def get_instructors():
     """ get all items or post to add new """
     context = {}
+    context["instructors"] = get_instructors_data()
     return render_template(f'instructors.html', context=context)
 
 # THIS FOR POP UP
-
-
 @bp.route(f'/{PAGE}/delete/<id>', methods=["GET"])
 def delete_one(id):
     """ delete item """
@@ -25,7 +23,7 @@ def delete_one(id):
 
 # ADD INSTRUCTORE
 @bp.route(f'/{PAGE}/new', methods=["GET", "POST"])
-def new_one(id):
+def new_one():
     """  new item """
     context = {}
     if request.method == 'POST':
@@ -35,8 +33,6 @@ def new_one(id):
         return render_template(f'new-{PAGE}.html')
 
 # Designation of materials
-
-
 @bp.route(f'/{PAGE}/assign', methods=["GET", "POST"])
 def dnew_assign():
     """ new item """
@@ -49,8 +45,6 @@ def dnew_assign():
         return render_template(f'assign-{PAGE}.html')
 
 # Profile personly
-
-
 @bp.route(f'/{PAGE}/<id>', methods=["GET", "POST"])
 def get_instructor(id):
     """ get all items or post to add new """
