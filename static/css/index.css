@@ -1,0 +1,244 @@
+body {
+    background: #F9F9F9 !important;
+}
+
+.style-logo {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 800;
+    line-height: 48px;
+    text-align: center;
+    text-transform: uppercase;
+
+    background: linear-gradient(132.27deg, #4372EA 14.02%, #505098 88.31%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+}
+
+.card-bg-surface {
+    background: #FCFCFD !important;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    padding: 28px 24px;
+    height: 112px !important;
+}
+
+.img-bg {
+    background: #F5F5F5;
+    border-radius: 8px;
+    width: 56px;
+    height: 56px;
+}
+
+@media only screen and (min-width: 1169px) {
+
+    .col-card {
+        width: 262px !important;
+    }
+}
+
+@media only screen and (max-width: 1170px) {
+    .col-card {
+        width: 44% !important;
+        margin-bottom: 20px;
+
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    .col-card {
+        width: 100% !important;
+        margin-bottom: 20px;
+    }
+}
+
+.card-body p {
+    color: #313135 !important;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.card-body h5 {
+    color: #73788C !important;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+}
+
+#myTable {
+    border: 1px solid #E6E8F0;
+}
+
+#myTable thead tr {
+    position: sticky;
+    top: 0;
+    background-color: #F6F6F6 !important;
+    border-width: 1px 1px 0px 0px;
+    border-style: solid;
+    border-color: #E6E8F0;
+    box-shadow: inset 0px -2px 0px #E6E8F0;
+    border-radius: 0px 10px 0px 0px;
+
+}
+
+.tableWrap {
+    max-height: 69vh !important;
+
+    overflow: auto;
+
+}
+
+#myTable th,
+#myTable td {
+    border: none !important;
+    font-style: normal !important;
+    font-size: 12px;
+
+}
+
+#myTable tbody tr {
+    border-bottom: 1px solid #E6E8F0 !important;
+
+}
+
+#myTable th {
+    font-weight: 700;
+}
+
+#myTable td {
+    font-weight: 400;
+    padding: 0px 8px !important;
+}
+
+.tableWrap::-webkit-scrollbar {
+    width: 5px !important;
+}
+
+/* Track */
+.tableWrap::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px #F9F9F9 !important;
+    border-radius: 10px !important;
+}
+
+/* Handle */
+.tableWrap::-webkit-scrollbar-thumb {
+    background: #E6E8F0 !important;
+    border-radius: 10px !important;
+
+}
+
+tr {
+    white-space: nowrap !important;
+    vertical-align: middle;
+    text-align: center !important;
+
+}
+
+
+/* .ui-datepicker {
+  background-color: #fff;
+  border: 1px solid #ccc;
+}
+.ui-datepicker-header {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+}
+
+.ui-datepicker-title {
+  font-size: 16px;
+  color: #333;
+} */
+.ui-state-default,
+.ui-widget-content {
+    background-color: white !important;
+    color: #313135 !important;
+}
+
+.ui-state-default:hover {
+    background-color: #c5c5c5 !important;
+    color: #313135 !important;
+}
+
+.ui-datepicker-header {
+    background-color: transparent !important;
+    border: 1px solid #df212100 !important;
+}
+
+.ui-state-active,
+.ui-state-highlight,
+.ui-widget-content .ui-state-highlight,
+.ui-widget-header .ui-state-highlight {
+    background-color: #4372EA !important;
+    border: 1px solid #4372EA;
+    color: #fff !important;
+
+
+}
+
+tr {
+    vertical-align: middle !important;
+
+}
+
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default,
+.ui-button,
+html .ui-button.ui-state-disabled:hover,
+html .ui-button.ui-state-disabled:active {
+    vertical-align: middle !important;
+    text-align: center;
+    padding: 0;
+    padding-top: 9px;
+}
+
+.ui-state-default {
+    border: 1px solid #c5c5c5;
+    background: transparent;
+    font-weight: normal;
+    color: #454545;
+    width: 3.4em;
+    height: 3em;
+
+
+}
+
+#ui-datepicker-div {
+    width: auto !important;
+}
+
+.ui-datepicker td {
+    padding: 0px;
+    margin: 0;
+}
+
+.ui-widget-content {
+    border: 1px solid #dddddd;
+    background: #ffffff;
+    color: #333333;
+    width: fit-content !important;
+}
+
+/* Settings Page */
+#mainData i,
+#mainData .cursor {
+    cursor: pointer;
+}
+
+
+
+@media only screen and (min-width: 576px) {
+    .col-5-classRooms {
+        flex: 0 0 auto;
+        width: 46.666667% !important;
+    }
+}
+
+@media only screen and (max-width: 575.98px) {
+    .col-5-classRooms {
+        flex: 0 0 auto;
+        width: 100% !important;
+    }
+}

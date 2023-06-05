@@ -1,0 +1,112 @@
+
+
+@font-face {
+  font-family: "pnuReg";
+  src: url("../fonts/ArbFonts/ArbFONTS-PNU-Regular.ttf");
+}
+
+@font-face {
+  font-family: "pnuMed";
+  src: url("../fonts/ArbFonts/ArbFONTS-PNU-Medium.ttf");
+}
+
+@font-face {
+  font-family: "pnuBold";
+  src: url("../fonts/ArbFonts/ArbFONTS-PNU-Bold.ttf");
+}
+
+@font-face {
+  font-family: "pnuLight";
+  src: url("../fonts/ArbFonts/ArbFONTS-PNU-Light.ttf");
+}
+
+*{
+  font-family: "pnuReg";
+}
+
+@media only screen and (min-width: 992px) {
+
+  .min-vh {
+    min-height: 100vh !important;
+  }
+}
+
+@media only screen and (max-width: 993px) {
+  .max-vh {
+    max-height: 100vh !important;
+  }
+}
+
+.nav-link,
+.btn-toggle {
+  color: #313135 !important;
+  font-family: "pnuMed" !important;
+}
+
+.nav-link.active,
+.nav-link:hover,
+
+.btn-toggle:hover,
+.accordion-button:hover,
+.accordion-button:not(.collapsed),
+.accordion-body ul li:hover
+  {
+  background-color: #275DE7 !important;
+  color: #FFFFFF !important;
+  border-radius: 6px !important;
+}
+.logout{
+  color: #F23345 !important;
+}
+.logout:hover{
+  background-color: #F23345 !important;
+  color: #FFFFFF !important;
+  border-radius: 6px !important;
+}
+.accordion-button:not(.collapsed) ,.accordion-button.collapsed {
+  box-shadow: none !important;
+}
+.class-rooms-icon {
+  width: 24px;
+  height: 25px;
+  color: #313135 !important;
+}
+
+
+
+a:hover .icon,
+a.active .icon,
+.btn-toggle:active .icon,
+.btn-toggle:hover .icon,
+.accordion-button:hover .icon
+,.accordion-button:not(.collapsed) .icon{
+  /* fill: blue; */
+  stroke: rgb(255, 255, 255);
+
+}
+
+#Capa_1 {
+  fill:#000;
+}
+
+a:hover #Capa_1,
+a.active #Copa_1 {
+  fill:rgb(255, 255, 255);
+}
+
+.accordion-button:not(.collapsed)::after {
+  background-image:url("../images/arrowwi.svg") !important;
+
+}
+
+.accordion-button::after {
+
+  background-image:url("../images/arrowblu.svg") !important;
+  margin-bottom: 4px;
+}
+
+
+/* #navbarTogglerDemo01 {
+  max-height: 100vh;
+}
+ */

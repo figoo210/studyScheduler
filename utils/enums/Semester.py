@@ -14,6 +14,7 @@ class SemesterEnum(db.TypeDecorator):
     The default would have stored the enum's *name* (ie the string).
     """
     impl = db.String(10)
+    cache_ok = True 
 
     def __init__(self, enumtype, *args, **kwargs):
         super(SemesterEnum, self).__init__(*args, **kwargs)

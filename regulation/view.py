@@ -1,38 +1,22 @@
 from flask import Blueprint, redirect, render_template, request
-
+from regulation.controller import add_new_regulation, delete_regulation
 
 PAGE = 'regulation'
 
-regu = Blueprint(PAGE, __name__, template_folder='templates')
+bp = Blueprint(PAGE, __name__, template_folder='templates')
 
 
-@regu.route(f'/{PAGE}/<id>', methods=["GET", "POST"])
-def handle_one(id):
-    """ get one item or post to update it """
+@bp.route(f'/{PAGE}', methods=["POST"])
+def add_regulation():
+    """ add new """
     context = {}
-    if request.method == 'POST':
-        return render_template(f'{PAGE}.html')
-    else:
-        return render_template(f'{PAGE}.html')
+    req = request.form.to_dict()
+    add_new_regulation(req)
+    return redirect('/settings')
 
 
-@regu.route(f'/{PAGE}', methods=["GET", "POST"])
-def handle_mod():
-    """ get all items or post to add new """
-    context = {}
-    if request.method == 'POST':
-        return render_template(f'{PAGE}.html')
-    else:
-        return render_template(f'{PAGE}.html')
-
-
-@regu.route(f'/{PAGE}/update', methods=["POST"])
-def update():
-    """ post to update """
-    return redirect(f'/{PAGE}')
-
-
-@regu.route(f'/{PAGE}/delete/<id>', methods=["GET"])
+@bp.route(f'/{PAGE}/delete/<id>', methods=["GET"])
 def delete_one(id):
     """ delete item """
-    return redirect(f'/{PAGE}')
+    delete_regulation(id)
+    return redirect(f'/settings')

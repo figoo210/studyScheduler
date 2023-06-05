@@ -9,7 +9,7 @@ from section.model import Section
 from utils.enums.Language import Language
 from utils.enums.Program import Program
 from utils.enums.Semester import Semester
-from utils.enums.Year import Year
+from utils.enums.Year import Division
 
 class TimetableScheduling():
     """Auto & Manual Scheduling
