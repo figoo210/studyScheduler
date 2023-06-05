@@ -7,3 +7,5 @@ from wtforms.validators import DataRequired
 class AuthForm(FlaskForm):
     username = StringField(label='UserName', validators=[DataRequired])
     password = PasswordField(label='Password', validators=[DataRequired])
+
+

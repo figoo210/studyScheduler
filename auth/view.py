@@ -30,3 +30,21 @@ def verification(id):
         return redirect(f'/{PAGE}/{id}')
     else:
         return render_template(f'{PAGE}.html')
+
+
+""" 
+@bp.route('/login')
+def login():
+    return render_template('login.html')
+
+@bp.route('/submit', methods=['POST'])
+def submit():
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    if username == 'admin' and password == 'password':
+        return 'Welcome to the dashboard'
+    else:
+        return 'Invalid username or password'
+        
+"""
