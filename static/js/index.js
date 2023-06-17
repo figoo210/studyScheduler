@@ -1,8 +1,13 @@
 $(document).ready(function () {
-  var multipleCancelButton = new Choices("#choices-multiple-remove-button", {
-    removeItemButton: true,
-    maxItemCount: 4,
-  });
+  let choicesExist = document.getElementById("choices-multiple-remove-button");
+  if (choicesExist) {
+    var multipleCancelButton = new Choices("#choices-multiple-remove-button", {
+      removeItemButton: true,
+      maxItemCount: 4,
+    });
+  }
+
+  $('.clockpicker')?.clockpicker();
 
   $("#departmentForm").submit((e) => {
     // e.preventDefault();

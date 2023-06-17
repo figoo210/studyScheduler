@@ -24,7 +24,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(255), unique=False, nullable=False)
     is_admin = db.Column(db.Boolean)
     pid = db.Column(db.String(14), unique=True, nullable=True)
-    # qa = db.Column(db.String(120), unique=False, nullable=True)
+    qa = db.Column(db.String(120), unique=False, nullable=True)
 
     def create_admin_if_not_exist():
         if not User.query.filter_by(username="admin").first():

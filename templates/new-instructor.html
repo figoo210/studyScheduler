@@ -7,7 +7,7 @@
       <nav aria-label="breadcrumb" dir="rtl" lang="">
         <ol class="breadcrumb" dir="rtl">
           <li class="breadcrumb-item">
-            <a href="#" class="fw-normal text-secondary text-decoration-none">
+            <a href="/instructors" class="fw-normal text-secondary text-decoration-none">
               المحاضرين
             </a>
           </li>
@@ -19,7 +19,8 @@
 
       <h1 class="h2 addClassRoomsH1 pt-3 pb-4">اضافة محاضرين</h1>
 
-      <form>
+      <!--action="{{url_for('instructor.new_one')}}" method="post"-->
+      <form action="{{url_for('instructor.new_one')}}" method="post" redirectLink="/instructors" id="multiValuesForm">
         <div
           id="form-container"
           class="row g-0 justify-content-between-center align-items-start py-4"
@@ -28,29 +29,58 @@
             <div class="col-3 mb-md-0 mb-3">
               <input
                 type="text"
+                value=""
                 class="form-control form-control-lg col-12"
-                id="textSearchField"
-                onkeyup="searchField('textSearchField')"
+                name="name"
                 placeholder="الإسم"
               />
-              <ul id="searchResultBox">
-              </ul>
-              <input hidden id="{{ 'textSearchField-' + 'data' }}" value='{{ ["Always","azulejo","to","change","an","azo","compound","third"] }}' />
             </div>
-            <div class="col-3 mb-md-0 mb-3">
-              <input
-                type="text"
+            <div class="col-2 mb-md-0 mb-3">
+              <select
                 class="form-control form-control-lg col-12"
-                id="exampleFormControlInput2"
-                placeholder="الرتبة"
-              />
+                style="
+                  font-family: bootstrap-icons;
+                  border: 1px solid #ced4da;
+                  color: #6c757d;
+                  border-radius: .5rem;
+                  min-height: 100%;
+                "
+                aria-label=".form-select-lg example"
+                name="role_id"
+              >
+                <option selected disabled>الرتبة</option>
+                {% for role in context.roles %}
+                <option value="{{ role.name }}">{{ role.name }}</option>
+                {% endfor %}
+              </select>
             </div>
-            <div class="col-3 mb-md-0 mb-3">
-              <input
-                type="text"
+            <div class="col-2 mb-md-0 mb-3">
+              <select
                 class="form-control form-control-lg col-12"
-                id="exampleFormControlInput3"
-                placeholder="القسم"
+                style="
+                  font-family: bootstrap-icons;
+                  border: 1px solid #ced4da;
+                  color: #6c757d;
+                  border-radius: .5rem;
+                  min-height: 100%;
+                "
+                aria-label=".form-select-lg example"
+                name="department_id"
+              >
+                <option selected disabled>القسم</option>
+                {% for department in context.departments %}
+                <option value="{{ department.id }}">{{ department.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-2 mb-md-0 mb-3">
+              <input
+                type="number"
+                value=""
+                min="0"
+                class="form-control form-control-lg col-12"
+                name="work_years"
+                placeholder="عدد سنوات العمل"
               />
             </div>
             <div class="col-1 mb-md-0 mb-3">
@@ -66,7 +96,9 @@
             <div class="col-1 mb-md-0 mb-3">
               <i
                 class="delete-button text-danger btn bi bi-trash col-12 col-md-1 text-center"
-                data-form-id="form-1" onClick="removeForm(this)"></i>
+                data-form-id="form-1"
+                onClick="removeForm(this)"
+              ></i>
             </div>
           </div>
         </div>
@@ -75,7 +107,7 @@
           <button type="button" class="btn btn-outline-danger px-4">
             ألغاء
           </button>
-          <button type="button" class="btn btn-primary px-4">حفظ</button>
+          <button type="button" onClick="onFormSubmited();" class="btn btn-primary px-4">حفظ</button>
         </div>
       </form>
     </div>

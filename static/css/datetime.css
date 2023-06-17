@@ -101,3 +101,15 @@
     color: #fff !important;
     background-color: #000 !important;
 }
+
+.datepicker table tr td.today,
+.datepicker table tr td.today:hover,
+.datepicker table tr td.today.disabled,
+.datepicker table tr td.today.disabled:hover {
+    background-color: #4372EA;
+}
+
+
+.clockpicker ::placeholder {
+    color: #4372EA;
+}

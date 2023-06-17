@@ -277,6 +277,8 @@ html .ui-button.ui-state-disabled:active {
     list-style-type: none;
     padding: 0;
     margin: 0;
+    position: absolute;
+    min-width: 240px;
 }
 
 #searchResultBox li a {
@@ -388,12 +390,12 @@ html .ui-button.ui-state-disabled:active {
 
 }
 
-thead {
+#dataTable thead {
     height: 38px;
 
 }
 
-thead tr th:nth-child(1) {
+#dataTable thead tr th:nth-child(1) {
     background-color: #F6F6F6;
     height: 22px;
     flex-grow: 1;
@@ -406,7 +408,7 @@ thead tr th:nth-child(1) {
     padding: 8px 6px auto 6px;
 }
 
-thead th .search-input {
+#dataTable thead th .search-input {
     color: #606060;
     font-family: "pnuReg";
     font-weight: 700;
@@ -417,7 +419,7 @@ thead th .search-input {
     outline: none;
 }
 
-thead th .search-input::placeholder {
+#dataTable thead th .search-input::placeholder {
     color: #606060;
     font-family: "pnuReg";
     font-weight: 700;
@@ -427,7 +429,7 @@ thead th .search-input::placeholder {
 
 
 
-thead tr th {
+#dataTable thead tr th {
     background-color: #F6F6F6;
     flex-grow: 1;
     font-stretch: normal;
@@ -441,13 +443,13 @@ thead tr th {
 
 }
 
-tbody {
+#dataTable tbody {
     font-size: 16px;
     font-weight: 400;
     font-family: "pnuReg";
 }
 
-tbody td {
+#dataTable tbody td {
     flex-grow: 0;
     font-stretch: normal;
     font-style: normal;

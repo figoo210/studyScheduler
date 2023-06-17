@@ -39,7 +39,7 @@
     </nav>
 
     <!--table-->
-    <table class="table doctor-table cd-table order-table">
+    <table class="table doctor-table cd-table order-table" id="dataTable">
       <thead>
         <tr>
           <th>
@@ -63,25 +63,35 @@
       </thead>
       <tbody>
 
-        {% for instructor in context.instructors %}
-        <tr>
-          <td>
-            {{ instructor.name }}
-          </td>
-          <td>{{ instructor.role }}</td>
-          <td>{{ instructor.department }}</td>
-          <td>{{ instructor.status }}</td>
-          <td>
-            <i
-              class="bi bi-trash text-danger me-2 cursor"
-              style="font-size: 24px;"
-              data-bs-toggle="modal"
-              data-bs-target="#staticBackdrop"
-              onClick="window.location.href='/instructor/delete/{{ instructor.id }}'"
-            ></i>
-          </td>
-        </tr>
-        {% endfor %}
+
+        {% if context.instructors %}
+          {% for instructor in context.instructors %}
+          <tr>
+            <td>
+              {{ instructor.name }}
+            </td>
+            <td>{{ instructor.role }}</td>
+            <td>{{ instructor.department }}</td>
+            <td>{{ instructor.status or "لا توجد معلومات" }}</td>
+            <td>
+              <i
+                class="bi bi-trash text-danger me-2 cursor"
+                style="font-size: 24px;"
+                data-bs-toggle="modal"
+                data-bs-target="#staticBackdrop"
+                onClick="window.location.href='/instructor/delete/{{ instructor.id }}'"
+              ></i>
+            </td>
+          </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="5">
+              <h3 class="text-center">لا توجد بيانات</h3>
+            </td>
+          </tr>
+        {% endif %}
+
 
       </tbody>
     </table>

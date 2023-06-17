@@ -17,11 +17,18 @@ def get_instructors_data():
         instructor_data['secuirty_code'] = instructor.secuirty_code
         instructor_data['status'] = instructor.health_status
         instructor_data['date_of_birth'] = instructor.date_of_birth
-        instructor_data['date_of_join'] = instructor.date_of_join
+        instructor_data['work_years'] = instructor.work_years
         instructor_data['department'] = Department.query.get(instructor.department_id).name
         instructor_data['role'] = InstructorRole.query.get(instructor.instructor_role).name
         instructors_data.append(instructor_data)
 
+    return instructors_data
+
+def get_instructors_name():
+    instructors = Instructor.query.all()
+    instructors_data = []
+    for instructor in instructors:
+        instructors_data.append(instructor.name)
     return instructors_data
 
 def get_instructor_data(instructor_id):
@@ -32,11 +39,10 @@ def get_instructor_data(instructor_id):
     instructor_data['secuirty_code'] = instructor.secuirty_code
     instructor_data['status'] = instructor.health_status
     instructor_data['date_of_birth'] = instructor.date_of_birth
-    instructor_data['date_of_join'] = instructor.date_of_join
+    instructor_data['work_years'] = instructor.work_years
     instructor_data['department'] = Department.query.get(instructor.department_id).name
     instructor_data['role'] = InstructorRole.query.get(instructor.instructor_role).name
 
-    
     return instructor_data
 
 
@@ -48,10 +54,7 @@ def delete_instructor(instructor_id):
 def add_new_instructor(data):
     instructor = Instructor(
         name=data['name'],
-        secuirty_code=data['secuirty_code'],
-        health_status=data['status'],
-        date_of_birth=data['date_of_birth'],
-        date_of_join=data['date_of_join'],
+        work_years=data['work_years'],
         department_id=data['department_id'],
         instructor_role=data['role_id']
     )
