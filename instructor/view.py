@@ -17,7 +17,7 @@ def get_instructors():
     """ get all items or post to add new """
     context = {}
     context["instructors"] = get_instructors_data()
-    return render_template(f'instructors.html', context=context)
+    return render_template(f'{PAGE}/instructors.html', context=context)
 
 # THIS FOR POP UP
 @bp.route(f'/{PAGE}/delete/<id>', methods=["GET"])
@@ -43,7 +43,7 @@ def new_one():
         # get all departments
         context["departments"] = get_departments()
 
-        return render_template(f'new-{PAGE}.html', context=context)
+        return render_template(f'{PAGE}/new-{PAGE}.html', context=context)
 
 # Designation of materials
 @bp.route(f'/{PAGE}/assign', methods=["GET", "POST"])
@@ -58,7 +58,7 @@ def new_assign():
         context["instructors"] = get_instructors_data()
         context["instructors_name"] = get_instructors_name()
         context["regulations"] = get_regulations()
-        return render_template(f'assign-{PAGE}.html', context=context)
+        return render_template(f'{PAGE}/assign-{PAGE}.html', context=context)
 
 # Profile personly
 @bp.route(f'/{PAGE}/<id>', methods=["GET", "POST"])
@@ -68,7 +68,7 @@ def get_instructor(id):
     if request.method == 'POST':
         return redirect(f'/{PAGE}/{id}')
     else:
-        return render_template(f'{PAGE}.html')
+        return render_template(f'{PAGE}/{PAGE}.html')
 
 
 # Instructors API

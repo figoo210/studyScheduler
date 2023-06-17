@@ -17,5 +17,7 @@ class Course(db.Model):
     program = db.Column(ProgramEnum(Program),
                         default=Program.regularity, nullable=False)
     has_section = db.Column(db.Boolean)
+    has_summer = db.Column(db.Boolean)
+    reverse_semester = db.Column(db.Boolean)
     regulation_id = db.Column(db.Integer, db.ForeignKey('regulation.id'), nullable=False)
     department_id = db.Column(db.Integer, db.ForeignKey('department.id'), nullable=False)

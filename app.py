@@ -57,6 +57,7 @@ def create_app(config_class=Config):
     from building.view import bp as building_view
     from instructor_role.view import bp as role_view
     from regulation.view import bp as regulation_view
+    from room.view import bp as room_view
 
     # Register blueprint(s)
     app.register_blueprint(error_view)
@@ -69,6 +70,7 @@ def create_app(config_class=Config):
     app.register_blueprint(building_view)
     app.register_blueprint(role_view)
     app.register_blueprint(regulation_view)
+    app.register_blueprint(room_view)
 
     # Sample HTTP error handling
     @app.errorhandler(404)

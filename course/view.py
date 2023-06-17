@@ -1,6 +1,7 @@
 from flask import Blueprint, redirect, render_template, request
 
-from course.controller import get_all_courses_general
+from course.controller import get_all_courses_general, get_all_courses, get_course
+from dashboard.controller import get_semesters_dict, get_semesters_list
 
 
 PAGE = 'course'
@@ -12,7 +13,9 @@ bp = Blueprint(PAGE, __name__, template_folder='templates')
 def get_courses():
     """ get all courses  """
     context = {}
-    return render_template('courses.html')
+    context["semesters"] = get_semesters_list()
+    context["courses"] = get_all_courses_general()
+    return render_template(f'{PAGE}/courses.html', context=context)
 
 # popup
 @bp.route(f'/{PAGE}/update', methods=["POST"])
@@ -35,7 +38,7 @@ def new_coures(id):
         # return  changes
         return redirect('/courses')
     else:
-        return render_template(f'new-{PAGE}.html')
+        return render_template(f'{PAGE}/new-{PAGE}.html', context=context)
 
 
 

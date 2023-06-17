@@ -7,13 +7,36 @@ $(document).ready(function () {
     });
   }
 
-  $('.clockpicker')?.clockpicker();
+  $(".clockpicker")?.clockpicker();
 
   $("#departmentForm").submit((e) => {
     // e.preventDefault();
     $("#departmentFormDivisions").val($("#departmentForm select").val());
   });
+
 });
+
+  // Add id to clicked edit modal
+function editThisByModal(modalData) {
+  let modal = document.getElementById("editModal");
+  let modalInput = modal.getElementsByTagName("input");
+  let modalSelect = modal.getElementsByTagName("select");
+  for (let i = 0; i < modalInput.length; i++) {
+    const element = modalInput[i];
+    element.value = modalData[element.name];
+  }
+  for (let i = 0; i < modalSelect.length; i++) {
+    const element = modalSelect[i];
+    for (let j = 0; j < element.getElementsByTagName("option").length; j++) {
+      const e = element.getElementsByTagName("option")[j];
+      if (e.value == modalData[element.name]){
+        e.selected = true;
+        break;
+      }
+    }
+  }
+}
+
 
 // Sidebar Active status
 let navCont = document.getElementById("navbarTogglerDemo01");
@@ -144,3 +167,15 @@ document.getElementById("doctors")?.addEventListener("click", (e) => {
 document.getElementById("helpers")?.addEventListener("click", (e) => {
   filterTabs("tabsFilter", "معيد");
 });
+
+// Buildings Filter Tabs
+document.getElementById("allBuildings")?.addEventListener("click", (e) => {
+  filterTabs("tabsFilter", "");
+});
+
+let buildings = document.getElementsByClassName("buildings");
+for (let i = 0; i < buildings.length; i++) {
+  buildings[i].addEventListener("click", (e) => {
+    filterTabs("tabsFilter", buildings[i].innerText);
+  });
+}
