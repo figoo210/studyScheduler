@@ -2,7 +2,7 @@
 %} {% block content %}
 
 <section class="container-fluid g-0">
-  <div class="p-5 classRooms-bg">
+  <div class="p-5 classcourses-bg">
     <div class="mb-5 py-3">
       <!-- 3 links top -->
       <nav id="instructorsTaps">
@@ -117,10 +117,10 @@
           <td>{{ course.name }}</td>
           <td>{{ course.regulation }}</td>
           <td>{{ course.department }}</td>
-          <td>{{ course.semester or "لا توجد معلومات" }}</td>
-          <td>{{ course.program or "لا توجد معلومات" }}</td>
-          <td>{{ course.reverse_semester }}</td>
-          <td>{{ course.has_summer }}</td>
+          <td>{{ course.semester }}</td>
+          <td>{{ course.program }}</td>
+          <td><input type="checkbox" {% if course.reverse_semester %}checked{% endif %}></td>
+          <td><input type="checkbox" {% if course.has_summer %}checked{% endif %}></td>
           <td>
             <div class="d-flex">
               <div
@@ -130,11 +130,11 @@
                 onClick="
                   editThisByModal(
                     {{ {
-                        'id': room.id,
-                        'name': room.name,
-                        'building_id': room.building_id,
-                        'supported_capacity': room.supported_capacity,
-                        'real_capacity': room.real_capacity
+                        'id': course.id,
+                        'name': course.name,
+                        'building_id': course.building_id,
+                        'supported_capacity': course.supported_capacity,
+                        'real_capacity': course.real_capacity
                     } }}
                   )
                 "
@@ -171,14 +171,14 @@
                 style="font-size: 24px"
                 data-bs-toggle="modal"
                 data-bs-target="#staticBackdrop"
-                onClick="window.location.href='/room/delete/{{ room.id }}'"
+                onClick="window.location.href='/course/delete/{{ course.id }}'"
               ></i>
             </div>
           </td>
         </tr>
         {% endfor %} {% else %}
         <tr>
-          <td colspan="5">
+          <td colspan="8">
             <h3 class="text-center">لا توجد بيانات</h3>
           </td>
         </tr>
@@ -198,15 +198,15 @@
     aria-hidden="true"
   >
     <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg">
-      <div class="modal-content classRooms-bg px-4 py-2">
+      <div class="modal-content classcourses-bg px-4 py-2">
         <div class="modal-header border-0 d-inline">
-          <small class="text-classRooms fs-6"> تعديل</small><br />
+          <small class="text-classcourses fs-6"> تعديل</small><br />
           <p class="fw-normal fs-3 mt-3">قاعات التدريس</p>
         </div>
         <div class="modal-body mb-5 pb-5">
           <form
             class="mb-5 pb-5"
-            action="{{url_for('room.update_room_by_id')}}"
+            action="{{url_for('course.update_course_by_id')}}"
             method="post"
           >
             <input hidden name="id" />
@@ -217,7 +217,7 @@
                   value=""
                   class="form-control form-control-lg col-12"
                   name="name"
-                  placeholder="إسم المدرج"
+                  placeholder="إسم "
                 />
               </div>
               <div class="col-12 col-md-6">
@@ -268,14 +268,14 @@
             >
               <button
                 type="button"
-                class="btn btn-outline-danger btn-lg col-5-classRooms"
+                class="btn btn-outline-danger btn-lg col-5-classcourses"
                 data-bs-dismiss="modal"
               >
                 الغاء
               </button>
               <button
                 type="submit"
-                class="btn btn-primary btn-lg col-5-classRooms"
+                class="btn btn-primary btn-lg col-5-classcourses"
               >
                 حفظ
               </button>

@@ -27,6 +27,7 @@ def get_all_courses_general():
         course["year"] = c.year
         course['department_id'] = c.department_id
         course['department'] = Department.query.get(c.department_id).name
+        courses.append(course)
     return courses
 
 
@@ -69,7 +70,7 @@ def get_course(course_id):
 
 
 # Delete Course by id
-def delete_course(course_id):
+def delete_course_by_id(course_id):
     course = Course.query.get(course_id)
     db.session.delete(course)
     db.session.commit()

@@ -1,5 +1,5 @@
-{% extends "layout/base.html" %} {% block title_block %}قاعات التدريس{% endblock %}
-{% block content %}
+{% extends "layout/base.html" %} {% block title_block %}قاعات التدريس{% endblock
+%} {% block content %}
 
 <section class="container-fluid g-0">
   <div class="p-5 classRooms-bg">
@@ -7,24 +7,83 @@
       <nav aria-label="breadcrumb" dir="rtl" lang="">
         <ol class="breadcrumb" dir="rtl">
           <li class="breadcrumb-item">
-            <a href="/rooms" class="fw-normal text-secondary text-decoration-none">
-              قاعات التدريس
+            <a
+              href="/courses"
+              class="fw-normal text-secondary text-decoration-none"
+            >
+              المواد
             </a>
           </li>
           <li class="breadcrumb-item active" id="bc-slash" aria-current="page">
-            <span class="px-2 fw-normal text-secondary">اضافة قاعات التدريس</span>
+            <span class="px-2 fw-normal text-secondary">اضافة مادة جديدة</span>
           </li>
         </ol>
       </nav>
 
-      <h1 class="h2 addClassRoomsH1 pt-3 pb-4">اضافة قاعات التدريس</h1>
+      <h1 class="h2 addClassRoomsH1 pt-3 pb-4">اضافة مادة جديدة</h1>
 
-      <form action="{{url_for('room.new_room')}}" method="post" redirectLink="/rooms" id="multiValuesForm">
+      <form
+        action="{{url_for('course.new_coures')}}"
+        method="post"
+        redirectLink="/courses"
+        id="multiValuesForm"
+      >
         <div
           id="form-container"
           class="row g-0 justify-content-between-center align-items-start py-4"
         >
-          <div class="row w-100 g-0 justify-content-between" id="formRow">
+          <div class="row w-100 g-0 justify-content-between mt-3" id="formRow">
+            <div class="col-3 mb-md-0 mb-3">
+              <input
+                type="text"
+                value=""
+                class="form-control form-control-lg col-12"
+                name="name"
+                placeholder="إسم المادة"
+              />
+            </div>
+            <div class="col-2 mb-md-0 mb-3">
+              <select
+                class="form-control form-control-lg col-12"
+                style="
+                  font-family: bootstrap-icons;
+                  border: 1px solid #ced4da;
+                  color: #6c757d;
+                  border-radius: 0.5rem;
+                  min-height: 100%;
+                "
+                aria-label=".form-select-lg example"
+                name="regulation_id"
+              >
+                <option selected disabled>الائحة</option>
+                {% for regulation in context.regulations %}
+                <option value="{{ regulation.id }}">
+                  {{ regulation.name }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-2 mb-md-0 mb-3">
+              <select
+                class="form-control form-control-lg col-12"
+                style="
+                  font-family: bootstrap-icons;
+                  border: 1px solid #ced4da;
+                  color: #6c757d;
+                  border-radius: 0.5rem;
+                  min-height: 100%;
+                "
+                aria-label=".form-select-lg example"
+                name="department_id"
+              >
+                <option selected disabled>القسم</option>
+                {% for department in context.departments %}
+                <option value="{{ department.id }}">
+                  {{ department.name }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
             <div class="col-2 mb-md-0 mb-3">
               <select
                 class="form-control form-control-lg col-12"
@@ -36,42 +95,103 @@
                   min-height: 100%;
                 "
                 aria-label=".form-select-lg example"
-                name="building_id"
+                name="semester"
               >
-                <option selected disabled>المبنى</option>
-                {% for building in context.buildings %}
-                <option value="{{ building.id }}">{{ building.name }}</option>
-                {% endfor %}
+                <option selected disabled>الترم</option>
+                <option value="First">الترم الأول</option>
+                <option value="Second">الترم الثاني</option>
+                <option value="Summer">الترم الصيفي</option>
               </select>
             </div>
-            <div class="col-3 mb-md-0 mb-3">
+
+            <br />
+            <div class="my-3"></div>
+            <br />
+
+            <div class="col-2 mb-md-0 mb-3">
+              <select
+                class="form-control form-control-lg col-12"
+                style="
+                  font-family: bootstrap-icons;
+                  border: 1px solid #ced4da;
+                  color: #6c757d;
+                  border-radius: 0.5rem;
+                  min-height: 100%;
+                "
+                aria-label=".form-select-lg example"
+                name="year"
+              >
+                <option selected disabled>الفرقة</option>
+                <option value="1">الأولى</option>
+                <option value="2">الثانية</option>
+                <option value="3">الثالثة</option>
+                <option value="4">الرابعة</option>
+              </select>
+            </div>
+            <div class="col-2 mb-md-0 mb-3">
+              <select
+                class="form-control form-control-lg col-12"
+                style="
+                  font-family: bootstrap-icons;
+                  border: 1px solid #ced4da;
+                  color: #6c757d;
+                  border-radius: 0.5rem;
+                  min-height: 100%;
+                "
+                aria-label=".form-select-lg example"
+                name="language"
+              >
+                <option selected disabled>اللغة</option>
+                <option value="ar">عربي</option>
+                <option value="en">انجليزي</option>
+                <option value="fr">فرنساوي</option>
+              </select>
+            </div>
+            <div class="col-2 mb-md-0 mb-3">
+              <select
+                class="form-control form-control-lg col-12"
+                style="
+                  font-family: bootstrap-icons;
+                  border: 1px solid #ced4da;
+                  color: #6c757d;
+                  border-radius: 0.5rem;
+                  min-height: 100%;
+                "
+                aria-label=".form-select-lg example"
+                name="program"
+              >
+                <option selected disabled>البرنامج</option>
+                <option value="Regularity">انتظام</option>
+                <option value="Affiliation">انتساب</option>
+                <option value="Open Education">تعليم مفتوح</option>
+              </select>
+            </div>
+            <div class="col-2 mb-md-0 mb-3">
+              <input
+                type="number"
+                value=""
+                min="0"
+                class="form-control form-control-lg col-12"
+                name="credit_hrs"
+                placeholder="عدد ساعات المادة"
+              />
+            </div>
+            <div class="col-2 mb-md-0 mb-3">
               <input
                 type="text"
                 value=""
                 class="form-control form-control-lg col-12"
-                name="name"
-                placeholder="إسم المدرج"
+                name="code"
+                placeholder="كود المادة"
               />
             </div>
-            <div class="col-2 mb-md-0 mb-3">
-              <input
-                type="number"
-                value=""
-                min="0"
-                class="form-control form-control-lg col-12"
-                name="supported_capacity"
-                placeholder="العدد الرسمي"
-              />
-            </div>
-            <div class="col-2 mb-md-0 mb-3">
-              <input
-                type="number"
-                value=""
-                min="0"
-                class="form-control form-control-lg col-12"
-                name="real_capacity"
-                placeholder="العدد الفعلي"
-              />
+
+            <br />
+            <div class="my-3"></div>
+            <br />
+
+            <div class="col-4 mb-md-0 mb-3 d-inline">
+              <label class="d-inline"><input type="checkbox" class="col-12 d-inline" name="has_section" id="has_section"/> اضافة سكشن للمادة</label>
             </div>
             <div class="col-1 mb-md-0 mb-3">
               <button
@@ -97,7 +217,13 @@
           <button type="button" class="btn btn-outline-danger px-4">
             ألغاء
           </button>
-          <button type="button" onClick="onFormSubmited();" class="btn btn-primary px-4">حفظ</button>
+          <button
+            type="button"
+            onClick="onFormSubmited();"
+            class="btn btn-primary px-4"
+          >
+            حفظ
+          </button>
         </div>
       </form>
     </div>
