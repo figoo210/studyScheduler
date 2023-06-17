@@ -2,6 +2,7 @@ from room.model import Room
 from building.model import Building
 from database import db
 
+
 def get_all_rooms():
     rooms = []
     for r in Room.query.all():
@@ -17,6 +18,8 @@ def get_all_rooms():
     return rooms
 
 # Update room by id
+
+
 def update_room(room_id, name, building_id, real_capacity, supported_capacity):
     room = Room.query.get(room_id)
     room.name = name
@@ -26,12 +29,17 @@ def update_room(room_id, name, building_id, real_capacity, supported_capacity):
     db.session.commit()
 
 # Create a new room
+
+
 def create_room(name, building_id, real_capacity, supported_capacity):
-    room = Room(name=name, building_id=building_id, real_capacity=real_capacity, supported_capacity=supported_capacity)
+    room = Room(name=name, building_id=building_id,
+                real_capacity=real_capacity, supported_capacity=supported_capacity)
     db.session.add(room)
     db.session.commit()
 
 # Delete a room by id
+
+
 def delete_room(room_id):
     room = Room.query.get(room_id)
     db.session.delete(room)

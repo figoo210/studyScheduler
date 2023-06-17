@@ -1,3 +1,4 @@
+from flask import flash
 from course.model import Course
 from department.model import Department
 from regulation.model import Regulation
@@ -76,11 +77,15 @@ def delete_course_by_id(course_id):
     db.session.commit()
 
 
+def update_reverse_semester(course_id, reverse_semester):
+    course = Course.query.get(course_id)
+    course.reverse_semester = reverse_semester
+    db.session.add(reverse_semester)
+    db.session.commit()
 
 
-
-
-
-
-
-
+def update_reverse_semester(course_id, has_summer):
+    course = Course.query.get(course_id)
+    course.has_summer = has_summer
+    db.session.add(has_summer)
+    db.session.commit()

@@ -61,3 +61,5 @@ def add_new_instructor(data):
     db.session.add(instructor)
     db.session.commit()
 
+
+"""

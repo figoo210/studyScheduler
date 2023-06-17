@@ -6,6 +6,8 @@ PAGE = 'auth'
 bp = Blueprint(PAGE, __name__, template_folder='templates')
 
 # login page
+
+
 @bp.route(f'/login', methods=["GET", "POST"])
 def login_page():
     """ sign in  """
@@ -21,6 +23,8 @@ def login_page():
         return render_template(f'layout/login.html')
 
 # forget password
+
+
 @bp.route(f'/verification', methods=["POST"])
 def verification():
     """ sign in  """
@@ -33,6 +37,8 @@ def verification():
     return redirect("/logn")
 
 # create user
+
+
 @bp.route(f'/new-user', methods=["POST"])
 def create_new_user():
     """ create new user  """
@@ -41,6 +47,8 @@ def create_new_user():
     return redirect("/users")
 
 # Show & update
+
+
 @bp.route('/users', methods=["GET", "POST"])
 def show_users():
     context = {}
@@ -54,9 +62,9 @@ def show_users():
         context["users"] = get_users()
         return render_template(f'users.html', context=context)
 
+
 @bp.route('/user/delete/<id>')
 def delete_user(id):
     """ delete user """
     delete_user_by_id(id)
     return redirect("/users")
-
