@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, request
 from flask_login import login_user
-from auth.controller import login_validate, verify_validate
+from auth.controller import login_validate, update_users, verify_validate, create_user, get_users, delete_user_by_id
 PAGE = 'auth'
 
 bp = Blueprint(PAGE, __name__, template_folder='templates')
@@ -18,7 +18,7 @@ def login_page():
         if is_valid:
             login_user(user=user, remember=True)
             return redirect("/")
-        return render_template(f'layout/login.html')
+        return redirect("/login")
     else:
         return render_template(f'layout/login.html')
 
@@ -36,24 +36,35 @@ def verification():
         return redirect("/")
     return redirect("/logn")
 
-# Create new user
-# @bp.route('/users', methods=["GET", "POST"])
-# def signup_post():
-#     # code to validate and add user to database goes here
-#     email = request.form.get('email')
-#     name = request.form.get('name')
-#     password = request.form.get('password')
+# create user
 
-#     user = User.query.filter_by(email=email).first() # if this returns a user, then the email already exists in database
 
-#     if user: # if a user is found, we want to redirect back to signup page so user can try again
-#         return redirect(url_for('auth.signup'))
+@bp.route(f'/new-user', methods=["POST"])
+def create_new_user():
+    """ create new user  """
+    req = request.form.to_dict()
+    create_user(req["username"], req["password"])
+    return redirect("/users")
 
-#     # create a new user with the form data. Hash the password so the plaintext version isn't saved.
-#     new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
+# Show & update
 
-#     # add the new user to the database
-#     db.session.add(new_user)
-#     db.session.commit()
 
-#     return redirect(url_for('auth.login'))
+@bp.route('/users', methods=["GET", "POST"])
+def show_users():
+    context = {}
+    if request.method == 'POST':
+        req = request.form.to_dict()
+        print("#######################: ", req)
+        update_users(req)
+        return redirect("/users")
+    else:
+        # get all users data
+        context["users"] = get_users()
+        return render_template(f'users.html', context=context)
+
+
+@bp.route('/user/delete/<id>')
+def delete_user(id):
+    """ delete user """
+    delete_user_by_id(id)
+    return redirect("/users")

@@ -16,14 +16,14 @@ class Instructor(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(120), unique=False, nullable=False)
     mac_address = db.Column(db.Integer, unique=True, nullable=True)
-    secuirty_code = db.Column(db.Integer, unique=True, nullable=False)
+    secuirty_code = db.Column(db.Integer, unique=True, nullable=True)
     health_status = db.Column(db.String(20), unique=False, nullable=True)
     date_of_birth = db.Column(db.DateTime, unique=False, nullable=True)
+    work_years = db.Column(db.Integer, unique=False, nullable=True)
     department_id = db.Column(db.Integer, db.ForeignKey(
         "department.id"), nullable=False)
-    instructor_role = db.Column(db.Integer, db.ForeignKey(
+    instructor_role = db.Column(db.String(20), db.ForeignKey(
         "instructor_role.name"), nullable=False)
     lectures = db.relationship("Lecture", backref="lecture", lazy=True)
     sections = db.relationship("Section", backref="section", lazy=True)
-    instructor_times = db.relationship(
-        "InstructorTime", backref="instructor_time", lazy=True)
+    instructor_times = db.relationship("InstructorTime", backref="instructor_time", lazy=True)
