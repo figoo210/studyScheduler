@@ -53,6 +53,7 @@
                           placeholder="&#xF1F6; موعد البدأ"
                           aria-label="Start time"
                           readonly
+                          required
                           name="semesterStartAt"
                           value="{% if context.semester_dates.semester_start_date %}{{ context.semester_dates.semester_start_date }}{% endif %}"
                         />
