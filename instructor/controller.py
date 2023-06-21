@@ -14,11 +14,10 @@ def get_instructors_data():
         instructor_data['id'] = instructor.id
         instructor_data['name'] = instructor.name
         instructor_data['secuirty_code'] = instructor.secuirty_code
-        instructor_data['status'] = instructor.health_status
         instructor_data['date_of_birth'] = instructor.date_of_birth
         instructor_data['work_years'] = instructor.work_years
         instructor_data['department'] = Department.query.get(instructor.department_id).name
-        instructor_data['role'] = InstructorRole.query.get(instructor.instructor_role).name
+        instructor_data['role'] = instructor.instructor_role
         instructors_data.append(instructor_data)
 
     return instructors_data
@@ -36,11 +35,12 @@ def get_instructor_data(instructor_id):
     instructor_data['id'] = instructor.id
     instructor_data['name'] = instructor.name
     instructor_data['secuirty_code'] = instructor.secuirty_code
-    instructor_data['status'] = instructor.health_status
     instructor_data['date_of_birth'] = instructor.date_of_birth
     instructor_data['work_years'] = instructor.work_years
     instructor_data['department'] = Department.query.get(instructor.department_id).name
-    instructor_data['role'] = InstructorRole.query.get(instructor.instructor_role).name
+    instructor_data['role'] = instructor.instructor_role
+    instructor_data['instructor_times'] = instructor.instructor_times
+    instructor_data['instructor_courses'] = instructor.instructor_courses
 
     return instructor_data
 

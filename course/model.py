@@ -18,7 +18,6 @@ class Course(db.Model):
 
     regulation_id = db.Column(db.Integer, db.ForeignKey('regulation.id'), nullable=False)
     department_id = db.Column(db.Integer, db.ForeignKey('department.id'), nullable=False)
-    dashboard_id = db.Column(db.Integer, db.ForeignKey('semester_settings.id'), nullable=False)
 
     course_updates = db.relationship('CourseUpdates', backref=backref('course_update', cascade="all,delete"), lazy=True)
     instructor_courses = db.relationship("InstructorCourse", backref=backref("course_with_instructors", cascade="all,delete"), lazy=True)
@@ -26,5 +25,5 @@ class Course(db.Model):
 
 class CourseUpdates(db.Model):
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'), primary_key=True)
-    semester_type = db.Column(SemesterEnum(Semester), default=Semester.summer, nullable=False)
-
+    dashboard_id = db.Column(db.Integer, db.ForeignKey('semester_settings.id'), primary_key=True)
+    semester_type = db.Column(SemesterEnum(Semester), default=Semester.summer, primary_key=True)

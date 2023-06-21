@@ -1,7 +1,8 @@
 from flask import flash
-from course.model import Course
+from course.model import Course, CourseUpdates
 from department.model import Department
 from regulation.model import Regulation
+from dashboard.model import SemesterSettings
 from database import db
 from utils.enums.Semester import Semester, get_translated_semesters
 
@@ -12,14 +13,13 @@ def get_all_courses():
 
 def get_all_courses_general():
     courses = []
-    for c in Course.query.all():
+    for c in get_all_courses():
         course = {}
         course["id"] = c.id
         course["name"] = c.name
         course["code"] = c.code
         course["credit_hrs"] = c.credit_hrs
         course["program"] = str(c.program)
-        course["reverse_semester"] = c.reverse_semester
         if c.has_section:
             course["has_section"] = 1
         else:
@@ -30,6 +30,8 @@ def get_all_courses_general():
         course["year"] = c.year
         course['department_id'] = c.department_id
         course['department'] = Department.query.get(c.department_id).name
+        course['has_summer'] = is_has_summer(c.id)
+        course['has_reverse'] = is_has_reverse(c.id)
         courses.append(course)
     return courses
 
@@ -48,9 +50,56 @@ def update_course(course_id, course_name, course_code, credit_hrs, has_section, 
 
 # Update reverse semester in course
 def update_reverse_semester(course_id, reverse_semester):
-    course = Course.query.get(course_id)
-    course.reverse_semester = reverse_semester
-    db.session.commit()
+    current_dashboard = SemesterSettings.query.order_by(SemesterSettings.id.desc()).first()
+    course_update = CourseUpdates.query.get(course_id, current_dashboard.id, Semester.reverse)
+    if reverse_semester:
+        if not course_update:
+            new_course_update = CourseUpdates(
+                course_id=course_id,
+                semester_type=Semester.reverse,
+                dashboard_id=current_dashboard.id,
+            )
+            db.session.add(new_course_update)
+            db.session.commit()
+    else:
+        if course_update:
+            db.session.delete(course_update)
+            db.session.commit()
+
+
+# Update summer semester in course
+def update_summer_semester(course_id, summer_semester):
+    current_dashboard = SemesterSettings.query.order_by(SemesterSettings.id.desc()).first()
+    course_update = CourseUpdates.query.get(course_id, current_dashboard.id, Semester.summer)
+    if summer_semester:
+        if not course_update:
+            new_course_update = CourseUpdates(
+                course_id=course_id,
+                semester_type=Semester.reverse,
+                dashboard_id=current_dashboard.id,
+            )
+            db.session.add(new_course_update)
+            db.session.commit()
+    else:
+        if course_update:
+            db.session.delete(course_update)
+            db.session.commit()
+
+
+def is_has_summer(course_id):
+    current_dashboard = SemesterSettings.query.order_by(SemesterSettings.id.desc()).first()
+    if CourseUpdates.query.get(course_id, current_dashboard.id, Semester.summer):
+        return True
+    else:
+        return False
+
+
+def is_has_reverse(course_id):
+    current_dashboard = SemesterSettings.query.order_by(SemesterSettings.id.desc()).first()
+    if CourseUpdates.query.get(course_id, current_dashboard.id, Semester.reverse):
+        return True
+    else:
+        return False
 
 
 
@@ -58,10 +107,17 @@ def update_reverse_semester(course_id, reverse_semester):
 def create_course(course_name, course_code, credit_hrs, course_semester,
                   course_year, course_program, has_section,
                   course_regulation, course_department):
-    course = Course(name=course_name, code=course_code, credit_hrs=credit_hrs,
-                    semester=course_semester, year=course_year,
-                    program=course_program, has_section=has_section,
-                    regulation_id=course_regulation, department_id=course_department)
+    course = Course(
+        name=course_name,
+        code=course_code,
+        credit_hrs=credit_hrs,
+        semester=course_semester,
+        year=course_year,
+        program=course_program,
+        has_section=has_section,
+        regulation_id=course_regulation,
+        department_id=course_department,
+    )
     db.session.add(course)
     db.session.commit()
     return course

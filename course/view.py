@@ -1,7 +1,8 @@
 from flask import Blueprint, redirect, render_template, request
 import json
-from course.controller import get_all_courses_general, get_all_courses, get_course, \
-    create_course, delete_course_by_id, update_reverse_semester, update_course
+from course.controller import get_all_courses_general, \
+    create_course, delete_course_by_id, update_reverse_semester, \
+    update_course, update_summer_semester
 from dashboard.controller import get_semesters_dict, get_semesters_list
 from regulation.controller import get_regulations
 from department.controller import get_departments
@@ -56,6 +57,15 @@ def update_course_reverse_semester(id, v):
         update_reverse_semester(id, True)
     else:
         update_reverse_semester(id, False)
+    return redirect(f'/{PAGE}s')
+
+@bp.route(f'/{PAGE}/update/summer/<id>/<v>', methods=["GET"])
+def update_course_summer_semester(id, v):
+    """ reverse to update """
+    if v == "true":
+        update_summer_semester(id, True)
+    else:
+        update_summer_semester(id, False)
     return redirect(f'/{PAGE}s')
 
 # Delete Course
