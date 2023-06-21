@@ -1,4 +1,5 @@
 from database import db
+from sqlalchemy.orm import backref
 
 
 class InstructorRole(db.Model):
@@ -14,5 +15,6 @@ class InstructorRole(db.Model):
     # role  الرتبة
     name = db.Column(db.String(30), primary_key=True)
     description = db.Column(db.Text, unique=False, nullable=True)
+
     instructors = db.relationship(
-        "Instructor", backref=" role_instructors", lazy=True)
+        "Instructor", backref=backref("role_instructors", cascade="all,delete"), lazy=True)

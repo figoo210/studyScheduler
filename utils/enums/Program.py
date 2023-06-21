@@ -13,7 +13,7 @@ class ProgramEnum(db.TypeDecorator):
     The default would have stored the enum's *name* (ie the string).
     """
     impl = db.String(20)
-    cache_ok = True 
+    cache_ok = True
 
     def __init__(self, enumtype, *args, **kwargs):
         super(ProgramEnum, self).__init__(*args, **kwargs)
@@ -27,3 +27,11 @@ class ProgramEnum(db.TypeDecorator):
 
     def process_result_value(self, value, dialect):
         return self._enumtype(value)
+
+
+def get_translated_programs():
+    return {
+        "Regularity": "انتظام",
+        "Affiliation": "انتساب",
+        "Open Education": "تعليم مفتوح"
+    }

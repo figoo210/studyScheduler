@@ -28,3 +28,12 @@ class DivisionEnum(db.TypeDecorator):
 
     def process_result_value(self, value, dialect):
         return self._enumtype(value)
+
+
+def get_translated_divisions():
+    return {
+        "1": "الفرقة الأولى",
+        "2": "الفرقة الثانية",
+        "3": "الفرقة الثالثة",
+        "4": "الفرقة الرابعة",
+    }

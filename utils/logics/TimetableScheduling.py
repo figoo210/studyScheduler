@@ -5,7 +5,6 @@ from course.model import Course
 from instructor.model import Instructor
 from instructor_time.model import InstructorTime
 from lecture.model import Lecture
-from section.model import Section
 from utils.enums.Language import Language
 from utils.enums.Program import Program
 from utils.enums.Semester import Semester
@@ -84,7 +83,8 @@ class TimetableScheduling():
                 records = records + Lecture.query.filter_by(course_id=each_course.id).all()
         else:
             for each_course in self.table_courses:
-                records = records + Section.query.filter_by(course_id=each_course.id).all()
+                pass
+                # records = records + Section.query.filter_by(course_id=each_course.id).all()
         self.instructor_listing(records)
 
     def instructor_listing(self, records):

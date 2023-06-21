@@ -3,7 +3,6 @@ from instructor_role.model import InstructorRole
 from instructor_time.model import InstructorTime
 from department.model import Department
 from lecture.model import Lecture
-from section.model import Section
 
 from database import db
 
@@ -62,4 +61,3 @@ def add_new_instructor(data):
     db.session.commit()
 
 
-"""

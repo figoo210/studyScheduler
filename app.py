@@ -37,8 +37,8 @@ def create_app(config_class=Config):
         from instructor_role.model import InstructorRole
         from instructor_time.model import InstructorTime
         from lecture.model import Lecture
-        from section.model import Section
         from dashboard.model import SemesterSettings
+        from instructor_course.model import InstructorCourse
         db.create_all()
         db.session.commit()
         # Migrate(app, db, compare_type=True)

@@ -105,7 +105,7 @@ function selectCourse() {
       for (let x = 0; x < data.length; x++) {
         if (
           data[x]["semester"] == semester.value &&
-          data[x]["regulation"] == regulation.value &&
+          data[x]["regulation_id"] == regulation.value &&
           data[x]["department"] == department.value
         ) {
           const option = document.createElement("option");

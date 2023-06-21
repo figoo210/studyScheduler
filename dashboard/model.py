@@ -1,6 +1,5 @@
 from database import db
-from flask_login import UserMixin
-from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.orm import backref
 from utils.enums.Semester import Semester, SemesterEnum
 
 # Semester Settings Model
@@ -12,5 +11,6 @@ class SemesterSettings(db.Model):
     semester_start_date = db.Column(db.Date, nullable=False)
     semester_end_date = db.Column(db.Date, nullable=False)
 
-
+    course_dashboards = db.relationship('Course', backref=backref('course_dashboard', cascade="all,delete"), lazy=True)
+    lecture_dashboards = db.relationship('Lecture', backref=backref('lecture_dashboard', cascade="all,delete"), lazy=True)
 

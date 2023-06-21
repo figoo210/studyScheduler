@@ -28,3 +28,11 @@ class LanguageEnum(db.TypeDecorator):
 
     def process_result_value(self, value, dialect):
         return self._enumtype(value)
+
+
+def get_translated_languages():
+    return {
+        "ar": "عربي",
+        "en": "إنجليزي",
+        "fr": "فرنسي"
+    }

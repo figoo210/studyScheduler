@@ -57,8 +57,8 @@ def get_semesters_dict():
 
 def get_semesters_list():
     semesters = [
-        "الأول (الخريف)",
-        "الثاني (الربيع)",
+        "الأول",
+        "الثاني",
         "الصيفي"
     ]
     return semesters
