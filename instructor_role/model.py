@@ -17,4 +17,4 @@ class InstructorRole(db.Model):
     description = db.Column(db.Text, unique=False, nullable=True)
 
     instructors = db.relationship(
-        "Instructor", backref=backref("role_instructors", cascade="all,delete"), lazy=True)
+        "Instructor", backref=backref("role_instructors"), lazy=True)

@@ -19,8 +19,8 @@ class Course(db.Model):
     regulation_id = db.Column(db.Integer, db.ForeignKey('regulation.id'), nullable=False)
     department_id = db.Column(db.Integer, db.ForeignKey('department.id'), nullable=False)
 
-    course_updates = db.relationship('CourseUpdates', backref=backref('course_update', cascade="all,delete"), lazy=True)
-    instructor_courses = db.relationship("InstructorCourse", backref=backref("course_with_instructors", cascade="all,delete"), lazy=True)
+    course_updates = db.relationship('CourseUpdates', backref=backref('course_update'), lazy=True)
+    instructor_courses = db.relationship("InstructorCourse", backref=backref("course_with_instructors"), lazy=True)
 
 
 class CourseUpdates(db.Model):

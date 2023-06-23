@@ -21,4 +21,4 @@ class Room(db.Model):
 
     building_id = db.Column(db.Integer, db.ForeignKey("building.id"))
 
-    lectures = db.relationship('Lecture', backref=backref('room_lectures', cascade="all,delete"), lazy=True)
+    lectures = db.relationship('Lecture', backref=backref('room_lectures'), lazy=True)

@@ -10,8 +10,8 @@ class Department(db.Model):
     name = db.Column(db.String(120), unique=False, nullable=False)
     description = db.Column(db.Text, unique=False, nullable=True)
 
-    courses = db.relationship('Course', backref=backref('department_courses', cascade="all,delete"), lazy=True)
-    instructors = db.relationship('Instructor', backref=backref('department_instructors', cascade="all,delete"), lazy=True)
+    courses = db.relationship('Course', backref=backref('department_courses'), lazy=True)
+    instructors = db.relationship('Instructor', backref=backref('department_instructors'), lazy=True)
 
     def create_general_department_if_not_exist():
         if not Department.query.filter_by(name="عام").first():

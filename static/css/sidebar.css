@@ -45,27 +45,28 @@
 
 .nav-link.active,
 .nav-link:hover,
-
 .btn-toggle:hover,
-.accordion-button:hover,
-.accordion-button:not(.collapsed),
-.accordion-body ul li:hover
+.btn-toggle:not(.collapsed)
   {
   background-color: #275DE7 !important;
   color: #FFFFFF !important;
   border-radius: 6px !important;
 }
+
 .logout{
   color: #F23345 !important;
 }
+
 .logout:hover{
   background-color: #F23345 !important;
   color: #FFFFFF !important;
   border-radius: 6px !important;
 }
+
 .accordion-button:not(.collapsed) ,.accordion-button.collapsed {
   box-shadow: none !important;
 }
+
 .class-rooms-icon {
   width: 24px;
   height: 25px;
@@ -82,7 +83,6 @@ a.active .icon,
 ,.accordion-button:not(.collapsed) .icon{
   /* fill: blue; */
   stroke: rgb(255, 255, 255);
-
 }
 
 #Capa_1 {

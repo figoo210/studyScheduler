@@ -30,6 +30,20 @@ def get_courses():
     context["departments"] = get_departments()
     return render_template(f'{PAGE}/courses.html', context=context)
 
+# Show Division courses
+@bp.route('/division/courses', methods=["GET"])
+def get_division_courses():
+    """ get all courses  """
+    context = {}
+    context["semesters"] = get_semesters_list()
+    context["dsemesters"] = get_semesters_dict()
+    context["translated_semesters"] = get_translated_semesters()
+    context["programs"] = get_translated_programs()
+    context["courses"] = get_all_courses_general()
+    context["regulations"] = get_regulations()
+    context["departments"] = get_departments()
+    return render_template(f'{PAGE}/division-courses.html', context=context)
+
 # popup
 @bp.route(f'/{PAGE}/update', methods=["POST"])
 def update_course_by_id():
@@ -85,7 +99,7 @@ def new_coures():
         print("#################: ", req)
         for e in req:
             has_section = False
-            if "has_section" in e and e["has_section"] == "on":
+            if "has_section" in e:
                 has_section = True
             create_course(
                 e["name"],

@@ -7,7 +7,7 @@ $(document).ready(function () {
     });
   }
 
-  $(".clockpicker")?.clockpicker();
+  $(".clockpicker").clockpicker();
 
   $("#departmentForm").submit((e) => {
     // e.preventDefault();

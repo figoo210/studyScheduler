@@ -51,7 +51,8 @@ def update_course(course_id, course_name, course_code, credit_hrs, has_section, 
 # Update reverse semester in course
 def update_reverse_semester(course_id, reverse_semester):
     current_dashboard = SemesterSettings.query.order_by(SemesterSettings.id.desc()).first()
-    course_update = CourseUpdates.query.get(course_id, current_dashboard.id, Semester.reverse)
+    key = (course_id, current_dashboard.id, Semester.reverse)
+    course_update = CourseUpdates.query.get(key)
     if reverse_semester:
         if not course_update:
             new_course_update = CourseUpdates(
@@ -70,25 +71,29 @@ def update_reverse_semester(course_id, reverse_semester):
 # Update summer semester in course
 def update_summer_semester(course_id, summer_semester):
     current_dashboard = SemesterSettings.query.order_by(SemesterSettings.id.desc()).first()
-    course_update = CourseUpdates.query.get(course_id, current_dashboard.id, Semester.summer)
+    key = (course_id, current_dashboard.id, Semester.summer)
+    course_update = CourseUpdates.query.get(key)
     if summer_semester:
         if not course_update:
             new_course_update = CourseUpdates(
                 course_id=course_id,
-                semester_type=Semester.reverse,
+                semester_type=Semester.summer,
                 dashboard_id=current_dashboard.id,
             )
             db.session.add(new_course_update)
             db.session.commit()
     else:
         if course_update:
-            db.session.delete(course_update)
+            cutd = db.session.query(CourseUpdates).get(key)
+            print("#################################: ", cutd)
+            db.session.delete(cutd)
             db.session.commit()
 
 
 def is_has_summer(course_id):
     current_dashboard = SemesterSettings.query.order_by(SemesterSettings.id.desc()).first()
-    if CourseUpdates.query.get(course_id, current_dashboard.id, Semester.summer):
+    key = (course_id, current_dashboard.id, Semester.summer)
+    if CourseUpdates.query.get(key):
         return True
     else:
         return False
@@ -96,7 +101,8 @@ def is_has_summer(course_id):
 
 def is_has_reverse(course_id):
     current_dashboard = SemesterSettings.query.order_by(SemesterSettings.id.desc()).first()
-    if CourseUpdates.query.get(course_id, current_dashboard.id, Semester.reverse):
+    key = (course_id, current_dashboard.id, Semester.reverse)
+    if CourseUpdates.query.get(key):
         return True
     else:
         return False
@@ -125,7 +131,25 @@ def create_course(course_name, course_code, credit_hrs, course_semester,
 
 # Get Course by id
 def get_course(course_id):
-    course = Course.query.get(course_id)
+    c = Course.query.get(course_id)
+    course = {}
+    course["id"] = c.id
+    course["name"] = c.name
+    course["code"] = c.code
+    course["credit_hrs"] = c.credit_hrs
+    course["program"] = str(c.program)
+    if c.has_section:
+        course["has_section"] = 1
+    else:
+        course["has_section"] = 0
+    course["semester"] = str(c.semester)
+    course["regulation_id"] = c.regulation_id
+    course["regulation"] = Regulation.query.get(c.regulation_id).name
+    course["year"] = c.year
+    course['department_id'] = c.department_id
+    course['department'] = Department.query.get(c.department_id).name
+    course['has_summer'] = is_has_summer(c.id)
+    course['has_reverse'] = is_has_reverse(c.id)
     return course
 
 

@@ -37,3 +37,8 @@ def update():
 def delete_one(id):
     """ delete item """
     return redirect(f'/{PAGE}')
+
+
+# {% if context.exec == "auto" %}
+#                     disabled
+#                     {% endif %}

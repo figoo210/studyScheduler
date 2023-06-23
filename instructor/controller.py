@@ -3,8 +3,13 @@ from instructor_role.model import InstructorRole
 from instructor_time.model import InstructorTime
 from department.model import Department
 from lecture.model import Lecture
+import hashlib
 
 from database import db
+
+def get_string_hash(s, length=5):
+    sc = hashlib.shake_256(s.encode("utf-8")).hexdigest(length=length)
+    return sc
 
 def get_instructors_data():
     instructors = Instructor.query.all()
@@ -13,7 +18,7 @@ def get_instructors_data():
         instructor_data = {}
         instructor_data['id'] = instructor.id
         instructor_data['name'] = instructor.name
-        instructor_data['secuirty_code'] = instructor.secuirty_code
+        instructor_data['secuirty_code'] = get_string_hash(str(instructor.name) + "-from-" + str(instructor.mac_address or "mac-default"))
         instructor_data['date_of_birth'] = instructor.date_of_birth
         instructor_data['work_years'] = instructor.work_years
         instructor_data['department'] = Department.query.get(instructor.department_id).name
@@ -34,10 +39,11 @@ def get_instructor_data(instructor_id):
     instructor_data = {}
     instructor_data['id'] = instructor.id
     instructor_data['name'] = instructor.name
-    instructor_data['secuirty_code'] = instructor.secuirty_code
+    instructor_data['secuirty_code'] = get_string_hash(str(instructor.name) + "-from-" + str(instructor.mac_address or "mac-default"))
     instructor_data['date_of_birth'] = instructor.date_of_birth
     instructor_data['work_years'] = instructor.work_years
     instructor_data['department'] = Department.query.get(instructor.department_id).name
+    instructor_data['department_id'] = instructor.department_id
     instructor_data['role'] = instructor.instructor_role
     instructor_data['instructor_times'] = instructor.instructor_times
     instructor_data['instructor_courses'] = instructor.instructor_courses

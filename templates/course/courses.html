@@ -26,7 +26,7 @@
             type="button"
             role="tab"
           >
-            الترم {{ b }}
+            {% if b != "الصيفي" %}الترم {{ b }}{% endif %}
           </button>
           {% endfor %}
         </div>
@@ -46,10 +46,12 @@
             ar
           />
           <div class="justify-content-end">
+            <a class="btn btn-primary px-4" href="/division/courses">مواد الفرق</a>
             <a class="btn btn-primary px-4" href="/course/new">
               <i class="bi bi-plus" style="margin-left: 3px; left: 0"> </i>
-              اضافة مادة جديدة</a
-            >
+              اضافة مادة جديدة</a>
+          </div>
+          <div class="justify-content-end">
           </div>
         </div>
       </form>
@@ -59,9 +61,6 @@
     <table class="table doctor-table cd-table order-table" id="dataTable">
       <thead>
         <tr>
-          <th>
-            <input type="text" class="search-input" placeholder="كود المادة" />
-          </th>
           <th>
             <input type="text" class="search-input" placeholder="المادة" />
           </th>
@@ -75,6 +74,9 @@
             <input type="text" class="search-input" placeholder="البرنامج" />
           </th>
           <th>
+            <input id="tabsFilter" type="text" class="search-input" placeholder="الترم" />
+          </th>
+          <th>
             <input type="text" class="search-input" placeholder="ترم معاكس" />
           </th>
           <th>
@@ -86,16 +88,16 @@
       <tbody>
         {% if context.courses %} {% for course in context.courses %}
         <tr>
-          <td>{{ course.code }}</td>
           <td>{{ course.name }}</td>
           <td>{{ course.regulation }}</td>
           <td>{{ course.department }}</td>
           <td>{{ context.programs[course.program] }}</td>
+          <td>{{ context.translated_semesters[course.semester] }}</td>
           <td>
             <input
               type="checkbox"
               name="reverse_semester"
-              {% if course.reverse_semester %}checked{% endif %}
+              {% if course.has_reverse %}checked{% endif %}
               {% if course.semester == "Summer" %}disabled{% endif %}
               onClick="updateCheckbox(this, {{ course.id }});"
               route="/course/update/reverse/"
@@ -107,11 +109,11 @@
             <input
               type="checkbox"
               name="has_semester"
-              {% if course.reverse_semester %}checked{% endif %}
+              {% if course.has_summer %}checked{% endif %}
               {% if course.semester == "Summer" %}disabled{% endif %}
               onClick="updateCheckbox(this, {{ course.id }});"
               route="/course/update/summer/"
-              value=""
+              value=""z
               autocomplete="off"
             />
           </td>

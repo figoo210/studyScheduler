@@ -1,0 +1,104 @@
+{% extends 'layout/base.html' %} {% block title_block %}
+  المواد
+{% endblock %}
+{% block custom_style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/allsubject.css') }}"/>
+{% endblock %}
+{% block content %}
+  <section class="container-fluid g-0">
+    <div class="p-5 classcourses-bg">
+      <div class="my-5 mx-4">
+        <h2 class="fw-normal fs-3">مواد الفرق الدراسية</h2>
+      </div>
+
+      <div class="d-flex col-12 flex-wrap px-2">
+
+        <div class="col-lg-6 col-12 tableTeamMaterials table-responsive ps-lg-3">
+          <table class="table">
+            <thead>
+              <tr class="text-center">
+                <th rowspan="3">
+                  <select class="form-select rounded-1 border-1" aria-label="Default select example">
+                    <option selected disabled>الائحه</option>
+                    <option value="ساعات المعتمده">الساعات المعتمده</option>
+                  </select>
+                </th>
+                <th colspan="8">عام</th>
+              </tr>
+              <tr class="text-center">
+                <th colspan="3">انتظام</th>
+                <th colspan="3">انتساب</th>
+              </tr>
+              <tr class="text-center">
+                <th colspan="1">عربي</th>
+                <th colspan="1">إنجليزي</th>
+                <th colspan="1">فرنساوي</th>
+                <th colspan="1">عربي</th>
+                <th colspan="1">إنجليزي</th>
+                <th colspan="1">فرنساوي</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="text-center">
+                <th scope="row" rowspan="6" class="bg-th">الفرقه الاولى</th>
+
+                <td>
+                  <small class="text-nowrap">محاسبة ادارية</small><br />
+                  <small class="text-nowrap">د/ رحاب المرسي</small>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+
+              <tr class="text-center">
+                <td>
+                  <small class="text-nowrap">محاسبة ادارية</small><br />
+                  <small class="text-nowrap">د/ رحاب المرسي</small>
+                </td> <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class="text-center">
+                <td>
+                  <small class="text-nowrap">محاسبة ادارية</small><br />
+                  <small class="text-nowrap">د/ رحاب المرسي</small>
+                </td> <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class="text-center">
+                <td>
+                  <small class="text-nowrap">محاسبة ادارية</small><br />
+                  <small class="text-nowrap">د/ رحاب المرسي</small>
+                </td> <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class="text-center">
+                <td>
+                  <small class="text-nowrap">محاسبة ادارية</small><br />
+                  <small class="text-nowrap">د/ رحاب المرسي</small>
+                </td> <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+{% endblock %}

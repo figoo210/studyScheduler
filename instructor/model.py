@@ -1,6 +1,6 @@
 from database import db
 from sqlalchemy.orm import backref
-import hashlib
+from sqlalchemy.ext.hybrid import hybrid_property
 
 
 class Instructor(db.Model):
@@ -24,11 +24,5 @@ class Instructor(db.Model):
     department_id = db.Column(db.Integer, db.ForeignKey("department.id"), nullable=False)
     instructor_role = db.Column(db.String(20), db.ForeignKey("instructor_role.name"), nullable=False)
 
-    instructor_times = db.relationship("InstructorTime", backref=backref("instructor_time", cascade="all,delete"), lazy=True)
-    instructor_courses = db.relationship("InstructorCourse", backref=backref("instructor_course", cascade="all,delete"), lazy=True)
-
-    @property
-    def security_code(self):
-        s = self.name + "-from-" + self.mac_address
-        sc = hashlib.shake_256(s.encode("utf-8")).hexdigest(length=10)
-        return sc
+    instructor_times = db.relationship("InstructorTime", backref=backref("instructor_time"), lazy=True)
+    instructor_courses = db.relationship("InstructorCourse", backref=backref("instructor_course"), lazy=True)

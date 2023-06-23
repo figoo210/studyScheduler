@@ -36,6 +36,7 @@ function addForm2() {
   // Increment the form counter
   formCounter2++;
   checkRemove2();
+  $(".clockpicker").clockpicker();
 }
 
 // Create a function to remove a form
@@ -54,35 +55,49 @@ function removeForm2(e) {
   checkRemove2();
 }
 
-function onFormSubmited2() {
+function instructorAssignFormSubmit() {
   let form = document.getElementById("multiValuesForm2");
   let formData = new FormData(form);
   console.log(formData);
-  let inputsArr = []
-  let eachRow = {}
-  // for (const [k, v] of formData) {
-  //   if (eachRow.hasOwnProperty(k)) {
-  //     console.log("HERE");
-  //     inputsArr.push(eachRow);
-  //     eachRow = {};
-  //     eachRow[k] = v;
-  //   } else {
-  //     eachRow[k] = v;
-  //   }
-  // }
-  // inputsArr.push(eachRow);
-  // let formPostData = new FormData();
-  // formPostData.append("data", JSON.stringify(inputsArr));
+  let instructor_course = [];
+  let instructor_time = [];
 
-  // $.ajax({
-  //   type: "POST",
-  //   url: form.action,
-  //   data: formPostData,
-  //   processData: false,
-  //   contentType: false,
-  //   success: function() {
-  //     window.location.href = form.getAttribute("redirectlink");
-  //   }
-  // });
+  let courses = document.getElementsByName("course");
+  for (let i = 0; i < courses.length; i++) {
+    let groups_num = document.getElementsByName("groupsNumber")[i].value;
+    instructor_course.push({
+      instructor_id: formData.get("id"),
+      course_id: courses[i].value,
+      groups_num: groups_num
+    });
+  }
+
+  let weekDay = document.getElementsByName("weekDay");
+  for (let i = 0; i < weekDay.length; i++) {
+    let startTime = document.getElementsByName("startTime")[i].value;
+    let endTime = document.getElementsByName("endTime")[i].value;
+    instructor_time.push({
+      instructor_id: formData.get("id"),
+      day_of_week: weekDay[i].value,
+      start_time: startTime,
+      end_time: endTime
+    });
+  }
+
+  let instructorAssignObj = {
+    instructor_course: instructor_course,
+    instructor_time: instructor_time
+  };
+
+  $.ajax({
+    type: "POST",
+    url: form.action,
+    data: JSON.stringify(instructorAssignObj),
+    processData: false,
+    contentType: false,
+    success: function() {
+      window.location.href = form.getAttribute("redirectlink");
+    }
+  });
 
 }

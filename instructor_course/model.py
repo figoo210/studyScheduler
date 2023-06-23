@@ -13,10 +13,10 @@ class InstructorCourse(db.Model):
     Foreign_key=can be small like ("instructor_time.id")
     """
     id = db.Column(db.Integer, primary_key=True)
-    
+
     groups_num = db.Column(db.Integer, unique=False, default=1)
     instructor_id = db.Column(db.Integer, db.ForeignKey("instructor.id"), nullable=False)
     course_id = db.Column(db.Integer, db.ForeignKey("course.id"), nullable=False)
 
-    lectures = db.relationship("Lecture", backref=backref("lecture", cascade="all,delete"), lazy=True)
+    lectures = db.relationship("Lecture", backref=backref("lecture"), lazy=True)
 

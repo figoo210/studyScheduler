@@ -1,13 +1,13 @@
 from flask import flash
 from database import db
-from instructor_role.model import InstructorTime 
+from instructor_time.model import InstructorTime
 
-def add_new_time(data):
+def add_new_time(day_of_week, start_time, end_time, instructor_id):
     """
     Add a new time to the database.
     """
-    time = InstructorTime(name=data['name'])
-    db.session.add(time)
+    t = InstructorTime(day_of_week=day_of_week, start_time=start_time, end_time=end_time, instructor_id=instructor_id)
+    db.session.add(t)
     db.session.commit()
     flash("تم اضافة التوقيت ", "success")
 
@@ -21,12 +21,12 @@ def delete_time(bid):
     flash("تم حذف التوقيت", "success")
 
 def update_time(id,start_time,day_of_week,end_time):
-    instructortime = InstructorTime.query.get(id)   
+    instructortime = InstructorTime.query.get(id)
     instructortime.start_time = start_time
     instructortime.day_of_week = day_of_week
     instructortime.end_time = end_time
     db.session.commit()
-    
+
 def get_times():
     """
     Get all Times from the database.

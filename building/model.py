@@ -16,4 +16,4 @@ class Building(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(60), unique=True, nullable=False)
     description = db.Column(db.Text, unique=False, nullable=True)
-    rooms = db.relationship("Room", backref=backref("building_rooms", cascade="all,delete"), lazy=True)
+    rooms = db.relationship("Room", backref=backref("building_rooms"), lazy=True)
