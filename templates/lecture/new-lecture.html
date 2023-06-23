@@ -113,7 +113,7 @@
             {% if program != "Open Education" %}
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingTwo">
-                <button onclick="addAccordionTaple(this)" class="accordion-button collapsed justify-content-between flex-wrap" type="button" data-bs-toggle="collapse" data-bs-target="#{{ language }}-{{ program }}-{{ department.id }}" aria-expanded="false" aria-controls="{{ language }}-{{ program }}-{{ department.id }}">
+                <button onclick="handleTables(this)" class="accordion-button collapsed justify-content-between flex-wrap" type="button" data-bs-toggle="collapse" data-bs-target="#{{ language }}-{{ program }}-{{ department.id }}" aria-expanded="false" aria-controls="{{ language }}-{{ program }}-{{ department.id }}">
                   <div class="row col-10 align-items-center text-right justify-content-between">
                     <span class="col-6 fs-5" style="text-align: right;">جدول قسم {{ department.name }} {{ context.languages[language] }} {{ context.programs[program] }} </span>
                     <div class="col-4 mb-md-0 mb-3">
@@ -136,7 +136,7 @@
               </h2>
               <div id="{{ language }}-{{ program }}-{{ department.id }}" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                 <div class="accordion-body p-5" id="group-0">
-                  <h3 id="groupName" class="text-center mt-4 mb-3">مجموعه (1)</h3>
+                  <h3 id="groupName" class="text-center mt-4 mb-3">مجموعة (1)</h3>
 
                   <ul class="list-group rounded-4 ms-4">
 
@@ -154,7 +154,8 @@
 
                       <div class="col-1 text-md-start text-end me-2">
                         <input type="text" hidden name="day_of_week" name="{{ day }}">
-                        <i class="bi bi-plus-lg fs-3 cursor" style="color: #4372EA;" onclick="addCourse(this, {{ day }})"></i>
+                        <meta id="data" data-instructors="{{ department.instructors }}" data-courses="{{ department.courses }}">
+                        <i class="bi bi-plus-lg fs-3 cursor" style="color: #4372EA;" onclick="addCourseCard(this, '{{ day }}')"></i>
                       </div>
                     </li>
                     {% endfor %}
