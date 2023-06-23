@@ -37,7 +37,6 @@ def delete_time(bid):
     flash("تم حذف الماده ", "success")
 
 
-from flask import flash
 def is_form_empty(AuthForm):
     # Loop through all form fields
     for field in AuthForm.values():

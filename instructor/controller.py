@@ -7,6 +7,7 @@ from section.model import Section
 
 from database import db
 
+
 def get_instructors_data():
     instructors = Instructor.query.all()
     instructors_data = []
@@ -18,11 +19,14 @@ def get_instructors_data():
         instructor_data['status'] = instructor.health_status
         instructor_data['date_of_birth'] = instructor.date_of_birth
         instructor_data['work_years'] = instructor.work_years
-        instructor_data['department'] = Department.query.get(instructor.department_id).name
-        instructor_data['role'] = InstructorRole.query.get(instructor.instructor_role).name
+        instructor_data['department'] = Department.query.get(
+            instructor.department_id).name
+        instructor_data['role'] = InstructorRole.query.get(
+            instructor.instructor_role).name
         instructors_data.append(instructor_data)
 
     return instructors_data
+
 
 def get_instructors_name():
     instructors = Instructor.query.all()
@@ -30,6 +34,7 @@ def get_instructors_name():
     for instructor in instructors:
         instructors_data.append(instructor.name)
     return instructors_data
+
 
 def get_instructor_data(instructor_id):
     instructor = Instructor.query.get(instructor_id)
@@ -40,8 +45,10 @@ def get_instructor_data(instructor_id):
     instructor_data['status'] = instructor.health_status
     instructor_data['date_of_birth'] = instructor.date_of_birth
     instructor_data['work_years'] = instructor.work_years
-    instructor_data['department'] = Department.query.get(instructor.department_id).name
-    instructor_data['role'] = InstructorRole.query.get(instructor.instructor_role).name
+    instructor_data['department'] = Department.query.get(
+        instructor.department_id).name
+    instructor_data['role'] = InstructorRole.query.get(
+        instructor.instructor_role).name
 
     return instructor_data
 
@@ -50,6 +57,7 @@ def delete_instructor(instructor_id):
     instructor = Instructor.query.get(instructor_id)
     db.session.delete(instructor)
     db.session.commit()
+
 
 def add_new_instructor(data):
     instructor = Instructor(
@@ -60,6 +68,3 @@ def add_new_instructor(data):
     )
     db.session.add(instructor)
     db.session.commit()
-
-
-"""

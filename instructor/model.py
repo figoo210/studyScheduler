@@ -26,4 +26,5 @@ class Instructor(db.Model):
         "instructor_role.name"), nullable=False)
     lectures = db.relationship("Lecture", backref="lecture", lazy=True)
     sections = db.relationship("Section", backref="section", lazy=True)
-    instructor_times = db.relationship("InstructorTime", backref="instructor_time", lazy=True)
+    instructor_times = db.relationship(
+        "InstructorTime", backref="instructor_time", lazy=True)

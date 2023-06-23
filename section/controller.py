@@ -13,21 +13,21 @@ def add_new_section(data):
     flash("تم اضافه سكشن ", "success")
 
 def update_section(room_id,start_time,day_of_week,name,absent):
-    lecture = Section.query.get()   
-    lecture.room_id = room_id 
-    lecture.start_time = start_time
-    lecture.day_of_week = day_of_week
-    lecture.name = name
-    lecture.absent = absent
+    section = Section.query.get()   
+    section.room_id = room_id 
+    section.start_time = start_time
+    section.day_of_week = day_of_week
+    section.name = name
+    section.absent = absent
     db.session.commit()
+
 
 def check_course_has_section(id):
     course = Course.query.get(id)
     section = Section.query.get(name=course.name)  
-    if  course.has_section == True :
-        if section.name != course.name:
-            return add_new_section
-
+    if course.has_section == True:
+        if section:
+            return add_new_section()
     
 def get_sections():
     """
