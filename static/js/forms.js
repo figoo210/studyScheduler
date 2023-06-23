@@ -36,6 +36,7 @@ function addForm() {
   // Increment the form counter
   formCounter++;
   checkRemove();
+  $(".clockpicker").clockpicker();
 }
 
 // Create a function to remove a form

@@ -14,8 +14,7 @@ class InstructorTime(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     start_time = db.Column(db.String(5), unique=False, nullable=False)
-    day_of_week = db.Column(WeekDayEnum(
-        WeekDay), default=WeekDay.sat, nullable=False)
     end_time = db.Column(db.String(5), unique=False, nullable=False)
-    instructor_id = db.Column(
-        db.Integer, db.ForeignKey("instructor.id"), nullable=False)
+    day_of_week = db.Column(WeekDayEnum(WeekDay), default=WeekDay.sat, nullable=False)
+
+    instructor_id = db.Column(db.Integer, db.ForeignKey("instructor.id"), nullable=False)

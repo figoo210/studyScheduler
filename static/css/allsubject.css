@@ -1,0 +1,113 @@
+/*start font*/
+
+@font-face {
+    font-family: "pnu";
+    src: url(/pnu/ArbFonts/ArbFONTS-PNU-Bold.ttf);
+    font-family: "pnu";
+    src: url(/pnu/ArbFonts/ArbFONTS-PNU-Light.ttf);
+    font-family: "pnu";
+    src: url(/pnu/ArbFonts/ArbFONTS-PNU-Medium.ttf);
+    font-family: "pnu";
+    src: url(/pnu/ArbFonts/ArbFONTS-PNU-Regular.ttf);
+}
+
+
+/* end root */
+/* ------------------------------------------------ */
+body {
+    font-family: "pnu";
+    direction: rtl;
+    background-color: var(--body-background-color);
+    margin-left: 64px;
+}
+
+/* ------------------------------------------------ */
+/* start root */
+/* end font */
+:root {
+    --font-color: #d9d9d9;
+    --hover-links: #313135;
+    --body-background-color: #f9f9f9;
+}
+
+/* start navbar */
+.subject-nav-menu {
+    margin-right: 0px;
+    margin-top: 80px;
+    padding-right: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 32px;
+    font-family: "pnu";
+    border-bottom: none;
+}
+
+/*start page team materials */
+.Materialfile-bg {
+    background-color: #F9F9F9 !important;
+    height: 100%;
+}
+.tableTeamMaterials>table {
+    border: 2px solid #000000 !important;
+    margin-bottom: 40px;
+}
+
+.tableTeamMaterials thead th,
+.tableTeamMaterials tbody td {
+    border: 1px solid #000000 !important;
+
+}
+
+.tableTeamMaterials thead th,
+.bg-th {
+    background: rgba(136, 136, 145, 0.5) !important;
+    font-size: 20px;
+}
+
+.tableTeamMaterials tbody td {
+    font-size: 16px;
+
+}
+
+.tableTeamMaterials tr {
+    vertical-align: middle;
+}
+
+
+.tableTeamMaterials td.py-4 {
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+}
+
+.form-select {
+    color: #565656 !important;
+    font-weight: normal !important;
+    font-size: 14px !important;
+}
+
+.form-select {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background: url('/img/arrow.svg') no-repeat center left !important;
+    background-size: 25px !important;
+    padding-right: 20px !important;
+    background-color: #FCFCFD !important;
+    border-color: #000000 !important;
+
+}
+
+
+.form-select:focus {
+    box-shadow: none !important;
+    border-color: #4372eace !important;
+}
+
+.small,
+small {
+    color: #313135;
+    font-size: 11px !important;
+}
+
+/*end page team materials */

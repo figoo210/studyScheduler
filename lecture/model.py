@@ -1,5 +1,6 @@
 from database import db
 from utils.enums.WeekDay import WeekDay, WeekDayEnum
+from utils.enums.Language import Language, LanguageEnum
 
 
 class Lecture(db.Model):
@@ -13,14 +14,16 @@ class Lecture(db.Model):
     Foreign_key=can be small like ("instructor_time.id")
 
     """
-    course_id = db.Column(db.Integer, db.ForeignKey(
-        "course.id"), primary_key=True, nullable=False)
-    instructor_id = db.Column(db.Integer, db.ForeignKey(
-        "instructor.id"), primary_key=True, nullable=False)
-    room_id = db.Column(db.Integer, db.ForeignKey(
-        "room.id"), primary_key=True, nullable=True)
-    start_time = db.Column(db.String(5), primary_key=True, nullable=True)
-    day_of_week = db.Column(WeekDayEnum(
-        WeekDay), primary_key=True, nullable=True)
-    name = db.Column(db.String(60), unique=False, nullable=True)
+    # Composite Primary Key
+    instructor_course_id = db.Column(db.Integer, db.ForeignKey("instructor_course.id"), primary_key=True)
+    room_id = db.Column(db.Integer, db.ForeignKey("room.id"), primary_key=True)
+    day_of_week = db.Column(WeekDayEnum(WeekDay), primary_key=True)
+    start_time = db.Column(db.String(5), primary_key=True)
+
+    group_num = db.Column(db.Integer, unique=False)
+    language = db.Column(LanguageEnum(Language), default=Language.ar, nullable=False)
     absent = db.Column(db.Boolean)
+    is_section = db.Column(db.Boolean)
+
+    dashboard_id = db.Column(db.Integer, db.ForeignKey('semester_settings.id'), nullable=False)
+

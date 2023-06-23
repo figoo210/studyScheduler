@@ -14,7 +14,7 @@ class SemesterEnum(db.TypeDecorator):
     The default would have stored the enum's *name* (ie the string).
     """
     impl = db.String(10)
-    cache_ok = True 
+    cache_ok = True
 
     def __init__(self, enumtype, *args, **kwargs):
         super(SemesterEnum, self).__init__(*args, **kwargs)
@@ -28,3 +28,12 @@ class SemesterEnum(db.TypeDecorator):
 
     def process_result_value(self, value, dialect):
         return self._enumtype(value)
+
+
+def get_translated_semesters():
+    return {
+        "First": "الترم الأول",
+        "Second": "الترم الثاني",
+        "Summer": "الترم الصيفي",
+        "Reverse": "الترم المعاكس"
+    }

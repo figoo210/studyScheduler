@@ -10,7 +10,7 @@ from course.model import Course
 from room.model import Room
 from lecture.model import Lecture
 from utils.date_and_time import get_day_name, get_date_from_string
-from utils.enums.Semester import Semester
+from utils.enums.Semester import Semester, get_translated_semesters
 
 # Get Instructors count
 def get_instructors_count():
@@ -57,8 +57,8 @@ def get_semesters_dict():
 
 def get_semesters_list():
     semesters = [
-        "الأول (الخريف)",
-        "الثاني (الربيع)",
+        "الأول",
+        "الثاني",
         "الصيفي"
     ]
     return semesters
@@ -78,3 +78,12 @@ def add_semester_settings(data):
         print(e)
 
 
+def get_current_semester():
+    ss = SemesterSettings.query.order_by(SemesterSettings.id.desc()).first()
+    data = {
+        "semester": ss.semester,
+        "translated_semester": get_translated_semesters()[ss.semester],
+        "start_date": ss.semester_start_date,
+        "end_date": ss.semester_end_date
+    }
+    return data

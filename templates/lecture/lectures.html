@@ -1,0 +1,159 @@
+{% extends 'layout/base.html' %} {% block title_block %}
+  جدول المحاضرات
+{% endblock %} {% block content %}
+  <section class="container-fluid g-0">
+    <div class="p-5 classRooms-bg">
+      <div class="mb-5 py-3">
+        <!-- 3 links top -->
+        <nav id="instructorsTaps">
+          <div class="nav nav-tabs border-0" id="nav-tab" role="tablist">
+            <h1>جدول المحاضرات</h1>
+          </div>
+        </nav>
+        <!-- end 3 links -->
+      </div>
+
+      <!-- search and 2 button -->
+      <nav class="navbar navbar-doctor-search">
+        <form class="w-100 d-flex doctor-form-search" role="search">
+          <div class="form-group d-flex justify-content-between w-100">
+            <input type="text" class="cd-search table-filter doctor-text-search" data-table="order-table" placeholder="البحث" ar />
+            <div class="justify-content-end">
+              <a class="btn btn-primary px-4" href="#" data-bs-toggle="modal" data-bs-target="#addTable">
+                <i class="bi bi-plus" style="margin-left: 3px; left: 0"></i>
+                انشاء جدول
+              </a>
+            </div>
+          </div>
+        </form>
+      </nav>
+
+      <!-- table -->
+      <table class="table doctor-table cd-table order-table" id="dataTable">
+        <thead>
+          <tr>
+            <th>
+              <input type="text" class="search-input" placeholder="الفرقة" />
+            </th>
+            <th>
+              <input type="text" class="search-input" placeholder="الائحة" />
+            </th>
+            <th>
+              <input type="text" class="search-input" placeholder="الترم" />
+            </th>
+            <th>
+              <input type="text" class="search-input" placeholder="العام الدراسي" />
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if context.lectures %}
+            {% for lecture in context.lectures %}
+              <tr>
+                <td>{{ lecture.course.year }}</td>
+                <td>{{ lecture.course.regulation }}</td>
+                <td>{{ lecture.dashboard.translated_semester }}</td>
+                <td>{{ lecture.dashboard.end_date }}</td>
+              </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td colspan="4">
+                <h3 class="text-center">لا توجد بيانات</h3>
+              </td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Modal --- -->
+    <div class="modal fade" id="addTable" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content px-4 py-2" id="modal-content">
+          <div class="modal-header border-0">
+            <button type="button" class="btn-close rounded-circle" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p class="fs-5 fw-normal mb-4">
+              <span>اضافة قسم جديد</span>
+            </p>
+
+            <form class="" action="{{ url_for('lecture.new_lecture') }}" method="post">
+              <input hidden name="id" />
+              <div class="row my-3">
+                <div class="col-12 col-md-6">
+                  <select class="form-control form-control-lg col-12" style="
+                      font-family: bootstrap-icons;
+                      border: 1px solid #ced4da;
+                      color: #6c757d;
+                      border-radius: 0.5rem;
+                      min-height: 100%;
+                    " aria-label=".form-select-lg example"
+                    name="regulation_id"
+                  >
+                    <option selected disabled>الائحة</option>
+                    {% for regulation in context.regulations %}
+                      <option value="{{ regulation.id }}">{{ regulation.name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-12 col-md-6">
+                  <select class="form-control form-control-lg col-12" style="
+                      font-family: bootstrap-icons;
+                      border: 1px solid #ced4da;
+                      color: #6c757d;
+                      border-radius: 0.5rem;
+                      min-height: 100%;
+                    " aria-label=".form-select-lg example"
+                    name="semester"
+                  >
+                    <option disabled selected>الترم</option>
+                    <option value="First">الترم الاول</option>
+                    <option value="Second">الترم الثاني</option>
+                    <option value="Summer">الترم الصيفي</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row my-3">
+                <div class="col-12 col-md-6 mb-md-0 mb-3">
+                  <select class="form-control form-control-lg col-12" style="
+                      font-family: bootstrap-icons;
+                      border: 1px solid #ced4da;
+                      color: #6c757d;
+                      border-radius: 0.5rem;
+                      min-height: 100%;
+                    " aria-label=".form-select-lg example"
+                    name="year"
+                  >
+                    <option disabled selected>الفرقة</option>
+                    <option value="1">الفرقة الاولى</option>
+                    <option value="2">الفرقة الثانية</option>
+                    <option value="3">الفرقة الثالثة</option>
+                    <option value="4">الفرقة الرابعة</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row my-3">
+                <div class="col-12 col-md-6 mb-md-0 mb-3">
+                  <h5 class="my-3">طريقة التنفيذ</h5>
+                  <fieldset id="exec">
+                    <h5><input type="radio" value="manual" name="exec" checked> يدوي</h5>
+                    <h5><input type="radio" value="auto" name="exec"> اوتوماتيك</h5>
+                  </fieldset>
+                </div>
+              </div>
+
+              <div class="row justify-content-around mt-5 pt-5">
+                <button type="button" class="btn btn-outline-danger btn-lg col-12 col-md-5" data-bs-dismiss="modal">الغاء</button>
+                <button type="submit" class="btn btn-primary btn-lg col-12 col-md-5">انشاء</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

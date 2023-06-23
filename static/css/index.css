@@ -27,18 +27,7 @@ body {
 }
 
 .style-logo {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 800;
-    line-height: 48px;
-    text-align: center;
-    text-transform: uppercase;
-
-    background: linear-gradient(132.27deg, #4372EA 14.02%, #505098 88.31%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-
+    margin-right: -8px;
 }
 
 .card-bg-surface {
@@ -462,4 +451,19 @@ html .ui-button.ui-state-disabled:active {
     font-weight: 400;
     color: #313135;
     background-color: #F6F6F6;
+}
+
+
+/* Lectures */
+
+.closeBtn {
+    position: absolute;
+    z-index: 1000;
+    top: -35px;
+    right: 0;
+    left: 0;
+    width: 20px;
+    margin: auto;
+    color: #a11212;
+    cursor: pointer;
 }

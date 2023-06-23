@@ -89,15 +89,17 @@ function getAutoFieldsByName(fieldId, selected) {
 
 
 // Course Selector Search
-function selectCourse() {
+function selectCourse(e) {
+  let indx = e.parentNode.parentNode.id == "formRow" ? 0 : parseInt(e.parentNode.parentNode.id.split("-")[1]);
+  console.log(indx);
   let semester = document.getElementsByName("semester");
   let regulation = document.getElementsByName("regulation");
   // let year = document.getElementsByName("year");
-  semester = semester[semester.length - 1];
-  regulation = regulation[regulation.length - 1];
+  semester = semester[indx];
+  regulation = regulation[indx];
   // year = year[year.length - 1];
   let department = document.getElementsByName("department")[0];
-  let course = document.getElementById("courseSearch");
+  let course = document.getElementsByName("course")[indx];
 
   if (semester.value != "الترم" && regulation.value != "الائحة" && department != "") {
     course.innerHTML = `<option selected disabled>المادة</option>`
@@ -105,7 +107,7 @@ function selectCourse() {
       for (let x = 0; x < data.length; x++) {
         if (
           data[x]["semester"] == semester.value &&
-          data[x]["regulation"] == regulation.value &&
+          data[x]["regulation_id"] == regulation.value &&
           data[x]["department"] == department.value
         ) {
           const option = document.createElement("option");

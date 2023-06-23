@@ -1,0 +1,90 @@
+*{
+    font-family: 'Cairo', sans-serif;
+}
+.lecturer-profile-bg {
+    background-color: #F9F9F9;
+}
+
+
+.breadcrumb-item>a {
+    color: #73788C;
+
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+    float: right !important;
+}
+@media only screen and (min-width: 576px) {
+    .col-sm-6-lectuer {
+        flex: 0 0 auto;
+        width: 47.8% !important;
+    }
+}
+
+@media only screen and (max-width: 575.98px) {
+    .col-sm-6-lectuer {
+        flex: 0 0 auto;
+        width: 100% !important;
+    }
+}
+input,.form-select {
+    border-color: #7194EE !important;
+    font-size: 20px !important;
+    background-color: #FCFCFD !important;
+}
+ol li{
+    background-color: #FCFCFD !important;
+
+}
+.table>:not(caption)>*>*{
+    padding: 1rem .5rem !important; 
+}
+th,
+td {
+    border: none !important;
+    font-style: normal !important;
+    font-size: 14px;
+    line-height: 22px;
+}
+
+th {
+    font-weight: 700;
+}
+
+td {
+    font-weight: 400;
+}
+
+tbody th {
+    color: #7194EE !;
+}
+.text-bg-primary {
+    background-color: #4372ea !important;
+}
+ol li{
+    border-color: #7194EE !important;
+}
+
+.form-select {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background: url('../images/arrowSelect.svg') no-repeat center left !important;
+    background-size: 25px !important;
+    padding-right: 29px !important;
+    border-radius: 6px;
+    background-color: #FCFCFD !important;
+
+}
+
+.form-select:focus,
+input:focus {
+    box-shadow: none !important;
+    border: 1.5px solid rgba(86, 86, 86, 0.22);
+}
+@media only screen and (min-width: 768px) {
+
+.border-md-start {
+    border-left: 1px solid #dee2e6 !important;
+}
+}

@@ -1,11 +1,13 @@
 import json
 
 from flask import Blueprint, redirect, render_template, request
-from instructor.controller import delete_instructor, get_instructors_data, add_new_instructor, get_instructors_name
+from instructor.controller import delete_instructor, get_instructors_data, add_new_instructor, get_instructors_name, get_instructor_data
 from instructor_role.controller import get_roles
+from instructor_course.controller import add_new_instructor_course
+from instructor_time.controller import add_new_time
 from department.controller import get_departments
 from regulation.controller import get_regulations
-
+from dashboard.controller import get_current_semester
 
 PAGE = 'instructor'
 
@@ -51,13 +53,17 @@ def new_assign():
     """ new item """
     context = {}
     if request.method == 'POST':
-        # return  changes
-        instructor_id = 0
-        return redirect(f'/{PAGE}/{instructor_id}')
+        req = json.loads(request.data)
+        for ic in req["instructor_course"]:
+            add_new_instructor_course(ic["instructor_id"], ic["course_id"], ic["groups_num"])
+        for it in req["instructor_time"]:
+            add_new_time(it["day_of_week"], it["start_time"], it["end_time"], it["instructor_id"])
+        return redirect(f'/{PAGE}s')
     else:
         context["instructors"] = get_instructors_data()
         context["instructors_name"] = get_instructors_name()
         context["regulations"] = get_regulations()
+        context["semester"] = get_current_semester()
         return render_template(f'{PAGE}/assign-{PAGE}.html', context=context)
 
 # Profile personly
@@ -68,7 +74,8 @@ def get_instructor(id):
     if request.method == 'POST':
         return redirect(f'/{PAGE}/{id}')
     else:
-        return render_template(f'{PAGE}/{PAGE}.html')
+        context["instructor"] = get_instructor_data(id)
+        return render_template(f'{PAGE}/{PAGE}-profile.html', context=context)
 
 
 # Instructors API

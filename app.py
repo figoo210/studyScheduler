@@ -33,12 +33,12 @@ def create_app(config_class=Config):
         from regulation.model import Regulation
         from room.model import Room
         from instructor.model import Instructor
-        from course.model import Course
+        from course.model import Course, CourseUpdates
         from instructor_role.model import InstructorRole
         from instructor_time.model import InstructorTime
         from lecture.model import Lecture
-        from section.model import Section
         from dashboard.model import SemesterSettings
+        from instructor_course.model import InstructorCourse
         db.create_all()
         db.session.commit()
         # Migrate(app, db, compare_type=True)
@@ -58,6 +58,7 @@ def create_app(config_class=Config):
     from instructor_role.view import bp as role_view
     from regulation.view import bp as regulation_view
     from room.view import bp as room_view
+    from lecture.view import bp as lecture_view
 
     # Register blueprint(s)
     app.register_blueprint(error_view)
@@ -71,6 +72,7 @@ def create_app(config_class=Config):
     app.register_blueprint(role_view)
     app.register_blueprint(regulation_view)
     app.register_blueprint(room_view)
+    app.register_blueprint(lecture_view)
 
     # Sample HTTP error handling
     @app.errorhandler(404)

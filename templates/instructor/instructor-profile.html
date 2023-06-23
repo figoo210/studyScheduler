@@ -1,0 +1,333 @@
+{% extends "layout/base.html" %} {% block title_block %}الملف الشخصي للمحاضر{% endblock %}
+
+{% block custom_style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/lecturerProfile.css') }}"/>
+{% endblock %}
+
+{% block content %}
+
+
+
+<div class="container-fluid">
+    <form class="row">
+
+        <div class="col-12 lecturer-profile-bg  py-5 pe-4">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#" class="fw-normal text-secondary  text-decoration-none">
+                            المحاضرين </a></li>
+                    <li class="breadcrumb-item active pe-1" aria-current="page">
+                        <span class="px-2 fw-normal text-secondary">
+                            الملف الشخصي
+
+                        </span>
+                    </li>
+                </ol>
+            </nav>
+
+            <h2 class="pt-3 pb-5">الملف الشخصي للمحاضر </h2>
+
+
+            <!-- البيانات الاساسيه -->
+            <div class="d-flex  justify-content-between flex-wrap">
+                <div class="text-center border-md-start col-md-3 col-12 d-flex align-items-center justify-content-center">
+                    <p class="text-center fs-5 fw-normal mt-md-0 mt-3">البيانات الاساسيه</p>
+                </div>
+                <div class="col-md-9 col-12 px-5 border-bottom pb-2 pt-4">
+                    <div class="col-12 col-md-8   mb-3">
+                        <input type="text" class="form-control form-control-lg col-12" id="nameDoc"
+                            placeholder="اسم الدكتور" value="{{ context.instructor.name }}" readonly>
+                    </div>
+                    <div class="col-12 col-md-8   mb-3">
+                        <input type="text" class="form-control form-control-lg col-12" id="nameDoc"
+                            placeholder="اسم الدكتور" value="{{ context.instructor.department }}" readonly>
+                    </div>
+                    <div class=" d-flex flex-wrap justify-content-between col-12 col-md-8 mb-sm-3">
+
+                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
+                        <input type="text" class="form-control form-control-lg col-12" id="nameDoc"
+                        placeholder="اسم الدكتور" value="{{ context.instructor.role }}" readonly>
+                        </div>
+                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
+                        <input type="text" class="form-control form-control-lg col-12" id="nameDoc"
+                        placeholder="اسم الدكتور" value="{{ context.instructor.work_years }}" readonly>
+                        </div>
+                    </div>
+                    <div class=" d-flex flex-wrap justify-content-between col-12 col-md-8 mb-3">
+
+                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
+
+                        <input type="text" class="form-control form-control-lg col-12" id="nameDoc"
+                        placeholder="اسم الدكتور" value="{{ context.instructor.date_of_birth or 'غير معروف' }}" readonly>
+
+                        </div>
+                        <div class="col-12 col-sm-6-lectuer  mb-sm-0 mb-3">
+                            <input type="text" class="form-control form-control-lg col-12" id="nameDoc"
+                                placeholder="اسم الدكتور" value="{{ context.instructor.secuirty_code }}" readonly>
+                        </div>
+                    </div>
+
+                </div>
+                <hr>
+            </div>
+
+            <!--  المواد التي يدرسها -->
+            <div class="d-flex  justify-content-between flex-wrap">
+                <div class="text-center border-md-start col-md-3 col-12 d-flex align-items-center justify-content-center">
+                    <p class="text-center fs-5 fw-normal mt-md-0 mt-3"> المواد التي يدرسها</p>
+                </div>
+                <div class="col-md-9 col-12 px-5 border-bottom pb-2 pt-4">
+
+                    <div class="d-flex col-12 flex-wrap mb-3">
+                        <div class="col-12 col-md-8   ">
+                            <input type="text" class="form-control form-control-lg col-12" id="nameDoc"
+                                placeholder="  اسم المادة ">
+
+                        </div>
+                            <div class="col-6 col-md-1 d-flex">
+                                <button type="button" id="add" class="  btn btn-primaryTwo">
+                                    <i class="bi bi-plus-lg text-primary"></i></button>
+                                    <button type="button" class="remove removeAdd btn btn-primaryTwo bi bi-trash text-danger">
+                                    </button>
+                            </div>
+                    </div>
+                    <!-- اللغه و القسم -->
+                    <div class=" d-flex flex-wrap justify-content-between col-12 col-md-8 mb-sm-3">
+
+                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
+                            <select class="form-select addClassRooms form-select-lg  addClassRoomsPaddingSelect"
+                                aria-label=".form-select-lg example">
+                                <option selected> اللغه</option>
+                                <option value="1"> mis</option>
+                                <option value="2"> acc</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
+                            <select class="form-select addClassRooms form-select-lg  addClassRoomsPaddingSelect"
+                                aria-label=".form-select-lg example">
+                                <option selected> القسم</option>
+                                <option value="1"> mis</option>
+                                <option value="2"> acc</option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <!-- الائحه و الترم -->
+                    <div class=" d-flex flex-wrap justify-content-between col-12 col-md-8 mb-sm-3">
+
+                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
+                            <select class="form-select addClassRooms form-select-lg  addClassRoomsPaddingSelect"
+                                aria-label=".form-select-lg example">
+                                <option selected> الائحه</option>
+                                <option value="1"> mis</option>
+                                <option value="2"> acc</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
+                            <select class="form-select addClassRooms form-select-lg  addClassRoomsPaddingSelect"
+                                aria-label=".form-select-lg example">
+                                <option selected> الترم</option>
+                                <option value="1"> mis</option>
+                                <option value="2"> acc</option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <!-- البرنامج و الفرقه -->
+                    <div class=" d-flex flex-wrap justify-content-between col-12 col-md-8 mb-sm-3">
+
+                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
+                            <select class="form-select addClassRooms form-select-lg  addClassRoomsPaddingSelect"
+                                aria-label=".form-select-lg example">
+                                <option selected> البرنامج</option>
+                                <option value="1"> mis</option>
+                                <option value="2"> acc</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
+                            <select class="form-select addClassRooms form-select-lg  addClassRoomsPaddingSelect"
+                                aria-label=".form-select-lg example">
+                                <option selected> الفرقه</option>
+                                <option value="1"> mis</option>
+                                <option value="2"> acc</option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <!-- رقم المجموعه و الكود -->
+                    <div class=" d-flex flex-wrap justify-content-between col-12 col-md-8 mb-3 ">
+
+                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
+                            <input type="text" class="form-control form-control-lg " id="nameDoc"
+                                placeholder="  رقم المجموعه ">
+
+                        </div>
+                        <div class="col-12 col-sm-6-lectuer  mb-sm-0 mb-3">
+                            <input type="text" class="form-control form-control-lg " id="nameDoc"
+                                placeholder="   كود الماده">
+
+                        </div>
+                    </div>
+                    <!-- <hr class="col-12 col-md-9 "> -->
+
+                </div>
+                <hr>
+            </div>
+
+            <!--    جدول المحاضرات الاسبوعي -->
+            <div class="d-flex  justify-content-between flex-wrap">
+                <div class="text-center border-md-start col-md-3 col-12 d-flex align-items-center justify-content-center">
+                    <p class="text-center fs-5 fw-normal mt-md-0 mt-3"> جدول المحاضرات الاسبوعي </p>
+                </div>
+                <div class="col-md-9 col-12  border-bottom pb-2 pt-4">
+                    <div class="col-12 col-md-8   mb-3">
+
+                        <ol class=" mx-1 list-group rounded-4">
+                            <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12">
+                                <span class="mx-2  col-lg-1 col-sm-2  col-3">السبت</span>
+                                <div class="col-md-9 col-8">
+
+
+                                </div>
+
+                            </li>
+                            <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12">
+                                <span class="mx-2  col-lg-1 col-sm-2  col-3">الاحد</span>
+                                <div class="col-md-9 col-8">
+
+                                </div>
+
+                            </li>
+                            <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12">
+                                <span class="mx-2  col-lg-1 col-sm-2  col-3">الاثنين</span>
+                                <div class="col-md-9 col-8">
+                                    <span class="badge text-bg-primary fw-normal  px-3 py-1 rounded-3 mb-1"> 2-11
+                                        اقتصاد كلي</span>
+                                    <span class="badge text-bg-primary fw-normal  px-3 py-1 rounded-3 mb-1"> 2-11
+                                        اقتصاد كلي</span>
+
+                                </div>
+
+                            </li>
+                            <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12">
+                                <span class="mx-2  col-lg-1 col-sm-2  col-3">الثلاثاء</span>
+                                <div class="col-md-9 col-8">
+                                    <span class="badge text-bg-primary fw-normal  px-3 py-1 rounded-3 mb-1"> 2-11
+                                        اقتصاد كلي</span>
+                                    <span class="badge text-bg-primary fw-normal  px-3 py-1 rounded-3 mb-1"> 2-11
+                                        اقتصاد كلي</span>
+
+                                </div>
+
+                            </li>
+                            <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12">
+                                <span class="mx-2  col-lg-1 col-sm-2  col-3">الاربعاء</span>
+                                <div class="col-md-9 col-8">
+                                    <span class="badge text-bg-primary fw-normal  px-3 py-1 rounded-3 mb-1"> 2-11
+                                        اقتصاد كلي</span>
+
+
+                                </div>
+
+                            </li>
+                            <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12">
+                                <span class="mx-2  col-lg-1 col-sm-2  col-3">الخميس</span>
+                                <div class="col-md-9 col-8">
+
+                                </div>
+
+                            </li>
+                            <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12">
+                                <span class="mx-2  col-lg-1 col-sm-2  col-3">الجمعه</span>
+                                <div class="col-md-9 col-8">
+
+                                </div>
+
+                            </li>
+
+
+
+
+
+
+
+
+                        </ol>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+
+            <!--    ملخص غياب المحاضر -->
+            <div class="d-flex  justify-content-between flex-wrap">
+                <div class="text-center border-md-start col-md-3 col-12 d-flex align-items-center justify-content-center">
+                    <p class="text-center fs-5 fw-normal mt-md-0 mt-3"> ملخص غياب المحاضر </p>
+                </div>
+                <div class="col-md-9 col-12 px-5 pb-2 pt-md-4">
+                    <div class="table-responsive-md col-12 col-md-8 mb-3 table-hover">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="text-nowrap text-center shadow-sm">
+                                    <th scope="col ">اسم الماده</th>
+                                    <th scope="col ">عدد محاضرات الترم</th>
+                                    <th scope="col">عدد الحضور</th>
+                                    <th scope="col">عددالغياب</th>
+                                    <th scope="col">لم يأتي تاريخها</th>
+
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white shadow-sm">
+                                <tr class="text-nowrap text-center border-bottom border-2">
+                                    <th scope="row ">الاقتصاد الكلي</th>
+                                    <td>2</td>
+                                    <td>22</td>
+                                    <td>222</td>
+                                    <td>2252</td>
+
+                                </tr>
+                                <tr class="text-nowrap text-center  border-bottom border-2">
+                                    <th scope="row">الاقتصاد الجزئي</th>
+                                    <td>2</td>
+                                    <td>22</td>
+                                    <td>222</td>
+                                    <td>2252</td>
+
+                                </tr>
+                                <tr class="text-nowrap text-center  border-bottom border-2">
+                                    <th scope="row">المحاسبه الماليه</th>
+                                    <td>2</td>
+                                    <td>22</td>
+                                    <td>222</td>
+                                    <td>2252</td>
+
+                                </tr>
+                                <tr class="text-nowrap text-center">
+                                    <th scope="row">ادارة الأعمال</th>
+                                    <td>2</td>
+                                    <td>22</td>
+                                    <td>222</td>
+                                    <td>2252</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div dir="ltr" class="py-3 px-4">
+            <button type="submit" class="btn btn-primary px-4">حفظ</button>
+            <button type="reset" class="btn btn-light px-4 ">ألغاء</button>
+
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}

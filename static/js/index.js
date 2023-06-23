@@ -7,7 +7,7 @@ $(document).ready(function () {
     });
   }
 
-  $(".clockpicker")?.clockpicker();
+  $(".clockpicker").clockpicker();
 
   $("#departmentForm").submit((e) => {
     // e.preventDefault();
@@ -23,7 +23,11 @@ function editThisByModal(modalData) {
   let modalSelect = modal.getElementsByTagName("select");
   for (let i = 0; i < modalInput.length; i++) {
     const element = modalInput[i];
-    element.value = modalData[element.name];
+    if (element.type == "checkbox") {
+      element.checked = modalData[element.name] == 1 ? true : false;
+    } else {
+      element.value = modalData[element.name];
+    }
   }
   for (let i = 0; i < modalSelect.length; i++) {
     const element = modalSelect[i];
@@ -35,6 +39,19 @@ function editThisByModal(modalData) {
       }
     }
   }
+}
+
+
+// Update checkbox
+function updateCheckbox(e, id) {
+  let route = e.getAttribute("route") + id + "/" + e.checked;
+  console.log(route);
+
+  // Need to remove has summer col and add or delete rows depend on summer exist
+
+  $.get(route, (data, status) => {
+    console.log(status);
+  });
 }
 
 
@@ -177,5 +194,18 @@ let buildings = document.getElementsByClassName("buildings");
 for (let i = 0; i < buildings.length; i++) {
   buildings[i].addEventListener("click", (e) => {
     filterTabs("tabsFilter", buildings[i].innerText);
+  });
+}
+
+// Courses Filter Tabs
+document.getElementById("allCourses")?.addEventListener("click", (e) => {
+  filterTabs("tabsFilter", "");
+});
+
+let courses = document.getElementsByClassName("courses");
+for (let i = 0; i < courses.length; i++) {
+  courses[i].addEventListener("click", (e) => {
+    console.log(courses[i].innerText);
+    filterTabs("tabsFilter", courses[i].innerText);
   });
 }

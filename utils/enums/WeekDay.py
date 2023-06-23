@@ -32,3 +32,15 @@ class WeekDayEnum(db.TypeDecorator):
 
     def process_result_value(self, value, dialect):
         return self._enumtype(value)
+
+
+def get_translated_weekdays():
+    return {
+        "Saturday": "السبت",
+        "Sunday": "الأحد",
+        "Monday": "الأثنين",
+        "Tuesday": "الثلاثاء",
+        "Wednesday": "الاربعاء",
+        "Thursday": "الخميس",
+        "Friday": "الجمعة"
+    }

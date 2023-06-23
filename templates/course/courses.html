@@ -1,5 +1,6 @@
-{% extends "layout/base.html" %} {% block title_block %}المواد{% endblock
-%} {% block content %}
+{% extends "layout/base.html" %} {% block title_block %}المواد{% endblock %}
+
+{%block content %}
 
 <section class="container-fluid g-0">
   <div class="p-5 classcourses-bg">
@@ -8,7 +9,7 @@
       <nav id="instructorsTaps">
         <div class="nav nav-tabs border-0" id="nav-tab" role="tablist">
           <button
-            id="allBuildings"
+            id="allCourses"
             class="nav-link active"
             data-bs-toggle="tab"
             type="button"
@@ -20,12 +21,12 @@
           {% for b in context.semesters %}
           <button
             id="{{ b.id }}"
-            class="nav-link buildings"
+            class="nav-link courses"
             data-bs-toggle="tab"
             type="button"
             role="tab"
           >
-            الترم {{ b }}
+            {% if b != "الصيفي" %}الترم {{ b }}{% endif %}
           </button>
           {% endfor %}
         </div>
@@ -45,10 +46,12 @@
             ar
           />
           <div class="justify-content-end">
+            <a class="btn btn-primary px-4" href="/division/courses">مواد الفرق</a>
             <a class="btn btn-primary px-4" href="/course/new">
               <i class="bi bi-plus" style="margin-left: 3px; left: 0"> </i>
-              اضافة مادة جديدة</a
-            >
+              اضافة مادة جديدة</a>
+          </div>
+          <div class="justify-content-end">
           </div>
         </div>
       </form>
@@ -59,54 +62,25 @@
       <thead>
         <tr>
           <th>
-            <input
-              type="text"
-              class="search-input"
-              placeholder="المادة"
-            />
+            <input type="text" class="search-input" placeholder="المادة" />
           </th>
           <th>
-            <input
-              type="text"
-              class="search-input"
-              placeholder="الائحة"
-            />
+            <input type="text" class="search-input" placeholder="الائحة" />
           </th>
           <th>
-            <input
-              type="text"
-              class="search-input"
-              placeholder="القسم"
-            />
+            <input type="text" class="search-input" placeholder="القسم" />
           </th>
           <th>
-            <input
-              id="tabsFilter"
-              type="text"
-              class="search-input"
-              placeholder="الترم"
-            />
+            <input type="text" class="search-input" placeholder="البرنامج" />
           </th>
           <th>
-            <input
-              type="text"
-              class="search-input"
-              placeholder="البرنامج"
-            />
+            <input id="tabsFilter" type="text" class="search-input" placeholder="الترم" />
           </th>
           <th>
-            <input
-              type="text"
-              class="search-input"
-              placeholder="ترم معاكس"
-            />
+            <input type="text" class="search-input" placeholder="ترم معاكس" />
           </th>
           <th>
-            <input
-              type="text"
-              class="search-input"
-              placeholder="سمر كورس"
-            />
+            <input type="text" class="search-input" placeholder="الترم الصيفي" />
           </th>
           <th></th>
         </tr>
@@ -117,10 +91,32 @@
           <td>{{ course.name }}</td>
           <td>{{ course.regulation }}</td>
           <td>{{ course.department }}</td>
-          <td>{{ course.semester }}</td>
-          <td>{{ course.program }}</td>
-          <td><input type="checkbox" {% if course.reverse_semester %}checked{% endif %}></td>
-          <td><input type="checkbox" {% if course.has_summer %}checked{% endif %}></td>
+          <td>{{ context.programs[course.program] }}</td>
+          <td>{{ context.translated_semesters[course.semester] }}</td>
+          <td>
+            <input
+              type="checkbox"
+              name="reverse_semester"
+              {% if course.has_reverse %}checked{% endif %}
+              {% if course.semester == "Summer" %}disabled{% endif %}
+              onClick="updateCheckbox(this, {{ course.id }});"
+              route="/course/update/reverse/"
+              value=""
+              autocomplete="off"
+            />
+          </td>
+          <td>
+            <input
+              type="checkbox"
+              name="has_semester"
+              {% if course.has_summer %}checked{% endif %}
+              {% if course.semester == "Summer" %}disabled{% endif %}
+              onClick="updateCheckbox(this, {{ course.id }});"
+              route="/course/update/summer/"
+              value=""z
+              autocomplete="off"
+            />
+          </td>
           <td>
             <div class="d-flex">
               <div
@@ -132,14 +128,14 @@
                     {{ {
                         'id': course.id,
                         'name': course.name,
-                        'building_id': course.building_id,
-                        'supported_capacity': course.supported_capacity,
-                        'real_capacity': course.real_capacity
+                        'regulation_id': course.regulation_id,
+                        'department_id': course.department_id,
+                        'code': course.code,
+                        'credit_hrs': course.credit_hrs,
+                        'has_section': course.has_section
                     } }}
                   )
                 "
-                console.log(e.value);
-                console.log(modalData[element.name]);
               >
                 <svg
                   width="18"
@@ -187,7 +183,7 @@
     </table>
   </div>
 
-  <!-- Modal      تعديل قاعات التدريس--->
+  <!-- Modal      تعديل المواد--->
   <div
     class="modal fade"
     id="editModal"
@@ -201,26 +197,39 @@
       <div class="modal-content classcourses-bg px-4 py-2">
         <div class="modal-header border-0 d-inline">
           <small class="text-classcourses fs-6"> تعديل</small><br />
-          <p class="fw-normal fs-3 mt-3">قاعات التدريس</p>
+          <p class="fw-normal fs-3 mt-3">المواد</p>
         </div>
-        <div class="modal-body mb-5 pb-5">
+        <div class="modal-body">
           <form
-            class="mb-5 pb-5"
+            class=""
             action="{{url_for('course.update_course_by_id')}}"
             method="post"
           >
             <input hidden name="id" />
-            <div class="row my-3">
+            <div class="row">
+              <div class="col-12 col-md-6 mb-md-0 mb-3">
+                <input
+                  type="text"
+                  value=""
+                  class="form-control form-control-lg col-12"
+                  name="code"
+                  placeholder="كود المادة"
+                  readonly
+                />
+              </div>
               <div class="col-12 col-md-6 mb-md-0 mb-3">
                 <input
                   type="text"
                   value=""
                   class="form-control form-control-lg col-12"
                   name="name"
-                  placeholder="إسم "
+                  placeholder="إسم المادة"
                 />
               </div>
-              <div class="col-12 col-md-6">
+            </div>
+
+            <div class="row my-5">
+              <div class="col-12 col-md-6 mb-md-0 mb-3">
                 <select
                   class="form-control form-control-lg col-12"
                   style="
@@ -231,51 +240,84 @@
                     min-height: 100%;
                   "
                   aria-label=".form-select-lg example"
-                  name="building_id"
+                  name="regulation_id"
                 >
-                  <option selected disabled>المبنى</option>
-                  {% for building in context.buildings %}
-                  <option value="{{ building.id }}">{{ building.name }}</option>
+                  <option selected disabled>الائحة</option>
+                  {% for regulation in context.regulations %}
+                  <option value="{{ regulation.id }}">
+                    {{ regulation.name }}
+                  </option>
                   {% endfor %}
                 </select>
               </div>
+              <div class="col-12 col-md-6 mb-md-0 mb-3">
+                <select
+                  class="form-control form-control-lg col-12"
+                  style="
+                    font-family: bootstrap-icons;
+                    border: 1px solid #ced4da;
+                    color: #6c757d;
+                    border-radius: 0.5rem;
+                    min-height: 100%;
+                  "
+                  aria-label=".form-select-lg example"
+                  name="department_id"
+                >
+                  <option selected disabled>القسم</option>
+                  {% for department in context.departments %}
+                  <option value="{{ department.id }}">
+                    {{ department.name }}
+                  </option>
+                  {% endfor %}
+                </select>
             </div>
-            <div class="row my-3">
+
+
+            <div class="row my-5">
               <div class="col-12 col-md-6 mb-md-0 mb-3">
                 <input
                   type="number"
+                  min="1"
                   value=""
-                  min="0"
                   class="form-control form-control-lg col-12"
-                  name="supported_capacity"
-                  placeholder="العدد الرسمي"
+                  name="credit_hrs"
+                  placeholder="عدد ساعات المادة"
                 />
               </div>
               <div class="col-12 col-md-6 mb-md-0 mb-3">
-                <input
-                  type="number"
-                  value=""
-                  min="0"
-                  class="form-control form-control-lg col-12"
-                  name="real_capacity"
-                  placeholder="العدد الفعلي"
-                />
+                <div class="mx-4">
+                  <label
+                    class="col-9 fs-5"
+                  >
+                    هل يوجد سكشن للمادة؟
+                  </label>
+                  <input
+                    type="checkbox"
+                    class="col-1 m-auto"
+                    style="transform: scale(1.5);"
+                    name="has_section"
+                    id="has_section"
+                    autocomplete="off"
+                    value=""
+                  />
+                </div>
               </div>
             </div>
 
+
             <div
-              class="modal-footer border-0 col-12 d-flex justify-content-between align-items-center"
+              class="row justify-content-around mt-5 pt-5"
             >
               <button
                 type="button"
-                class="btn btn-outline-danger btn-lg col-5-classcourses"
+                class="btn btn-outline-danger btn-lg col-12 col-md-5"
                 data-bs-dismiss="modal"
               >
                 الغاء
               </button>
               <button
                 type="submit"
-                class="btn btn-primary btn-lg col-5-classcourses"
+                class="btn btn-primary btn-lg col-12 col-md-5"
               >
                 حفظ
               </button>

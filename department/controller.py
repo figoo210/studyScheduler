@@ -1,5 +1,8 @@
 from flask import flash
 from department.model import Department, DivisionDepartments
+
+from utils.enums.Year import Division as Division_Enum
+
 from database import db
 
 arabic_divisions = ["الأولى", "الثانية", "الثالثة", "الرابعة"]
@@ -37,6 +40,53 @@ def get_department_divisions(department_id):
         }
         divisions.append(division)
     return divisions
+
+# Get all divisions departments
+def get_all_divisions_departments():
+    dd1 = []
+    dd2 = []
+    dd3 = []
+    dd4 = []
+
+    dds = ["1", "2", "3", "4"]
+    for y in dds:
+        departments = []
+        for dd in DivisionDepartments.query.filter_by(division=Division_Enum(int(y))).all():
+            if dd.department_id in departments:
+                continue
+            department = Department.query.get(dd.department_id)
+            department_dict = {
+                "id": dd.department_id,
+                "name": department.name,
+                "count": dd.students_count,
+                "courses": department.courses,
+                "instructors": department.instructors
+            }
+            if y == "1": dd1.append(department_dict)
+            if y == "2": dd2.append(department_dict)
+            if y == "3": dd3.append(department_dict)
+            if y == "4": dd4.append(department_dict)
+
+    divisions = {
+        "1": {
+            "name": "الأولى",
+            "departments": dd1
+        },
+        "2": {
+            "name": "الثانية",
+            "departments": dd2
+        },
+        "3": {
+            "name": "الثالثة",
+            "departments": dd3
+        },
+        "4": {
+            "name": "الرابعة",
+            "departments": dd4
+        },
+    }
+    return divisions
+
 
 def delete_department(department_id):
     department = Department.query.get(department_id)
