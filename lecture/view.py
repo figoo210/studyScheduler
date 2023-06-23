@@ -84,3 +84,14 @@ def update():
 def delete_one(id):
     """ delete item """
     return redirect(f'/{PAGE}')
+
+
+# API
+
+@bp.route(f'/{PAGE}/data', methods=["POST"])
+def get_data(id):
+    """ Get Data """
+    req = request.data
+    print("##############################: ", req)
+    return "Done"
+

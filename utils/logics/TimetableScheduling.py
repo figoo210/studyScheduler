@@ -83,8 +83,7 @@ class TimetableScheduling():
                 records = records + Lecture.query.filter_by(course_id=each_course.id).all()
         else:
             for each_course in self.table_courses:
-                pass
-                # records = records + Section.query.filter_by(course_id=each_course.id).all()
+                records = records + Lecture.query.filter_by(course_id=each_course.id, is_section=True).all()
         self.instructor_listing(records)
 
     def instructor_listing(self, records):
