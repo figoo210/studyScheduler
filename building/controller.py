@@ -1,7 +1,7 @@
 from flask import flash
 from building.model import Building
 
-from database import db
+from database import db, model_to_dict
 
 def add_new_building(data):
     """
@@ -25,7 +25,10 @@ def get_buildings():
     """
     Get all buildings from the database.
     """
-    return Building.query.all()
+    buildings = []
+    for building in Building.query.all():
+        buildings.append(model_to_dict(building))
+    return buildings
 
 
 

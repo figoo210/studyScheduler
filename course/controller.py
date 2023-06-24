@@ -3,12 +3,24 @@ from course.model import Course, CourseUpdates
 from department.model import Department
 from regulation.model import Regulation
 from dashboard.model import SemesterSettings
-from database import db
+from database import db, model_to_dict
 from utils.enums.Semester import Semester, get_translated_semesters
 
 
 def get_all_courses():
     return Course.query.all()
+
+def get_filtered_courses(semester, year, program, regulation_id, department_id):
+    courses = []
+    for c in Course.query.filter_by(semester=semester, year=year, program=program, regulation_id=regulation_id, department_id=department_id).all():
+        cdict = {
+            "course": model_to_dict(c),
+            "course_instructors": []
+        }
+        for ci in c.instructor_courses:
+            cdict["course_instructors"].append(model_to_dict(ci))
+        courses.append(cdict)
+    return courses
 
 
 def get_all_courses_general():
@@ -148,7 +160,7 @@ def get_course(course_id):
     course["semester"] = str(c.semester)
     course["regulation_id"] = c.regulation_id
     course["regulation"] = Regulation.query.get(c.regulation_id).name
-    course["year"] = c.year
+    course["year"] = str(c.year.value)
     course['department_id'] = c.department_id
     course['department'] = Department.query.get(c.department_id).name
     course['has_summer'] = is_has_summer(c.id)

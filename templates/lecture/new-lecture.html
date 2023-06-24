@@ -7,6 +7,18 @@
     <div class="p-5 classRooms-bg">
       <div class="container-fluid g-0">
         <div class="p-5 addClassRoomsIndexBg" id="container">
+          <nav aria-label="breadcrumb" dir="rtl" lang="">
+            <ol class="breadcrumb" dir="rtl">
+              <li class="breadcrumb-item">
+                <a href="/lectures" class="fw-normal text-secondary text-decoration-none">
+                  المحاضرات
+                </a>
+              </li>
+              <li class="breadcrumb-item active" id="bc-slash" aria-current="page">
+                <span class="px-2 fw-normal text-secondary">انشاء جدول المحاضرات</span>
+              </li>
+            </ol>
+          </nav>
           <h3 class="addClassRoomsH1 pt-3 pb-4">انشاء جدول المحاضرات</h3>
 
           <form id="form-container" class="w-100">
@@ -130,38 +142,56 @@
                     </div>
                   </div>
                   <div class="col-2">
-                    <span class="badge bg-danger py-2 px-2 ms-md-3 fs-6" id="accordionStatus"></span>
+                    <span class="badge py-2 px-2 ms-md-3 fs-6" id="accordionStatus"></span>
                   </div>
                 </button>
               </h2>
               <div id="{{ language }}-{{ program }}-{{ department.id }}" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                 <div class="accordion-body p-5" id="group-0">
-                  <h3 id="groupName" class="text-center mt-4 mb-3">مجموعة (1)</h3>
+                  <form action="" class="text-center ">
+                    <h3 id="groupName" class="text-center mt-4 mb-3">مجموعة (1)</h3>
+                    <button
+                      type="button"
+                      class="btn btn-primary btn-lg mb-4"
+                      onclick="submitGroupTable(this);"
+                    >
+                      حفظ
+                    </button>
+                    <div class="alert" role="alert" id="alert"></div>
+                    <ul class="list-group rounded-4 ms-4">
 
-                  <ul class="list-group rounded-4 ms-4">
+                      <!-- Day Container -->
 
-                    <!-- Day Container -->
+                      {% for day in context.weekDays %}
+                      <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12 align-items-center day-{{ day }}">
+                        <span class="mx-2 col-lg-1 col-sm-2 col-3">{{ context.weekDays[day] }}</span>
 
-                    {% for day in context.weekDays %}
-                    <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12 align-items-center day-{{ day }}">
-                      <span class="mx-2 col-lg-1 col-sm-2 col-3">{{ context.weekDays[day] }}</span>
-
-                      <div class="col-md-9 col-12 d-flex row flex-wrap" id="dayContent">
-                        <!-- Day Content -->
-
-
-                      </div>
-
-                      <div class="col-1 text-md-start text-end me-2">
-                        <input type="text" hidden name="day_of_week" name="{{ day }}">
-                        <meta id="data" data-instructors="{{ department.instructors }}" data-courses="{{ department.courses }}">
-                        <i class="bi bi-plus-lg fs-3 cursor" style="color: #4372EA;" onclick="addCourseCard(this, '{{ day }}')"></i>
-                      </div>
-                    </li>
-                    {% endfor %}
+                        <div class="col-md-9 col-12 d-flex row flex-wrap" id="dayContent">
+                          <!-- Day Content -->
 
 
-                  </ul>
+                        </div>
+
+                        <div class="col-1 text-md-start text-end me-2">
+                          <input type="text" hidden name="day_of_week" name="{{ day }}">
+                          <i
+                            class="bi bi-plus-lg fs-3 cursor"
+                            style="color: #4372EA;"
+                            onclick="addCourseCard(this, '{{ day }}', {
+                              department_id: {{ department.id }},
+                              semester: '{{ context.semester }}',
+                              year: {{ context.year }},
+                              regulation_id: {{ context.regulation_id }},
+                              program: '{{ program }}'
+                            })"
+                          ></i>
+                        </div>
+                      </li>
+                      {% endfor %}
+
+
+                    </ul>
+                  </form>
                 </div>
               </div>
             </div>
@@ -169,286 +199,7 @@
             {% endfor %}
 
             {% else %}
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="headingTwo">
-                <button class="accordion-button collapsed justify-content-between flex-wrap" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                  <div class="d-flex col-10 align-items-center">
-                    <span>جدول قسم {{ department.name }} {{ context.languages[language] }} </span>
-                    <div class="col-5 col-sm-3 col-md-2 mb-md-0 mb-3">
-                      <input type="number" class="form-control form-control-lg col-12" id="exampleFormControlInput3" placeholder="  1 " />
-                    </div>
-                  </div>
-                  <div class="col">
-                    <span class="badge text-bg-light-c py-2 px-2 ms-md-3 textStutas" name="textStutas">لم يكتمل</span>
-                  </div>
-                </button>
-              </h2>
-              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                <div class="accordion-body p-5">
-                  <h3 class="text-center mt-4 mb-3">مجموعه (1)</h3>
-
-                  <ul class="list-group rounded-4 ms-4">
-                    <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12 align-items-center">
-                      <span class="mx-2 col-lg-1 col-md-2 col-12">السبت</span>
-                      <div class="col-md-9 col-12 d-flex row flex-wrap"></div>
-                      <div class="col text-md-start text-end me-2">
-                        <img src="./img/add.svg" alt=" add" />
-                      </div>
-                    </li>
-                    <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12 align-items-center">
-                      <span class="mx-2 col-lg-1 col-md-2 col-12">الاحد</span>
-                      <div class="col-md-9 col-12 d-flex row flex-wrap">
-                        <ul class="list-group col-lg-6 col-12">
-                          <li class="list-group-item bg-primary">
-                            <div class="col text-start">
-                              <img src="./img/close.svg" alt="close icone" />
-                            </div>
-                          </li>
-                          <li class="list-group-item bg-primary d-flex">
-                            <span class="text-white">د/</span>
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>ناصر نور</option>
-                              <option value="1">نور ناصر</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>تكاليف متقدمة</option>
-                              <option value="1">تكاليف متقدمة</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>ح 602</option>
-                              <option value="1">ح 602</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <input type="number" class="form-control form-control-lg col-12" id="exampleFormControlInput1" placeholder="11   " />
-                          </li>
-                        </ul>
-
-                        <ul class="list-group col-lg-6 col-12">
-                          <li class="list-group-item bg-primary">
-                            <div class="col text-start">
-                              <img src="./img/close.svg" alt="close icone" />
-                            </div>
-                          </li>
-                          <li class="list-group-item bg-primary d-flex">
-                            <span class="text-white">د/</span>
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>ناصر نور</option>
-                              <option value="1">نور ناصر</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>تكاليف متقدمة</option>
-                              <option value="1">تكاليف متقدمة</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>ح 602</option>
-                              <option value="1">ح 602</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <input type="number" class="form-control form-control-lg col-12" id="exampleFormControlInput1" placeholder="11   " />
-                          </li>
-                        </ul>
-                      </div>
-
-                      <div class="col text-md-start text-end me-2">
-                        <img src="./img/add.svg" alt=" add" />
-                      </div>
-                    </li>
-                    <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12 align-items-center">
-                      <span class="mx-2 col-lg-1 col-sm-2 col-3">الاثنين</span>
-                      <div class="col-md-9 col-12 d-flex row flex-wrap">
-                        <ul class="list-group col-lg-6 col-12">
-                          <li class="list-group-item bg-primary">
-                            <div class="col text-start">
-                              <img src="./img/close.svg" alt="close icone" />
-                            </div>
-                          </li>
-                          <li class="list-group-item bg-primary d-flex">
-                            <span class="text-white">د/</span>
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>ناصر نور</option>
-                              <option value="1">نور ناصر</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>تكاليف متقدمة</option>
-                              <option value="1">تكاليف متقدمة</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>ح 602</option>
-                              <option value="1">ح 602</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <input type="number" class="form-control form-control-lg col-12" id="exampleFormControlInput1" placeholder="11   " />
-                          </li>
-                        </ul>
-
-                        <ul class="list-group col-lg-6 col-12">
-                          <li class="list-group-item bg-primary">
-                            <div class="col text-start">
-                              <img src="./img/close.svg" alt="close icone" />
-                            </div>
-                          </li>
-                          <li class="list-group-item bg-primary d-flex">
-                            <span class="text-white">د/</span>
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>ناصر نور</option>
-                              <option value="1">نور ناصر</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>تكاليف متقدمة</option>
-                              <option value="1">تكاليف متقدمة</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>ح 602</option>
-                              <option value="1">ح 602</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <input type="number" class="form-control form-control-lg col-12" id="exampleFormControlInput1" placeholder="11   " />
-                          </li>
-                        </ul>
-                      </div>
-
-                      <div class="col text-md-start text-end me-2">
-                        <img src="./img/add.svg" alt=" add" />
-                      </div>
-                    </li>
-                    <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12 align-items-center">
-                      <span class="mx-2 col-lg-1 col-sm-2 col-3">الثلاثاء</span>
-                      <div class="col-md-9 col-12 d-flex row flex-wrap">
-                        <ul class="list-group col-lg-6 col-12">
-                          <li class="list-group-item bg-primary">
-                            <div class="col text-start">
-                              <img src="./img/close.svg" alt="close icone" />
-                            </div>
-                          </li>
-                          <li class="list-group-item bg-primary d-flex">
-                            <span class="text-white">د/</span>
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>ناصر نور</option>
-                              <option value="1">نور ناصر</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>تكاليف متقدمة</option>
-                              <option value="1">تكاليف متقدمة</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>ح 602</option>
-                              <option value="1">ح 602</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <input type="number" class="form-control form-control-lg col-12" id="exampleFormControlInput1" placeholder="11   " />
-                          </li>
-                        </ul>
-
-                        <ul class="list-group col-lg-6 col-12">
-                          <li class="list-group-item bg-primary">
-                            <div class="col text-start">
-                              <img src="./img/close.svg" alt="close icone" />
-                            </div>
-                          </li>
-                          <li class="list-group-item bg-primary d-flex">
-                            <span class="text-white">د/</span>
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>ناصر نور</option>
-                              <option value="1">نور ناصر</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>تكاليف متقدمة</option>
-                              <option value="1">تكاليف متقدمة</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>ح 602</option>
-                              <option value="1">ح 602</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <input type="number" class="form-control form-control-lg col-12" id="exampleFormControlInput1" placeholder="11   " />
-                          </li>
-                        </ul>
-                      </div>
-
-                      <div class="col text-md-start text-end me-2">
-                        <img src="./img/add.svg" alt=" add" />
-                      </div>
-                    </li>
-                    <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12 align-items-center">
-                      <span class="mx-2 col-lg-1 col-sm-2 col-3">الاربعاء</span>
-                      <div class="col-md-9 col-12 d-flex row flex-wrap"></div>
-
-                      <div class="col text-md-start text-end me-2">
-                        <img src="./img/add.svg" alt=" add" />
-                      </div>
-                    </li>
-                    <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12 align-items-center">
-                      <span class="mx-2 col-lg-1 col-sm-2 col-3">الخميس</span>
-                      <div class="col-md-9 col-12 d-flex row flex-wrap">
-                        <ul class="list-group col-lg-6 col-12">
-                          <li class="list-group-item bg-primary">
-                            <div class="col text-md-start text-end me-2">
-                              <img src="./img/close.svg" alt="close icone" />
-                            </div>
-                          </li>
-                          <li class="list-group-item bg-primary d-flex">
-                            <span class="text-white">د/</span>
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>ناصر نور</option>
-                              <option value="1">نور ناصر</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>تكاليف متقدمة</option>
-                              <option value="1">تكاليف متقدمة</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected>ح 602</option>
-                              <option value="1">ح 602</option>
-                            </select>
-                          </li>
-                          <li class="list-group-item bg-primary">
-                            <input type="number" class="form-control form-control-lg col-12" id="exampleFormControlInput1" placeholder="11   " />
-                          </li>
-                        </ul>
-                      </div>
-
-                      <div class="col text-md-start text-end me-2">
-                        <img src="./img/add.svg" alt=" add" />
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            <p>TEST</p>
             {% endif %}
 
 

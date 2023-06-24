@@ -1,11 +1,12 @@
 from instructor.model import Instructor
+from instructor_course.model import InstructorCourse
 from instructor_role.model import InstructorRole
 from instructor_time.model import InstructorTime
 from department.model import Department
 from lecture.model import Lecture
 import hashlib
 
-from database import db
+from database import db, model_to_dict
 
 
 def get_string_hash(s, length=5):
@@ -53,10 +54,28 @@ def get_instructor_data(instructor_id):
         instructor.department_id).name
     instructor_data['department_id'] = instructor.department_id
     instructor_data['role'] = instructor.instructor_role
-    instructor_data['instructor_times'] = instructor.instructor_times
-    instructor_data['instructor_courses'] = instructor.instructor_courses
+
+    instructor_data['instructor_times'] = [model_to_dict(x) for x in instructor.instructor_times]
+
+    instructor_data['instructor_courses'] = [model_to_dict(x) for x in instructor.instructor_courses]
 
     return instructor_data
+
+
+def get_filtered_instructors(department_id):
+    instructors = []
+    for c in Instructor.query.filter_by(department_id=department_id).all():
+        cdict = {
+            "instructor": model_to_dict(c),
+            "instructor_courses": [],
+            "instructor_times": []
+        }
+        for ci in c.instructor_courses:
+            cdict["instructor_courses"].append(model_to_dict(ci))
+        for ci in c.instructor_times:
+            cdict["instructor_times"].append(model_to_dict(ci))
+        instructors.append(cdict)
+    return instructors
 
 
 def delete_instructor(instructor_id):

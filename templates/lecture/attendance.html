@@ -1,31 +1,71 @@
 {% extends 'layout/base.html' %} {% block title_block %}
-  جدول المحاضرات
-{% endblock %} {% block content %}
+  تسجيل الغياب
+{% endblock %}
+
+{% block custom_style %}
+  <link rel="stylesheet" href="{{ url_for('static', filename = 'css/attendance.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename = 'css/customCalender.css') }}" />
+{% endblock %}
+
+{% block content %}
   <section class="container-fluid g-0">
     <div class="p-5 classRooms-bg">
       <div class="mb-5 py-3">
         <!-- 3 links top -->
-        <nav id="instructorsTaps">
-          <div class="nav nav-tabs border-0" id="nav-tab" role="tablist">
-            <h1>جدول المحاضرات</h1>
+        <div class="d-flex justify-content-start align-items-center">
+          <span class="fw-bolder fs-1 style-day-month" id="dayOfMonth"></span>
+          <div class="d-flex flex-column justify-content-center align-items-center">
+            <span class="style-month" id="curMonth"></span>
+            <span class="style-year" id="curYear"></span>
           </div>
-        </nav>
+        </div>
         <!-- end 3 links -->
       </div>
 
       <!-- search and 2 button -->
-      <nav class="navbar navbar-doctor-search">
-        <form class="w-100 d-flex doctor-form-search" role="search">
-          <div class="form-group d-flex justify-content-between w-100">
-            <input type="text" class="cd-search table-filter doctor-text-search" data-table="order-table" placeholder="البحث" ar />
-            <div class="justify-content-end">
-              <a class="btn btn-primary px-4" href="#" data-bs-toggle="modal" data-bs-target="#addTable">
-                <i class="bi bi-plus" style="margin-left: 3px; left: 0"></i>
-                انشاء جدول
-              </a>
-            </div>
-          </div>
+      <nav class="navbar navbar-doctor-search row">
+        <form class="col-5 d-flex doctor-form-search" role="search">
+          <input type="text" class="cd-search table-filter doctor-text-search col-4" data-table="order-table" placeholder="البحث" ar />
         </form>
+        <div class="col-7 text-md-start d-md-block d-flex justify-content-between mb-md-0">
+            <div class="btn-group">
+              <button class="btn dropdown-toggle btn-primary" type="button" data-bs-toggle="dropdown" aria-expanded="false">محاضرة تعويضية</button>
+              <ul class="dropdown-menu text-end px-3 py-4">
+                <li>
+                  <select class="form-select mb-3" aria-label=" example">
+                    <option selected disabled>اسم المحاضر</option>
+                    <option value="1">محمود ابراهيم</option>
+                    <option value="2">محمد علي</option>
+                  </select>
+                </li>
+                <li>
+                  <select class="form-select mb-3" aria-label="example">
+                    <option selected disabled>المواد</option>
+                    <option value="1">انتاج</option>
+                    <option value="2">قواعد بيانات</option>
+                  </select>
+                </li>
+
+                <li>
+                  <input type="date" class="pe-3 form-control dateclass placeholderclass mb-3" id="date" aria-describedby="dateHelp" placeholder="تاريخ التعويض" onclick="removeClass(this)" />
+                </li>
+                <li>
+                  <select class="form-select mb-3" aria-label="example">
+                    <option selected disabled>التعويض</option>
+                    <option value="أوفلاين">أوفلاين</option>
+                    <option value="أونلاين">أونلاين</option>
+                  </select>
+                </li>
+                <li class="text-start">
+                  <div>
+                    <button type="submit" class="btn btn-primary">اضافة</button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <button type="button" class="btn btn-primary ms-2 me-2" data-bs-toggle="modal" data-bs-target="#done"><span class="fw-normal">اكتمال</span></button>
+            <button type="button" class="btn btn-primary ms-2 me-2" data-bs-toggle="modal" data-bs-target="#save"><span class="fw-normal">حفظ</span></button>
+          </div>
       </nav>
 
       <!-- table -->
@@ -33,22 +73,31 @@
         <thead>
           <tr>
             <th>
-              <input type="text" class="search-input" placeholder="المادة" />
-            </th>
-            <th>
               <input type="text" class="search-input" placeholder="المحاضر" />
             </th>
             <th>
-              <input type="text" class="search-input" placeholder="الفرقة" />
+              <input type="text" class="search-input" placeholder="الرتبة" />
             </th>
             <th>
-              <input type="text" class="search-input" placeholder="الائحة" />
+              <input type="text" class="search-input" placeholder="المادة" />
+            </th>
+            <th>
+              <input type="text" class="search-input" placeholder="قاعة التدريس" />
+            </th>
+            <th>
+              <input type="text" class="search-input" placeholder="وقت المحاضرة" />
             </th>
             <th>
               <input type="text" class="search-input" placeholder="الترم" />
             </th>
             <th>
-              <input type="text" class="search-input" placeholder="العام الدراسي" />
+              <input type="text" class="search-input" placeholder="الحضور" />
+            </th>
+            <th>
+              <input type="text" class="search-input" placeholder="الغياب" />
+            </th>
+            <th>
+              <input type="text" class="search-input" placeholder="QR Code" />
             </th>
           </tr>
         </thead>
@@ -56,11 +105,14 @@
           {% if context.lectures %}
             {% for lecture in context.lectures %}
               <tr>
-                <td>{{ lecture.course.name }}</td>
                 <td>{{ lecture.instructor.name }}</td>
-                <td>{{ context.translated_year[lecture.course.year] }}</td>
+                <td>{{ context.instructor.instructor_role }}</td>
+                <td>{{ lecture.course.name }}</td>
                 <td>{{ lecture.course.regulation }}</td>
                 <td>{{ lecture.dashboard.translated_semester }}</td>
+                <td>{{ lecture.current_year }}</td>
+                <td>{{ lecture.dashboard.translated_semester }}</td>
+                <td>{{ lecture.current_year }}</td>
                 <td>{{ lecture.current_year }}</td>
               </tr>
             {% endfor %}
@@ -97,9 +149,7 @@
                       color: #6c757d;
                       border-radius: 0.5rem;
                       min-height: 100%;
-                    " aria-label=".form-select-lg example"
-                    name="regulation_id"
-                  >
+                    " aria-label=".form-select-lg example" name="regulation_id">
                     <option selected disabled>الائحة</option>
                     {% for regulation in context.regulations %}
                       <option value="{{ regulation.id }}">{{ regulation.name }}</option>
@@ -113,9 +163,7 @@
                       color: #6c757d;
                       border-radius: 0.5rem;
                       min-height: 100%;
-                    " aria-label=".form-select-lg example"
-                    name="semester"
-                  >
+                    " aria-label=".form-select-lg example" name="semester">
                     <option disabled selected>الترم</option>
                     <option value="First">الترم الاول</option>
                     <option value="Second">الترم الثاني</option>
@@ -132,9 +180,7 @@
                       color: #6c757d;
                       border-radius: 0.5rem;
                       min-height: 100%;
-                    " aria-label=".form-select-lg example"
-                    name="year"
-                  >
+                    " aria-label=".form-select-lg example" name="year">
                     <option disabled selected>الفرقة</option>
                     <option value="1">الفرقة الاولى</option>
                     <option value="2">الفرقة الثانية</option>
@@ -148,8 +194,8 @@
                 <div class="col-12 col-md-6 mb-md-0 mb-3">
                   <h5 class="my-3">طريقة التنفيذ</h5>
                   <fieldset id="exec">
-                    <h5><input type="radio" value="manual" name="exec" checked> يدوي</h5>
-                    <h5><input type="radio" value="auto" name="exec"> اوتوماتيك</h5>
+                    <h5><input type="radio" value="manual" name="exec" checked />يدوي</h5>
+                    <h5><input type="radio" value="auto" name="exec" />اوتوماتيك</h5>
                   </fieldset>
                 </div>
               </div>
@@ -164,4 +210,8 @@
       </div>
     </div>
   </section>
+{% endblock %}
+{% block custom_script %}
+  <script src="{{ url_for('static', filename = 'js/attendance.js') }}"></script>
+  <script src="{{ url_for('static', filename = 'js/customCalender.js') }}"></script>
 {% endblock %}

@@ -1,0 +1,44 @@
+
+/* / */
+.style-month ,.style-day-month ,.style-year {
+    font-style: normal;
+    font-weight: 400;
+}
+.style-year {
+    font-size: 20px;
+    line-height: 29px;
+    letter-spacing: 1.2em;
+}
+
+.style-day-month {
+
+    font-size: 36px;
+    line-height: 65px;
+    color: #4372EA;
+}
+
+.style-month {
+    font-size: 24px;
+    line-height: 43px;
+    color: #313135;
+}
+/*  */
+.dateclass {
+    width: 100%;
+  }
+
+  .dateclass.placeholderclass::after {
+    width: 100%;
+    content: attr(placeholder);
+    text-align: end !important;
+
+  }
+
+  .dateclass.placeholderclass:hover::after {
+    width: 100%;
+    content: "";
+  }
+
+  .dropdown-menu li {
+    width: 260px !important;
+  }
