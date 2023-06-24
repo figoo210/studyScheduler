@@ -1,0 +1,284 @@
+{% extends 'layout/base.html' %} {% block title_block %}
+  جدول المحاضرات
+{% endblock %}
+
+{% block custom_style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/attendance.css') }}"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/customCalender.css') }}"/>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid g-0 ">
+    <!-- <label for="exampleColorInput" class="form-label">Color picker</label>
+<input type="date" class="form-control form-control-date" id="exampleColorInput"> -->
+    <div class="p-5  classRooms-bg">
+    <h2 id="date"></h2>
+      <!-- navbar search & filter -->
+      <nav class="navbar navbar-expand-md bg-navber-search-andfillter">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse " id="navbarScroll">
+            <div class="mt-md-0 mt-2 col-12 d-flex flex-wrap justify-content-between align-items-center">
+              <form class="d-flex nosubmit col-md-5 col-12 position-relative" role="search">
+                <input   id="myInput" class="form-control me-2 nosubmit col-12 rounded-5 px-3 py-2 input-search" type="text" placeholder="البحث" aria-label="Search">
+                <button id="myButton" class="position-absolute top-0 start-0 btn " type="button">
+                  <svg id="btnClick" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2 22L4 20M3 11.5C3 12.7476 3.24573 13.9829 3.72315 15.1355C4.20057 16.2881 4.90033 17.3354 5.78249 18.2175C6.66464 19.0997 7.71192 19.7994 8.86451 20.2769C10.0171 20.7543 11.2524 21 12.5 21C13.7476 21 14.9829 20.7543 16.1355 20.2769C17.2881 19.7994 18.3354 19.0997 19.2175 18.2175C20.0997 17.3354 20.7994 16.2881 21.2769 15.1355C21.7543 13.9829 22 12.7476 22 11.5C22 8.98044 20.9991 6.56408 19.2175 4.78249C17.4359 3.00089 15.0196 2 12.5 2C9.98044 2 7.56408 3.00089 5.78249 4.78249C4.00089 6.56408 3 8.98044 3 11.5Z" stroke="#313135" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  </button>
+              </form>
+              <div class="col-md-6 col-12 text-md-start d-md-block d-flex justify-content-between mb-md-0 mt-2">
+                <div class="btn-group ">
+                  <button class="btn  dropdown-toggle btn-primary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    محاضرة تعويضية
+
+                  </button>
+                  <ul class="dropdown-menu text-end px-3 py-4">
+                    <li> <select class="form-select  mb-3 " aria-label=" example">
+                      <option selected disabled> اسم المحاضر</option>
+                      <option value="1">محمود ابراهيم                      </option>
+                      <option value="2">محمد علي</option>
+                    </select></li>
+                    <li> <select class="form-select  mb-3 " aria-label="example">
+                      <option selected disabled>  المواد</option>
+                      <option value="1">انتاج </option>
+                      <option value="2">قواعد بيانات</option>
+                    </select></li>
+
+                    <li>
+                      <input type="date" class="pe-3 form-control dateclass placeholderclass mb-3" id="date" aria-describedby="dateHelp" placeholder="تاريخ التعويض" onclick="removeClass(this)"/>
+                    </li>
+                    <li> <select class="form-select mb-3 " aria-label="example">
+                      <option selected disabled>  التعويض</option>
+                      <option value="أوفلاين">أوفلاين</option>
+                      <option value="أونلاين">أونلاين </option>
+                    </select></li>
+                    <li class="text-start">
+                      <div >
+                        <button type="submit" class="btn btn-primary ">اضافة</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <button type="button" class="btn btn-primary  ms-2 me-2" data-bs-toggle="modal"
+                data-bs-target="#save">
+                  <span class="fw-normal"> حفظ </span>
+                </button>
+                <div class="btn-group ">
+                  <button class="btn  dropdown-toggle " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                   <input type="hidden"  id="datepicker">
+
+                  </button>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </nav>
+<!-- body in taps -->
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active tableWrap table-responsive" id="nav-allbul" role="tabpanel" aria-labelledby="nav-home-tab"
+          tabindex="0" >
+          <table class="table table-hover"  id="myTable">
+            <thead class="">
+              <tr class="text-nowrap">
+                <th scope="col" class="text-end">اسم المحاضر  </th>
+                <th scope="col">الرتبة </th>
+                <th scope="col">   المادة</th>
+                <th scope="col"> قاعة التدريس</th>
+                <th scope="col">Start Time</th>
+                <th scope="col"> تسجيل الحضور</th>
+                <th scope="col">Qr Code</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr class="text-nowrap ">
+
+                <td>
+
+
+                  <figure class="text-end">
+                    <blockquote class="blockquote m-0">
+                      <p class="m-0">محمود ابراهيم</p>
+                    </blockquote>
+                    <span class="sourcetitle">علي محمد علي</span>
+                    </figure>
+                </td>
+                <td>معيد</td>
+                <td>محاسبة ادارية</td>
+                <td>مدرج 5</td>
+                <td dir="ltr"><time>2:00 Pm</time> </td>
+                <td>
+                  <input class="form-check-input" type="checkbox" value="" id="all" >
+                </td>
+                <td> <input class="form-check-input" type="checkbox" value="" id="aten" >
+                </td>
+              </tr>
+              <tr class="text-nowrap ">
+
+                <td>
+
+
+                  <figure class="text-end">
+                    <blockquote class="blockquote m-0">
+                      <p class="m-0">محمود ابراهيم</p>
+                    </blockquote>
+                    <span class="sourcetitle">علي محمد علي</span>
+                    </figure>
+                </td>
+                <td>معيد</td>
+                <td>محاسبة ادارية</td>
+                <td>مدرج 5</td>
+                <td dir="ltr"><time>2:00 Pm</time> </td>
+                <td>
+                  <input class="form-check-input" type="checkbox" value="" id="all" >
+                </td>
+                <td> <input class="form-check-input" type="checkbox" value="" id="aten" >
+                </td>
+              </tr>
+              <tr class="text-nowrap ">
+
+                <td>
+
+
+                  <figure class="text-end">
+                    <blockquote class="blockquote m-0">
+                      <p class="m-0">محمود ابراهيم</p>
+                    </blockquote>
+                    <span class="sourcetitle">علي محمد علي</span>
+                    </figure>
+                </td>
+                <td>معيد</td>
+                <td>محاسبة ادارية</td>
+                <td>مدرج 5</td>
+                <td dir="ltr"><time>2:00 Pm</time> </td>
+                <td>
+                  <input class="form-check-input" type="checkbox" value="" id="all" >
+                </td>
+                <td> <input class="form-check-input" type="checkbox" value="" id="aten" >
+                </td>
+              </tr>
+              <tr class="text-nowrap ">
+
+                <td>
+
+
+                  <figure class="text-end">
+                    <blockquote class="blockquote m-0">
+                      <p class="m-0">محمود ابراهيم</p>
+                    </blockquote>
+                    <span class="sourcetitle">علي محمد علي</span>
+                    </figure>
+                </td>
+                <td>معيد</td>
+                <td>محاسبة ادارية</td>
+                <td>مدرج 5</td>
+                <td dir="ltr"><time>2:00 Pm</time> </td>
+                <td>
+                  <input class="form-check-input" type="checkbox" value="" id="all" >
+                </td>
+                <td> <input class="form-check-input" type="checkbox" value="" id="aten" >
+                </td>
+              </tr>
+              <tr class="text-nowrap ">
+
+                <td>
+
+
+                  <figure class="text-end">
+                    <blockquote class="blockquote m-0">
+                      <p class="m-0">محمود ابراهيم</p>
+                    </blockquote>
+                    <span class="sourcetitle">علي محمد علي</span>
+                    </figure>
+                </td>
+                <td>معيد</td>
+                <td>محاسبة ادارية</td>
+                <td>مدرج 5</td>
+                <td dir="ltr"><time>2:00 Pm</time> </td>
+                <td>
+                  <input class="form-check-input" type="checkbox" value="" id="all" >
+                </td>
+                <td> <input class="form-check-input" type="checkbox" value="" id="aten" >
+                </td>
+              </tr>
+              <tr class="text-nowrap ">
+
+                <td>
+
+
+                  <figure class="text-end">
+                    <blockquote class="blockquote m-0">
+                      <p class="m-0">محمود ابراهيم</p>
+                    </blockquote>
+                    <span class="sourcetitle">علي محمد علي</span>
+                    </figure>
+                </td>
+                <td>معيد</td>
+                <td>محاسبة ادارية</td>
+                <td>مدرج 5</td>
+                <td dir="ltr"><time>2:00 Pm</time> </td>
+                <td>
+                  <input class="form-check-input" type="checkbox" value="" id="all" >
+                </td>
+                <td> <input class="form-check-input" type="checkbox" value="" id="aten" >
+                </td>
+              </tr>
+              </tbody>
+          </table>
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+
+  <!-- Modal الحفظ -->
+  <div class="modal fade" id="save" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content py-2">
+        <div class="modal-header border-0 col-12 justify-content-between align-items-center pb-0">
+          <div class="col-11"></div>
+          <button type="button" class="btn-close col-1 ms-1" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row justify-content-center flex-wrap">
+            <div class="col-3 col-sm-2 ">
+              <div class="classRooms-wrring-icone rounded-2 d-flex justify-content-center align-items-center">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M7.85711 12.2929C7.46658 11.9024 6.83342 11.9024 6.44289 12.2929C6.05237 12.6834 6.05237 13.3166 6.44289 13.7071L10.3429 17.6071C10.7334 17.9976 11.3666 17.9976 11.7571 17.6071L19.5571 9.80711C19.9476 9.41658 19.9476 8.78342 19.5571 8.39289C19.1666 8.00237 18.5334 8.00237 18.1429 8.39289L11.05 15.4858L7.85711 12.2929ZM25 13C25 19.6274 19.6274 25 13 25C6.37258 25 1 19.6274 1 13C1 6.37258 6.37258 1 13 1C19.6274 1 25 6.37258 25 13Z"
+                    stroke="#3D9A50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+
+              </div>
+            </div>
+            <div class="col-8 col-sm-10">
+              <p class="fw-medium fs-4 m-0"> تم الحفظ بنجاح!</p>
+              <p class="fw-normal fs-6 text-classRooms m-0 ">    الغاية هي الشكل وليس المحتوى </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <p><input type="hidden"  id="datepicker"></p>
+
+
+{% endblock %}
+{% block custom_script %}
+<script src="{{ url_for('static', filename='js/attendance.js') }}"></script>
+<script src="{{ url_for('static', filename='js/customCalender.js') }}"></script>
+
+{% endblock %}
