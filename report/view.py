@@ -13,7 +13,7 @@ def show_Summary_report():
     if request.method == 'POST':
         return redirect(f'/{PAGE}')
     else:
-        return render_template(f'Summary_report-{PAGE}.html')
+        return render_template(f'{PAGE}/Summary_report-{PAGE}.html')
 
 
 @bp.route(f"/{PAGE}/detailed_report", methods=['GET', 'POST'])
@@ -23,7 +23,7 @@ def show_detailed_report():
     if request.method == 'POST':
         return redirect(f'/{PAGE}')
     else:
-        return render_template(f'detailed_report-{PAGE}.html')
+        return render_template(f'{PAGE}/detailed_report-{PAGE}.html')
 
 
 @bp.route(f"/{PAGE}/weekly_report", methods=['GET', 'POST'])
@@ -33,11 +33,18 @@ def show_weekly_report():
     if request.method == 'POST':
         return redirect(f'/{PAGE}')
     else:
-        return render_template(f'weekly_report-{PAGE}.html')
+        return render_template(f'{PAGE}/weekly_report-{PAGE}.html')
+
+
+@bp.route(f'/{PAGE}/attendance-report', methods=["GET"])
+def attendance_report():
+    """ attendance_report """
+    context = {}
+    return render_template(f'{PAGE}/attendance-report.html')
 
 
 @bp.route(f'/form', methods=["GET"])
 def get_form():
     """ get all items"""
     context = {}
-    return render_template(f'form.html')
+    return render_template(f'{PAGE}/form.html')

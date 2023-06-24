@@ -105,20 +105,45 @@
           {% if context.lectures %}
             {% for lecture in context.lectures %}
               <tr>
-                <td>{{ lecture.instructor.name }}</td>
-                <td>{{ context.instructor.instructor_role }}</td>
+                <td>{{ lecture['instructor'].name }}</td>
+                <td>{{ lecture['instructor'].role }}</td>
                 <td>{{ lecture.course.name }}</td>
-                <td>{{ lecture.course.regulation }}</td>
-                <td>{{ lecture.dashboard.translated_semester }}</td>
-                <td>{{ lecture.current_year }}</td>
-                <td>{{ lecture.dashboard.translated_semester }}</td>
-                <td>{{ lecture.current_year }}</td>
-                <td>{{ lecture.current_year }}</td>
+
+                {% for room in context.rooms %}
+                {% if room.id == lecture.room_id %}
+                <td>{{ room.name }}</td>
+                {% endif %}
+                {% endfor %}
+
+                <td>{{ lecture.start_time }}</td>
+                <td>{{ context.translated_semesters[lecture.course.semester] }}</td>
+                <fieldset id="attendance-{{lecture.instructor_course_id}}-{{lecture.room_id}}-{{lecture.day_of_week}}-{{lecture.start_time}}">
+                <td>
+                  <input
+                    type="radio"
+                    value="attend"
+                    name="attendance-{{lecture.instructor_course_id}}-{{lecture.room_id}}-{{lecture.day_of_week}}-{{lecture.start_time}}"
+                    onclick="window.location.href = '/lecture/absent/{{lecture.instructor_course_id}}-{{lecture.room_id}}-{{lecture.day_of_week}}-{{lecture.start_time}}/false'"
+                    {% if lecture.absent %} checked {% endif %}
+                  >
+                </td>
+                <td>
+                  <input
+                    type="radio"
+                    value="absent"
+                    name="attendance-{{lecture.instructor_course_id}}-{{lecture.room_id}}-{{lecture.day_of_week}}-{{lecture.start_time}}"
+                    onclick="window.location.href = '/lecture/absent/{{lecture.instructor_course_id}}-{{lecture.room_id}}-{{lecture.day_of_week}}-{{lecture.start_time}}/true'"
+                    {% if not lecture.absent %} checked {% endif %}
+
+                  >
+                </td>
+
+                <td><input type="checkbox" disabled /></td>
               </tr>
             {% endfor %}
           {% else %}
             <tr>
-              <td colspan="4">
+              <td colspan="9">
                 <h3 class="text-center">لا توجد بيانات</h3>
               </td>
             </tr>

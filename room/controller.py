@@ -3,6 +3,9 @@ from building.model import Building
 from database import db
 
 
+def get_room_by_id(id):
+    return Room.query.get(id)
+
 def get_all_rooms():
     rooms = []
     for r in Room.query.all():

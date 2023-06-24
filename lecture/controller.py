@@ -44,6 +44,16 @@ def update_lecture(room_id,start_time,day_of_week,name,absent):
     lecture.absent = absent
     db.session.commit()
 
+def lecture_attend(lecture_id):
+    lecture = Lecture.query.get(lecture_id)
+    lecture.absent = True
+    db.session.commit()
+
+def lecture_absent(lecture_d):
+    lecture = Lecture.query.get(lecture_d)
+    lecture.absent = False
+    db.session.commit()
+
 def get_lectures():
     """
     Get all lectures from the database.

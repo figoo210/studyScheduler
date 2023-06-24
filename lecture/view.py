@@ -1,13 +1,13 @@
 import json
 from flask import Blueprint, redirect, render_template, request
-from lecture.controller import add_new_lecture, get_lectures, get_api_lectures_data
+from lecture.controller import add_new_lecture, get_lectures, get_api_lectures_data, lecture_attend, lecture_absent
 from regulation.controller import get_regulations
 from department.controller import get_all_divisions_departments
 from room.controller import get_all_rooms
 from building.controller import get_buildings
 
 from utils.enums.Program import get_translated_programs, Program
-from utils.enums.Semester import Semester
+from utils.enums.Semester import Semester, get_translated_semesters
 from utils.enums.Year import Division, get_translated_divisions
 from utils.enums.Language import get_translated_languages
 from utils.enums.WeekDay import get_translated_weekdays
@@ -29,21 +29,28 @@ def handle_one(id):
 
 
 
-# @bp.route(f'/{PAGE}/absent/<id>', methods=["GET"])
-# def set_absent_attendance(id):
-#     """ set_absent_attendance """
-#     record_attendance(id)
-#     return redirect(f'{PAGE}/absent')
+@bp.route(f'/{PAGE}/absent/<id>/<check>', methods=["GET"])
+def set_absent_attendance(id, check):
+    """ set_absent_attendance """
+    if check == "true":
+        id = tuple(map(str, id.split('-')))
+        lecture_absent(id)
+    else:
+        id = tuple(map(str, id.split('-')))
+        lecture_attend(id)
+    return redirect(f'{PAGE}/attendance')
 
 
 
 @bp.route(f'/{PAGE}/attendance', methods=["GET"])
-def set_absent_attendance():
+def get_absent_attendance():
     """ get_absent_attendance """
     context = {}
     context["lectures"] = get_lectures()
     context["translated_year"] = get_translated_divisions()
+    context["translated_semesters"] = get_translated_semesters()
     context["regulations"] = get_regulations()
+    context["rooms"] = get_all_rooms()
     return render_template(f'{PAGE}/attendance.html', context=context)
 
 

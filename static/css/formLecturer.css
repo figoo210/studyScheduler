@@ -1,0 +1,30 @@
+
+.text-black {
+    color: black !important;
+}
+
+table ,tfoot td{
+    border: 2px solid #000000 !important   ;
+
+
+  }
+  thead th,tbody td {
+    border: 1px solid  #000000 !important   ;
+
+  }
+  thead th{
+    background: rgba(136, 136, 145, 0.5) !important;
+    font-size: 22px;
+  }
+  tbody td{
+    font-size: 16px;
+
+  }
+
+  tr{
+    vertical-align: middle;
+}
+td.py-4 {
+    padding-top: 20px!important;
+    padding-bottom: 20px!important;
+}
