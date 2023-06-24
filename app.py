@@ -10,6 +10,8 @@ from config import Config
 from database import db
 
 # Define the WSGI application object
+
+
 def create_app(config_class=Config):
     app = Flask(__name__, static_url_path='/static')
     app.config.from_object(config_class)
@@ -95,7 +97,6 @@ def create_app(config_class=Config):
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
-
 
     return app
 

@@ -14,6 +14,8 @@ PAGE = 'instructor'
 bp = Blueprint(PAGE, __name__, template_folder='templates')
 
 # THIS THE MAIN PAGE
+
+
 @bp.route(f'/instructors', methods=["GET"])
 def get_instructors():
     """ get all items or post to add new """
@@ -22,6 +24,8 @@ def get_instructors():
     return render_template(f'{PAGE}/instructors.html', context=context)
 
 # THIS FOR POP UP
+
+
 @bp.route(f'/{PAGE}/delete/<id>', methods=["GET"])
 def delete_one(id):
     """ delete item """
@@ -48,6 +52,8 @@ def new_one():
         return render_template(f'{PAGE}/new-{PAGE}.html', context=context)
 
 # Designation of materials
+
+
 @bp.route(f'/{PAGE}/assign', methods=["GET", "POST"])
 def new_assign():
     """ new item """
@@ -55,9 +61,11 @@ def new_assign():
     if request.method == 'POST':
         req = json.loads(request.data)
         for ic in req["instructor_course"]:
-            add_new_instructor_course(ic["instructor_id"], ic["course_id"], ic["groups_num"])
+            add_new_instructor_course(
+                ic["instructor_id"], ic["course_id"], ic["groups_num"])
         for it in req["instructor_time"]:
-            add_new_time(it["day_of_week"], it["start_time"], it["end_time"], it["instructor_id"])
+            add_new_time(it["day_of_week"], it["start_time"],
+                         it["end_time"], it["instructor_id"])
         return redirect(f'/{PAGE}s')
     else:
         context["instructors"] = get_instructors_data()
@@ -67,6 +75,8 @@ def new_assign():
         return render_template(f'{PAGE}/assign-{PAGE}.html', context=context)
 
 # Profile personly
+
+
 @bp.route(f'/{PAGE}/<id>', methods=["GET", "POST"])
 def get_instructor(id):
     """ get all items or post to add new """
@@ -83,4 +93,3 @@ def get_instructor(id):
 @bp.route(f'/api/instructors', methods=["GET"])
 def get_all_instructors():
     return get_instructors_data()
-

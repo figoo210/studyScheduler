@@ -8,8 +8,8 @@
 
 
 
-<div class="container-fluid">
-    <form class="row">
+<div  class="container-fluid">
+    <form action="{{ url_for('instructor.get_instructors') }}" method="post" class="row">
 
         <div class="col-12 lecturer-profile-bg  py-5 pe-4">
             <nav aria-label="breadcrumb">
@@ -19,7 +19,6 @@
                     <li class="breadcrumb-item active pe-1" aria-current="page">
                         <span class="px-2 fw-normal text-secondary">
                             الملف الشخصي
-
                         </span>
                     </li>
                 </ol>
@@ -35,35 +34,35 @@
                 </div>
                 <div class="col-md-9 col-12 px-5 border-bottom pb-2 pt-4">
                     <div class="col-12 col-md-8   mb-3">
-                        <input type="text" class="form-control form-control-lg col-12" id="nameDoc"
+                        <input name = "instructor_name" type="text" class="form-control form-control-lg col-12"
                             placeholder="اسم الدكتور" value="{{ context.instructor.name }}" readonly>
                     </div>
                     <div class="col-12 col-md-8   mb-3">
-                        <input type="text" class="form-control form-control-lg col-12" id="nameDoc"
-                            placeholder="اسم الدكتور" value="{{ context.instructor.department }}" readonly>
+                        <input name="department_name" type="text" class="form-control form-control-lg col-12" 
+                            placeholder ="اسم القسم" value="{{ context.instructor.department }}" readonly>
                     </div>
                     <div class=" d-flex flex-wrap justify-content-between col-12 col-md-8 mb-sm-3">
 
                         <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
-                        <input type="text" class="form-control form-control-lg col-12" id="nameDoc"
-                        placeholder="اسم الدكتور" value="{{ context.instructor.role }}" readonly>
+                        <input name="instructor_role" type="text" class="form-control form-control-lg col-12"
+                        placeholder="رتبة الدكتور" value="{{ context.instructor.role }}" readonly>
                         </div>
                         <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
-                        <input type="text" class="form-control form-control-lg col-12" id="nameDoc"
-                        placeholder="اسم الدكتور" value="{{ context.instructor.work_years }}" readonly>
+                        <input name="instructor.work_years" type="text" class="form-control form-control-lg col-12" 
+                        placeholder="تاريخ الأ نضمام" value="{{ context.instructor.work_years }}" readonly>
                         </div>
                     </div>
                     <div class=" d-flex flex-wrap justify-content-between col-12 col-md-8 mb-3">
 
                         <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
 
-                        <input type="text" class="form-control form-control-lg col-12" id="nameDoc"
-                        placeholder="اسم الدكتور" value="{{ context.instructor.date_of_birth or 'غير معروف' }}" readonly>
+                        <input name="instructor.date_of_birth" type="text" class="form-control form-control-lg col-12"
+                        placeholder=" تاريخ الميلاد" value="{{ context.instructor.date_of_birth or 'غير معروف' }}" readonly>
 
                         </div>
                         <div class="col-12 col-sm-6-lectuer  mb-sm-0 mb-3">
-                            <input type="text" class="form-control form-control-lg col-12" id="nameDoc"
-                                placeholder="اسم الدكتور" value="{{ context.instructor.secuirty_code }}" readonly>
+                            <input name="nstructor.secuirty_code " type="text" class="form-control form-control-lg col-12" 
+                                placeholder="رمز الأ مان  " value="{{ context.instructor.secuirty_code }}" readonly>
                         </div>
                     </div>
 
@@ -72,7 +71,7 @@
             </div>
 
             <!--  المواد التي يدرسها -->
-            <div class="d-flex  justify-content-between flex-wrap">
+            <!-- <div class="d-flex  justify-content-between flex-wrap">
                 <div class="text-center border-md-start col-md-3 col-12 d-flex align-items-center justify-content-center">
                     <p class="text-center fs-5 fw-normal mt-md-0 mt-3"> المواد التي يدرسها</p>
                 </div>
@@ -80,7 +79,7 @@
 
                     <div class="d-flex col-12 flex-wrap mb-3">
                         <div class="col-12 col-md-8   ">
-                            <input type="text" class="form-control form-control-lg col-12" id="nameDoc"
+                            <input name="courses_name" type="text" class="form-control form-control-lg col-12" value=" context.courses.name"
                                 placeholder="  اسم المادة ">
 
                         </div>
@@ -90,85 +89,8 @@
                                     <button type="button" class="remove removeAdd btn btn-primaryTwo bi bi-trash text-danger">
                                     </button>
                             </div>
-                    </div>
-                    <!-- اللغه و القسم -->
-                    <div class=" d-flex flex-wrap justify-content-between col-12 col-md-8 mb-sm-3">
+                    </div> -->  
 
-                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
-                            <select class="form-select addClassRooms form-select-lg  addClassRoomsPaddingSelect"
-                                aria-label=".form-select-lg example">
-                                <option selected> اللغه</option>
-                                <option value="1"> mis</option>
-                                <option value="2"> acc</option>
-                            </select>
-                        </div>
-                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
-                            <select class="form-select addClassRooms form-select-lg  addClassRoomsPaddingSelect"
-                                aria-label=".form-select-lg example">
-                                <option selected> القسم</option>
-                                <option value="1"> mis</option>
-                                <option value="2"> acc</option>
-                            </select>
-
-                        </div>
-                    </div>
-                    <!-- الائحه و الترم -->
-                    <div class=" d-flex flex-wrap justify-content-between col-12 col-md-8 mb-sm-3">
-
-                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
-                            <select class="form-select addClassRooms form-select-lg  addClassRoomsPaddingSelect"
-                                aria-label=".form-select-lg example">
-                                <option selected> الائحه</option>
-                                <option value="1"> mis</option>
-                                <option value="2"> acc</option>
-                            </select>
-                        </div>
-                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
-                            <select class="form-select addClassRooms form-select-lg  addClassRoomsPaddingSelect"
-                                aria-label=".form-select-lg example">
-                                <option selected> الترم</option>
-                                <option value="1"> mis</option>
-                                <option value="2"> acc</option>
-                            </select>
-
-                        </div>
-                    </div>
-                    <!-- البرنامج و الفرقه -->
-                    <div class=" d-flex flex-wrap justify-content-between col-12 col-md-8 mb-sm-3">
-
-                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
-                            <select class="form-select addClassRooms form-select-lg  addClassRoomsPaddingSelect"
-                                aria-label=".form-select-lg example">
-                                <option selected> البرنامج</option>
-                                <option value="1"> mis</option>
-                                <option value="2"> acc</option>
-                            </select>
-                        </div>
-                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
-                            <select class="form-select addClassRooms form-select-lg  addClassRoomsPaddingSelect"
-                                aria-label=".form-select-lg example">
-                                <option selected> الفرقه</option>
-                                <option value="1"> mis</option>
-                                <option value="2"> acc</option>
-                            </select>
-
-                        </div>
-                    </div>
-                    <!-- رقم المجموعه و الكود -->
-                    <div class=" d-flex flex-wrap justify-content-between col-12 col-md-8 mb-3 ">
-
-                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
-                            <input type="text" class="form-control form-control-lg " id="nameDoc"
-                                placeholder="  رقم المجموعه ">
-
-                        </div>
-                        <div class="col-12 col-sm-6-lectuer  mb-sm-0 mb-3">
-                            <input type="text" class="form-control form-control-lg " id="nameDoc"
-                                placeholder="   كود الماده">
-
-                        </div>
-                    </div>
-                    <!-- <hr class="col-12 col-md-9 "> -->
 
                 </div>
                 <hr>

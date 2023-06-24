@@ -7,7 +7,7 @@ $(document).ready(function () {
     });
   }
 
-  $(".clockpicker").clockpicker();
+  $(".clockpicker")?.clockpicker();
 
   $("#departmentForm").submit((e) => {
     // e.preventDefault();
@@ -16,7 +16,7 @@ $(document).ready(function () {
 
 });
 
-  // Add id to clicked edit modal
+// Add id to clicked edit modal
 function editThisByModal(modalData) {
   let modal = document.getElementById("editModal");
   let modalInput = modal.getElementsByTagName("input");
@@ -33,7 +33,7 @@ function editThisByModal(modalData) {
     const element = modalSelect[i];
     for (let j = 0; j < element.getElementsByTagName("option").length; j++) {
       const e = element.getElementsByTagName("option")[j];
-      if (e.value == modalData[element.name]){
+      if (e.value == modalData[element.name]) {
         e.selected = true;
         break;
       }

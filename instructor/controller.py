@@ -55,9 +55,11 @@ def get_instructor_data(instructor_id):
     instructor_data['department_id'] = instructor.department_id
     instructor_data['role'] = instructor.instructor_role
 
-    instructor_data['instructor_times'] = [model_to_dict(x) for x in instructor.instructor_times]
+    instructor_data['instructor_times'] = [
+        model_to_dict(x) for x in instructor.instructor_times]
 
-    instructor_data['instructor_courses'] = [model_to_dict(x) for x in instructor.instructor_courses]
+    instructor_data['instructor_courses'] = [
+        model_to_dict(x) for x in instructor.instructor_courses]
 
     return instructor_data
 
@@ -92,4 +94,14 @@ def add_new_instructor(data):
         instructor_role=data['role_id']
     )
     db.session.add(instructor)
+    db.session.commit()
+
+
+def update_instructor_profile(instructor_id, instructor_name, date_of_birth, work_years, instructor_role, department_id):
+    instructor = Instructor.query.get(instructor_id)
+    instructor.name = instructor_name
+    instructor.date_of_birth = date_of_birth
+    instructor.work_years = work_years
+    instructor.instructor_role = instructor_role
+    instructor.department_id = department_id
     db.session.commit()
