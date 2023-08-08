@@ -55,10 +55,10 @@ function removeForm2(e) {
   checkRemove2();
 }
 
-function instructorAssignFormSubmit() {
-  let form = document.getElementById("multiValuesForm2");
+function instructorAssignFormSubmit(e) {
+  let form = document.getElementById("multiValuesForm2") || e.parentNode.parentNode;
+  console.log(form);
   let formData = new FormData(form);
-  console.log(formData);
   let instructor_course = [];
   let instructor_time = [];
 

@@ -1,3 +1,4 @@
+from instructor.controller import get_instructor_data
 from instructor_course.model import InstructorCourse
 from database import db
 
@@ -31,5 +32,13 @@ def update_instructor_course_by_id(id, instructor_id, course_id, groups_num):
     db.session.commit()
 
 
-
-
+# Get all course instructors
+def get_all_course_instructors(course_id):
+    cis = InstructorCourse.query.filter_by(course_id=course_id).all()
+    result = []
+    for ci in cis:
+        result.append({
+            "instructor_name": get_instructor_data(ci.instructor_id)["name"],
+            "groups_num": ci.groups_num
+        })
+    return result

@@ -1,3 +1,4 @@
+let counter = 0;
 let courseCard = (instructorsData, coursesData, buildingsData, roomsData) => {
   let instructors = () => {
     let options = "";
@@ -41,6 +42,9 @@ let courseCard = (instructorsData, coursesData, buildingsData, roomsData) => {
     }
     return options;
   };
+
+  counter++;
+
   return `
   <ul class="list-group rounded-top rounded-6 col-4 m-1 position-relative dayCard">
 
@@ -48,23 +52,17 @@ let courseCard = (instructorsData, coursesData, buildingsData, roomsData) => {
       <i class="bi bi-x fs-4" style="padding: 0; margin: 0; color: #fff; cursor: pointer;" onClick="removeCourseCard(this)"></i>
     </li>
     <li class="list-group-item bg-primary d-flex px-1 border-0" style="padding: 0.2rem;">
-      <select
-        class="form-control col-12"
-        style="
-          font-family: bootstrap-icons;
-          border: 1px solid #ced4da;
-          color: #6c757d;
-          border-radius: .5rem;
-          min-height: 100%;
-        "
-        aria-label=".form-select-lg example"
-        name="instructor"
-      >
-        <option selected disabled>إسم المحاضر</option>
-
-        ${instructors()}
-
-      </select>
+      <input
+        type="text"
+        value=""
+        class="form-control  col-12"
+        name="lecture"
+        placeholder="إسم المحاضر"
+        id="textSearchField"
+        onkeyup="generalSearch(this, '/api/instructors/search', 'searchBarResultBox-${counter}', 'selectInstructor(this)', true)"
+      />
+      <ul id="searchBarResultBox-${counter}"></ul>
+      <input name="instructor" hidden value="" />
     </li>
     <li class="list-group-item bg-primary px-1 border-0" style="padding: 0.2rem;">
       <select
@@ -105,19 +103,20 @@ let courseCard = (instructorsData, coursesData, buildingsData, roomsData) => {
 
       </select>
     </li>
-    <li class="list-group-item bg-primary px-1 clockpicker border-0" style="padding: 0.2rem;">
+    <li class="list-group-item bg-primary px-1 border-0" style="padding: 0.2rem;">
       <input
-        type="text"
-        value=""
-        class="form-control col-12 text-center"
+        type="time"
+        class="form-control form-control-lg col-12 w-100"
         style="
           font-family: bootstrap-icons;
           border: 1px solid #4372EA;
           color: #4372EA;
           border-radius: .5rem;
+          text-align: center;
         "
-        placeholder="وقت المحاضرة  &#xF293;"
+        dir="ltr"
         name="startTime"
+        value="08:00"
       />
     </li>
   </ul>
@@ -126,11 +125,10 @@ let courseCard = (instructorsData, coursesData, buildingsData, roomsData) => {
 
 let coursesHandler = (e) => {
   let options = e.getElementsByTagName("option");
-  let instructorId =
-    e.parentNode.parentNode.querySelector(`[name=instructor]`).value;
+  let instructorId = e.parentNode.parentNode.querySelector(`[name=instructor]`).value;
   for (let i = 1; i < options.length; i++) {
     const option = options[i];
-    let instructorIds = option.getAttribute("instructorId");
+    let instructorIds = option.getAttribute("instructorId").split(",");
     if (instructorIds.includes(instructorId)) {
       option.style.display = "block";
     } else {
@@ -206,8 +204,6 @@ function removeLastGroup(container, groupToRemove) {
 }
 
 function handleTables(e) {
-  $(".clockpicker").clockpicker();
-
   let accordionStatus = e.querySelector("#accordionStatus");
   let groupsNum = e.querySelector("#groupsNum");
   let groupsNumValue = groupsNum.value;
@@ -268,7 +264,6 @@ function handleTables(e) {
       for (let j = 0; j < fields.length; j++) {
         const element = fields[j];
         if (element.value == inf.defaultValue) {
-          console.log("here");
           accordionStatus.textContent = "لم يكتمل";
           accordionStatus.classList.remove("bg-success");
           accordionStatus.classList.add("bg-warning");
@@ -312,7 +307,34 @@ function addCourseCard(e, day, data) {
       const parser = new DOMParser();
       const doc = parser.parseFromString(newCard , "text/html");
       dayContent.appendChild(doc.body.firstChild);
-      $(".clockpicker").clockpicker();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+function addCourseCardValues(dayContent, data, values) {
+  // Instructors, Courses, Buildings, Rooms, Lectures
+  callAPI("/lecture/data", {
+    method: "POST",
+    body: data,
+  })
+    .then((data) => {
+      let newCard = courseCard(
+        data.instructors,
+        data.courses,
+        data.buildings,
+        data.rooms
+      );
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(newCard , "text/html");
+      dayContent.appendChild(doc.body.firstChild);
+      // Add values to card
+      dayContent.children[dayContent.children.length - 1].querySelector("#textSearchField").value = values.instructor_name;
+      dayContent.children[dayContent.children.length - 1].querySelector("[name='instructor']").value = values.instructor_id;
+      dayContent.children[dayContent.children.length - 1].querySelector("[name='startTime']").value = values.start_time;
+      dayContent.children[dayContent.children.length - 1].querySelector("[name='course']").value = values.course_id;
+      dayContent.children[dayContent.children.length - 1].querySelector("[name='room']").value = values.room_id;
     })
     .catch((err) => {
       console.log(err);
@@ -342,79 +364,6 @@ function callAPI(url, options) {
   });
 }
 
-// function manualScheduling() {
-//   console.log(runtimeData);
-
-//   let tables = document
-//     .getElementById("accordionExample")
-//     .getElementsByClassName("accordion-body");
-
-//   for (let i = 0; i < tables.length; i++) {
-//     const element = tables[i];
-
-//     for (let j = 0; j < weekDays.length; j++) {
-//       const day = weekDays[j];
-//       let dayElement = element.querySelector(`.day-${day}`);
-//       let dayCards = dayElement.querySelectorAll(".dayCard");
-
-//       if (dayCards.length > 0) {
-//         for (let c = 0; c < dayCards.length; c++) {
-//           const card = dayCards[c];
-//           let genericPath = `${element.parentNode.id}_${element.id}_${day}_${c}`;
-
-//           if (runtimeData.length == 0) {
-//             runtimeData.push({
-//               path: genericPath,
-//               day: day,
-//               instructor:
-//                 card.querySelector(`[name=instructor]`).value == "إسم المحاضر"
-//                   ? ""
-//                   : card.querySelector(`[name=instructor]`).value,
-//               course:
-//                 card.querySelector(`[name=course]`).value == "المادة"
-//                   ? ""
-//                   : card.querySelector(`[name=course]`).value,
-//               room:
-//                 card.querySelector(`[name=room]`).value == "المكان"
-//                   ? ""
-//                   : card.querySelector(`[name=room]`).value,
-//               startTime: card.querySelector(`[name=startTime]`).value,
-//             });
-//           } else {
-//             let pathes = []
-//             for (let r = 0; r < runtimeData.length; r++) {
-//               const rtd = runtimeData[r];
-//               pathes.push(rtd.path);
-//             }
-//             if (pathes.includes(genericPath)) {
-//               continue;
-//             } else {
-//               runtimeData.push({
-//                 path: genericPath,
-//                 day: day,
-//                 instructor:
-//                   card.querySelector(`[name=instructor]`).value == "إسم المحاضر"
-//                     ? ""
-//                     : card.querySelector(`[name=instructor]`).value,
-//                 course:
-//                   card.querySelector(`[name=course]`).value == "المادة"
-//                     ? ""
-//                     : card.querySelector(`[name=course]`).value,
-//                 room:
-//                   card.querySelector(`[name=room]`).value == "المكان"
-//                     ? ""
-//                     : card.querySelector(`[name=room]`).value,
-//                 startTime: card.querySelector(`[name=startTime]`).value,
-//               });
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-
-
-// }
 
 function submitGroupTable(e) {
 
@@ -430,7 +379,7 @@ function submitGroupTable(e) {
     if (dayCards.length > 0) {
       for (let c = 0; c < dayCards.length; c++) {
         const card = dayCards[c];
-        let genericPath = `${element.parentNode.id}_${element.id}_${day}_${c}`;
+        let genericPath = `${element.parentNode.id}-${element.id}-${day}-${c}-${document.getElementById("year").value}`;
 
         dataList.push({
           path: genericPath,
@@ -453,7 +402,6 @@ function submitGroupTable(e) {
     }
   }
 
-  console.log(dataList);
   let alertBox = element.querySelector("#alert")
 
   // callAPI
@@ -461,10 +409,52 @@ function submitGroupTable(e) {
     method: "POST",
     body: JSON.stringify(dataList),
   })
-  .then((data) => {
-    console.log(data);
+  .then((data)=> {
     if (data.status == false) {
-      alertBox.innerHTML = data.msg;
+      alertBox.innerHTML = "";
+      for (let i = 0; i < data.errors.length; i++) {
+        const error = data.errors[i];
+        alertBox.innerHTML += `<p class='d-block'>${error.msg}</p>`
+        /* let editCard = document.createElement("div");
+        let prepathList = error.prepath.split("-"); */
+        callAPI(`/lecture/${error.prepath}`, {method: "GET"})
+        .then((d)=> {
+          console.log(d);
+          alertBox.innerHTML += `
+            <p class='d-block'>مع جدول ${d.path_data.year_trans} قسم ${d.path_data.department}
+            ${d.path_data.language_trans} ${d.path_data.program_trans}
+            في مجموعة رقم ${d.path_data.group_num + 1}
+            يوم ${d.path_data.day_trans}</p>
+          `
+          /*addCourseCardValues(
+            editCard,
+            {
+              department_id: prepathList[2],
+              semester: document.getElementById("semester").value,
+              year: prepathList[7],
+              regulation_id: document.getElementById("regulation_id").value,
+              program: prepathList[1]
+            },
+            {
+              instructor_name: d.instructor.name,
+              instructor_id: d.instructor_id,
+              course_name: d.course.name,
+              course_id: d.course_id,
+              room_name: d.room.name,
+              room_id: d.room_id,
+              start_time: d.start_time
+            }
+          );
+          alertBox.appendChild(editCard);*/
+        })
+        .catch((er) => {
+          console.log(er);
+        })
+        let pathData = readPath(error.path);
+        element.parentNode.querySelector(`#${pathData.groupId}`)
+          .getElementsByClassName(pathData.dayClassName)[0]
+          .getElementsByClassName("dayCard")[pathData.cardIndex].style.border = "3px solid red";
+      }
       alertBox.classList.add("alert-danger");
       alertBox.classList.remove("alert-success");
     } else {
@@ -476,9 +466,61 @@ function submitGroupTable(e) {
   })
   .catch((err) => {
     console.log(err);
-      alertBox.innerHTML = "هذه المحاضرة موجودة بالفعل";
-      alertBox.classList.add("alert-danger");
-      alertBox.classList.remove("alert-success");
+    alertBox.innerHTML = "هذه المحاضرة موجودة بالفعل";
+    alertBox.classList.add("alert-danger");
+    alertBox.classList.remove("alert-success");
   });
 
 }
+
+function readPath(path) {
+  let pathList = path.split("-");
+  return {
+    "groupId": `${pathList[3]}-${pathList[4]}`,
+    "dayClassName": `day-${pathList[5]}`,
+    "cardIndex": parseInt(pathList[6])
+  }
+}
+
+
+// GET DATA
+
+$(document).ready(function() {
+  callAPI("/lectures/data", {method: "GET"})
+  .then((dataList) => {
+    for (let i = 0; i < dataList.length; i++) {
+      const data = dataList[i];
+      let accord = document.querySelector(`[data-bs-target='#${data.path_data.language}-${data.path_data.program}-${data.path_data.department_id}']`);
+      let accordContainer = document.getElementById(`${data.path_data.language}-${data.path_data.program}-${data.path_data.department_id}`);
+      let groupsNum = accord.querySelector('#groupsNum');
+      if (groupsNum.value == "" || !groupsNum.value) {
+        groupsNum.value = data.path_data.no_of_groups;
+      }
+      let group_0 = accordContainer.querySelector(`#group-0`);
+
+      let groupNum = parseInt(data.path_data.group_num);
+      groupNum > 0 && addNewGroup(groupNum, groupNum + 1, accordContainer, group_0.innerHTML);
+
+      let group = accordContainer.querySelector(`#group-${groupNum}`);
+      let dayContainer = group.querySelector(`.day-${data.path_data.day}`).querySelector("#dayContent");
+      addCourseCardValues(dayContainer, {
+        department_id: data.path_data.department_id,
+        semester: document.getElementById("semester").value,
+        year: data.path_data.year,
+        regulation_id: document.getElementById("regulation_id").value,
+        program: data.path_data.program
+      }, {
+        instructor_name: data.instructor.name,
+        instructor_id: data.instructor_id,
+        course_name: data.course.name,
+        course_id: data.course_id,
+        room_name: data.room.name,
+        room_id: data.room_id,
+        start_time: data.start_time
+      });
+    }
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+});

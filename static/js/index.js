@@ -177,13 +177,12 @@ document.getElementById("allInstractors")?.addEventListener("click", (e) => {
   filterTabs("tabsFilter", "");
 });
 
-document.getElementById("doctors")?.addEventListener("click", (e) => {
-  filterTabs("tabsFilter", "دكتور");
-});
-
-document.getElementById("helpers")?.addEventListener("click", (e) => {
-  filterTabs("tabsFilter", "معيد");
-});
+let roles = document.getElementsByClassName("roles");
+for (let i = 0; i < roles.length; i++) {
+  roles[i].addEventListener("click", (e) => {
+    filterTabs("tabsFilter", roles[i].innerText);
+  });
+}
 
 // Buildings Filter Tabs
 document.getElementById("allBuildings")?.addEventListener("click", (e) => {
@@ -209,3 +208,68 @@ for (let i = 0; i < courses.length; i++) {
     filterTabs("tabsFilter", courses[i].innerText);
   });
 }
+
+
+
+function autoGenerate(e) {
+
+    let form = document.getElementById("formModal");
+    let formData = new FormData(form);
+
+
+    if (formData.get("exec") == "auto") {
+      // Open the iframe in a new window
+      var newWindow = window.open("/pdf", "_blank");
+
+      // window.location.href = "/pdf";
+
+      // Add the iframe to the new window
+      // newWindow.document.body.appendChild(iframe);
+    }
+}
+
+
+// Print
+function printElem(el) {
+  $( document ).ready(function() {
+    var printcontent = $('#' + el).clone();
+    let headerStyle = `
+      <style type="text/css" media="print">
+        @page
+        {
+          size:  auto;   /* auto is the initial value */
+          margin: 0mm;  /* this affects the margin in the printer settings */
+        }
+
+        html
+        {
+          background-color: #FFFFFF;
+          margin: 0px;  /* this affects the margin on the html before sending to printer */
+        }
+
+        body
+        {
+          border: solid 5px #000 ;
+          height: 100vh;
+          margin: 10mm 15mm 10mm 15mm; /* margin you want for the content */
+        }
+      </style>
+    `
+    $('body').empty().html(printcontent);
+    $('html').attr("xmlns", "http://www.w3.org/1999/xhtml");
+    $('head').append(headerStyle);
+    $('body').prepend("<h1 class='text-center m-5'>" + document.title + "</h1>");
+    window.print();
+    window.location.reload();
+  });
+}
+
+
+// Dropdown
+const dropdownToggle = document.getElementById('dropdownMenuButton');
+const dropdownMenu = document.querySelector('.dropdown-menu');
+
+dropdownToggle.addEventListener('click', () => {
+  dropdownMenu.classList.toggle('show');
+});
+

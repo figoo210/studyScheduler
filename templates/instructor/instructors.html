@@ -8,8 +8,18 @@
       <nav id="instructorsTaps">
         <div class="nav nav-tabs border-0" id="nav-tab" role="tablist">
           <button id="allInstractors" class="nav-link active" data-bs-toggle="tab" type="button" role="tab">جميع المحاضرين</button>
-          <button id="doctors" class="nav-link" data-bs-toggle="tab" type="button" role="tab">الدكاترة</button>
-          <button id="helpers" class="nav-link" data-bs-toggle="tab" type="button" role="tab">المعيدين</button>
+
+          {% for b in context.roles %}
+          <button
+            id="{{ b.id }}"
+            class="nav-link roles"
+            data-bs-toggle="tab"
+            type="button"
+            role="tab"
+          >
+            {{ b.name }}
+          </button>
+          {% endfor %}
         </div>
       </nav>
       <!--end 3 links-->
@@ -68,7 +78,9 @@
           {% for instructor in context.instructors %}
           <tr>
             <td>
-              {{ instructor.name }}
+              <a href="/instructor/{{ instructor.id }}" style="text-decoration: none; color: #00008B;">
+                {{ instructor.name }}
+              </a>
             </td>
             <td>{{ instructor.role }}</td>
             <td>{{ instructor.department }}</td>

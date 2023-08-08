@@ -54,7 +54,6 @@ def show_users():
     context = {}
     if request.method == 'POST':
         req = request.form.to_dict()
-        print("#######################: ", req)
         update_users(req)
         return redirect("/users")
     else:

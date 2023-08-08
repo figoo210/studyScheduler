@@ -9,12 +9,12 @@
 
 
 <div class="container-fluid">
-    <form class="row">
+    <div class="row">
 
         <div class="col-12 lecturer-profile-bg  py-5 pe-4">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#" class="fw-normal text-secondary  text-decoration-none">
+                    <li class="breadcrumb-item"><a href="/instructors" class="fw-normal text-secondary  text-decoration-none">
                             المحاضرين </a></li>
                     <li class="breadcrumb-item active pe-1" aria-current="page">
                         <span class="px-2 fw-normal text-secondary">
@@ -40,17 +40,17 @@
                     </div>
                     <div class="col-12 col-md-8   mb-3">
                         <input type="text" class="form-control form-control-lg col-12" id="nameDoc"
-                            placeholder="اسم الدكتور" value="{{ context.instructor.department }}" readonly>
+                            placeholder="القسم" value="{{ context.instructor.department }}" readonly>
                     </div>
                     <div class=" d-flex flex-wrap justify-content-between col-12 col-md-8 mb-sm-3">
 
                         <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
                         <input type="text" class="form-control form-control-lg col-12" id="nameDoc"
-                        placeholder="اسم الدكتور" value="{{ context.instructor.role }}" readonly>
+                        placeholder="رتبة الدكتور" value="{{ context.instructor.role }}" readonly>
                         </div>
                         <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
                         <input type="text" class="form-control form-control-lg col-12" id="nameDoc"
-                        placeholder="اسم الدكتور" value="{{ context.instructor.work_years }}" readonly>
+                        placeholder="سنوات العمل" value="{{ context.instructor.work_years }}" readonly>
                         </div>
                     </div>
                     <div class=" d-flex flex-wrap justify-content-between col-12 col-md-8 mb-3">
@@ -58,16 +58,21 @@
                         <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
 
                         <input type="text" class="form-control form-control-lg col-12" id="nameDoc"
-                        placeholder="اسم الدكتور" value="{{ context.instructor.date_of_birth or 'غير معروف' }}" readonly>
+                        placeholder="تاريخ الميلاد" value="{{ context.instructor.date_of_birth or 'غير معروف' }}" readonly>
 
                         </div>
                         <div class="col-12 col-sm-6-lectuer  mb-sm-0 mb-3">
                             <input type="text" class="form-control form-control-lg col-12" id="nameDoc"
-                                placeholder="اسم الدكتور" value="{{ context.instructor.secuirty_code }}" readonly>
+                                placeholder="كود الدكتور" value="{{ context.instructor.secuirty_code }}" readonly>
                         </div>
                     </div>
 
+                    <!-- <div dir="ltr" class="py-3 px-4">
+                        <button type="submit" class="btn btn-primary px-4">حفظ</button>
+                    </div> -->
+
                 </div>
+
                 <hr>
             </div>
 
@@ -77,98 +82,234 @@
                     <p class="text-center fs-5 fw-normal mt-md-0 mt-3"> المواد التي يدرسها</p>
                 </div>
                 <div class="col-md-9 col-12 px-5 border-bottom pb-2 pt-4">
+                    <ul>
 
-                    <div class="d-flex col-12 flex-wrap mb-3">
-                        <div class="col-12 col-md-8   ">
-                            <input type="text" class="form-control form-control-lg col-12" id="nameDoc"
-                                placeholder="  اسم المادة ">
+                        {% for ic in context.instructor.instructor_courses %}
 
-                        </div>
-                            <div class="col-6 col-md-1 d-flex">
-                                <button type="button" id="add" class="  btn btn-primaryTwo">
-                                    <i class="bi bi-plus-lg text-primary"></i></button>
-                                    <button type="button" class="remove removeAdd btn btn-primaryTwo bi bi-trash text-danger">
-                                    </button>
+                            {% for course in context.courses %}
+                                {% if course.id == ic.course_id %}
+                                    <li class="col-9 row"><p class="col-8">{{ course.name }} - {{ ic.groups_num }} مجموعات</p>
+                                        <a class="col-1" href="/instructor/course/delete/{{ ic.id }}/{{ context.instructor.id }}">
+                                        <i class="delete-button text-danger btn bi bi-trash col-12 col-md-1 text-center d-block"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+
+                        {% endfor %}
+
+                    </ul>
+                    <form
+                        action="{{url_for('instructor.new_assign')}}"
+                        method="post"
+                        redirectLink="/instructor/{{ context.instructor.id }}"
+                        id="multiValuesForm2"
+                    >
+                        <input type="text" name="id" value="{{ context.instructor.id }}" hidden />
+                        <div class="row w-100 g-0 justify-content-between" id="form-container">
+                            <div class="row w-100 g-0 justify-content-between" id="formRow">
+                                <div class="col-12 col-sm-6 col-md-3  mb-3">
+                                <select
+                                    class="form-control form-control-lg col-12"
+                                    style="
+                                    font-family: bootstrap-icons;
+                                    border: 1px solid #ced4da;
+                                    color: #6c757d;
+                                    border-radius: .5rem;
+                                    min-height: 100%;
+                                    "
+                                    aria-label=".form-select-lg example"
+                                    name="regulation"
+                                >
+                                    <option selected disabled>الائحة</option>
+                                    {% for regulation in context.regulations %}
+                                    <option value="{{ regulation.id }}">{{ regulation.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                </div>
+                                <input hidden name="semester" value="{{ context.semester.semester }}" />
+                                <div class="col-12 col-md-3  mb-3">
+                                <select
+                                    class="form-control form-control-lg col-12"
+                                    style="
+                                    font-family: bootstrap-icons;
+                                    border: 1px solid #ced4da;
+                                    color: #6c757d;
+                                    border-radius: .5rem;
+                                    min-height: 100%;
+                                    "
+                                    aria-label=".form-select-lg example"
+                                    name="course"
+                                    onFocus="selectCourse(this)"
+                                    id="courseSearch"
+                                    required
+                                >
+                                    <option selected disabled>المادة</option>
+                                    <option disabled value="">برجاء اختيار الترم والائحة</option>
+                                </select>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-2  mb-3">
+                                <input
+                                    type="number"
+                                    min="1"
+                                    value=""
+                                    defaultValue="1"
+                                    class="form-control form-control-lg col-12"
+                                    name="groupsNumber"
+                                    placeholder="عدد المجموعات"
+                                />
+                                </div>
+                                <div class="col-1 mb-md-0 mb-2  mb-3">
+                                <button
+                                    id="add-form-button"
+                                    type="button"
+                                    class="btn btn-primaryTwo text-end col-12"
+                                    onClick="addForm()"
+                                >
+                                    <i class="bi bi-plus-lg text-primary fs-4"></i>
+                                </button>
+                                </div>
+                                <div class="col-1 mb-md-0 mb-2  mb-3">
+                                <i
+                                    class="delete-button text-danger btn bi bi-trash col-12 col-md-1 text-center"
+                                    data-form-id="form-1"
+                                    onClick="removeForm(this)"
+                                ></i>
+                                </div>
                             </div>
-                    </div>
-                    <!-- اللغه و القسم -->
-                    <div class=" d-flex flex-wrap justify-content-between col-12 col-md-8 mb-sm-3">
-
-                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
-                            <select class="form-select addClassRooms form-select-lg  addClassRoomsPaddingSelect"
-                                aria-label=".form-select-lg example">
-                                <option selected> اللغه</option>
-                                <option value="1"> mis</option>
-                                <option value="2"> acc</option>
-                            </select>
                         </div>
-                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
-                            <select class="form-select addClassRooms form-select-lg  addClassRoomsPaddingSelect"
-                                aria-label=".form-select-lg example">
-                                <option selected> القسم</option>
-                                <option value="1"> mis</option>
-                                <option value="2"> acc</option>
-                            </select>
-
+                        <div dir="ltr" class="py-3 px-4">
+                            <button
+                              type="button"
+                              onClick="instructorAssignFormSubmit(this);"
+                              class="btn btn-primary px-4"
+                            >
+                              حفظ
+                            </button>
                         </div>
-                    </div>
-                    <!-- الائحه و الترم -->
-                    <div class=" d-flex flex-wrap justify-content-between col-12 col-md-8 mb-sm-3">
+                    </form>
 
-                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
-                            <select class="form-select addClassRooms form-select-lg  addClassRoomsPaddingSelect"
-                                aria-label=".form-select-lg example">
-                                <option selected> الائحه</option>
-                                <option value="1"> mis</option>
-                                <option value="2"> acc</option>
-                            </select>
+                </div>
+                <hr>
+            </div>
+
+
+            <!-- اوقات المحاضر المتاحه  -->
+            <div class="d-flex  justify-content-between flex-wrap">
+                <div class="text-center border-md-start col-md-3 col-12 d-flex align-items-center justify-content-center">
+                    <p class="text-center fs-5 fw-normal mt-md-0 mt-3"> اوقات المحاضر المتاحة</p>
+                </div>
+                <div class="col-md-9 col-12 px-5 border-bottom pb-2 pt-4">
+                    <ul>
+
+                        {% for it in context.instructor.instructor_times %}
+
+                            <li class="col-9 row"><p class="col-8"><strong>{{ context.week_days[it.day_of_week] }}</strong> من <strong>{{ it.start_time }}</strong> الى <strong>{{ it.end_time }}</strong></p>
+                                <a class="col-1" href="/instructor/time/delete/{{ it.id }}/{{ context.instructor.id }}">
+                                <i class="delete-button text-danger btn bi bi-trash col-12 col-md-1 text-center d-block"></i>
+                                </a>
+                            </li>
+
+                        {% endfor %}
+
+                    </ul>
+                    <form
+                        action="{{url_for('instructor.new_assign')}}"
+                        method="post"
+                        redirectLink="/instructor/{{ context.instructor.id }}"
+                    >
+                        <input type="text" name="id" value="{{ context.instructor.id }}" hidden />
+
+                        <div id="form-container2">
+                            <div class="row w-100 g-0 justify-content-between" id="formRow2">
+
+                            <div class="col-12 col-sm-2 col-md-2 mb-3">
+                                <select
+                                class="form-control form-control-lg col-12"
+                                style="
+                                    font-family: bootstrap-icons;
+                                    border: 1px solid #ced4da;
+                                    color: #6c757d;
+                                    border-radius: .5rem;
+                                    min-height: 100%;
+                                "
+                                aria-label=".form-select-lg example"
+                                name="weekDay"
+                                >
+                                <option selected disabled>اليوم</option>
+                                <option value="Saturday">السبت</option>
+                                <option value="Sunday">الأحد</option>
+                                <option value="Monday">الإثنين</option>
+                                <option value="Tuesday">الثلاثاء</option>
+                                <option value="Wednesday">الاربعاء</option>
+                                <option value="Thursday">الخميس</option>
+                                <option value="Friday">الجمعة</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12 col-sm-2 col-md-2 mb-3">
+                                <input
+                                type="time"
+                                class="form-control form-control-lg col-12"
+                                style="
+                                    font-family: bootstrap-icons;
+                                    border: 1px solid #4372EA;
+                                    color: #4372EA;
+                                    border-radius: .5rem;
+                                    text-align: center;
+                                "
+                                dir="ltr"
+                                name="startTime"
+                                value="08:00"
+                                />
+                            </div>
+
+                            <div class="col-12 col-sm-2 col-md-2 mb-3">
+                                <input
+                                type="time"
+                                class="form-control form-control-lg col-12"
+                                style="
+                                    font-family: bootstrap-icons;
+                                    border: 1px solid #4372EA;
+                                    color: #4372EA;
+                                    border-radius: .5rem;
+                                    text-align: center;
+                                "
+                                dir="ltr"
+                                name="endTime"
+                                value="08:00"
+                                />
+                            </div>
+
+                            <div class="col-1 mb-md-0 mb-3 mb-3">
+                                <button
+                                id="add-form-button"
+                                type="button"
+                                class="btn btn-primaryTwo text-end col-12"
+                                onClick="addForm2()"
+                                >
+                                <i class="bi bi-plus-lg text-primary fs-4"></i>
+                                </button>
+                            </div>
+                            <div class="col-1 mb-md-0 mb-3 mb-3">
+                                <i
+                                class="delete-button2 text-danger btn bi bi-trash col-12 col-md-1 text-center"
+                                data-form-id="form-1"
+                                onClick="removeForm2(this)"
+                                ></i>
+                            </div>
+                            </div>
                         </div>
-                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
-                            <select class="form-select addClassRooms form-select-lg  addClassRoomsPaddingSelect"
-                                aria-label=".form-select-lg example">
-                                <option selected> الترم</option>
-                                <option value="1"> mis</option>
-                                <option value="2"> acc</option>
-                            </select>
-
+                        <div dir="ltr" class="py-3 px-4">
+                            <button
+                              type="button"
+                              onClick="instructorAssignFormSubmit(this);"
+                              class="btn btn-primary px-4"
+                            >
+                              حفظ
+                            </button>
                         </div>
-                    </div>
-                    <!-- البرنامج و الفرقه -->
-                    <div class=" d-flex flex-wrap justify-content-between col-12 col-md-8 mb-sm-3">
-
-                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
-                            <select class="form-select addClassRooms form-select-lg  addClassRoomsPaddingSelect"
-                                aria-label=".form-select-lg example">
-                                <option selected> البرنامج</option>
-                                <option value="1"> mis</option>
-                                <option value="2"> acc</option>
-                            </select>
-                        </div>
-                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
-                            <select class="form-select addClassRooms form-select-lg  addClassRoomsPaddingSelect"
-                                aria-label=".form-select-lg example">
-                                <option selected> الفرقه</option>
-                                <option value="1"> mis</option>
-                                <option value="2"> acc</option>
-                            </select>
-
-                        </div>
-                    </div>
-                    <!-- رقم المجموعه و الكود -->
-                    <div class=" d-flex flex-wrap justify-content-between col-12 col-md-8 mb-3 ">
-
-                        <div class="col-12 col-sm-6-lectuer mb-sm-0  mb-3">
-                            <input type="text" class="form-control form-control-lg " id="nameDoc"
-                                placeholder="  رقم المجموعه ">
-
-                        </div>
-                        <div class="col-12 col-sm-6-lectuer  mb-sm-0 mb-3">
-                            <input type="text" class="form-control form-control-lg " id="nameDoc"
-                                placeholder="   كود الماده">
-
-                        </div>
-                    </div>
-                    <!-- <hr class="col-12 col-md-9 "> -->
+                    </form>
 
                 </div>
                 <hr>
@@ -179,70 +320,135 @@
                 <div class="text-center border-md-start col-md-3 col-12 d-flex align-items-center justify-content-center">
                     <p class="text-center fs-5 fw-normal mt-md-0 mt-3"> جدول المحاضرات الاسبوعي </p>
                 </div>
+
                 <div class="col-md-9 col-12  border-bottom pb-2 pt-4">
-                    <div class="col-12 col-md-8   mb-3">
+                    <div class="col-12 col-md-8 mb-3" id="print">
 
                         <ol class=" mx-1 list-group rounded-4">
                             <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12">
                                 <span class="mx-2  col-lg-1 col-sm-2  col-3">السبت</span>
                                 <div class="col-md-9 col-8">
 
+                                    {% for lec in context.instructor_lectures_table %}
+
+                                        {% if lec.day_of_week == "Saturday" %}
+                                        <span class="badge text-bg-primary fw-normal px-3 py-1 rounded-3 mb-1">
+                                            {{ lec.start_time }} - {{ lec.end_time }} {{ lec.course.name }}
+                                            <br> {{ lec.room.name }}
+                                        </span>
+                                        {% endif %}
+
+                                    {% endfor %}
 
                                 </div>
-
                             </li>
+
                             <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12">
                                 <span class="mx-2  col-lg-1 col-sm-2  col-3">الاحد</span>
                                 <div class="col-md-9 col-8">
 
-                                </div>
+                                    {% for lec in context.instructor_lectures_table %}
 
+                                        {% if lec.day_of_week == "Sunday" %}
+                                        <span class="badge text-bg-primary fw-normal px-3 py-1 rounded-3 mb-1">
+                                            {{ lec.start_time }} - {{ lec.end_time }} {{ lec.course.name }}
+                                            <br> {{ lec.room.name }}
+                                        </span>
+                                        {% endif %}
+
+                                    {% endfor %}
+
+                                </div>
                             </li>
+
                             <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12">
                                 <span class="mx-2  col-lg-1 col-sm-2  col-3">الاثنين</span>
                                 <div class="col-md-9 col-8">
-                                    <span class="badge text-bg-primary fw-normal  px-3 py-1 rounded-3 mb-1"> 2-11
-                                        اقتصاد كلي</span>
-                                    <span class="badge text-bg-primary fw-normal  px-3 py-1 rounded-3 mb-1"> 2-11
-                                        اقتصاد كلي</span>
+
+                                    {% for lec in context.instructor_lectures_table %}
+
+                                        {% if lec.day_of_week == "Monday" %}
+                                        <span class="badge text-bg-primary fw-normal px-3 py-1 rounded-3 mb-1">
+                                            {{ lec.start_time }} - {{ lec.end_time }} {{ lec.course.name }}
+                                            <br> {{ lec.room.name }}
+                                        </span>
+                                        {% endif %}
+
+                                    {% endfor %}
 
                                 </div>
-
                             </li>
+
                             <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12">
                                 <span class="mx-2  col-lg-1 col-sm-2  col-3">الثلاثاء</span>
                                 <div class="col-md-9 col-8">
-                                    <span class="badge text-bg-primary fw-normal  px-3 py-1 rounded-3 mb-1"> 2-11
-                                        اقتصاد كلي</span>
-                                    <span class="badge text-bg-primary fw-normal  px-3 py-1 rounded-3 mb-1"> 2-11
-                                        اقتصاد كلي</span>
+
+                                    {% for lec in context.instructor_lectures_table %}
+
+                                        {% if lec.day_of_week == "Tuesday" %}
+                                        <span class="badge text-bg-primary fw-normal px-3 py-1 rounded-3 mb-1">
+                                            {{ lec.start_time }} - {{ lec.end_time }} {{ lec.course.name }}
+                                            <br> {{ lec.room.name }}
+                                        </span>
+                                        {% endif %}
+
+                                    {% endfor %}
 
                                 </div>
-
                             </li>
+
                             <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12">
                                 <span class="mx-2  col-lg-1 col-sm-2  col-3">الاربعاء</span>
                                 <div class="col-md-9 col-8">
-                                    <span class="badge text-bg-primary fw-normal  px-3 py-1 rounded-3 mb-1"> 2-11
-                                        اقتصاد كلي</span>
 
+                                    {% for lec in context.instructor_lectures_table %}
+
+                                        {% if lec.day_of_week == "Wednesday" %}
+                                        <span class="badge text-bg-primary fw-normal px-3 py-1 rounded-3 mb-1">
+                                            {{ lec.start_time }} - {{ lec.end_time }} {{ lec.course.name }}
+                                            <br> {{ lec.room.name }}
+                                        </span>
+                                        {% endif %}
+
+                                    {% endfor %}
 
                                 </div>
-
                             </li>
+
                             <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12">
                                 <span class="mx-2  col-lg-1 col-sm-2  col-3">الخميس</span>
                                 <div class="col-md-9 col-8">
 
-                                </div>
+                                    {% for lec in context.instructor_lectures_table %}
 
+                                        {% if lec.day_of_week == "Thursday" %}
+                                        <span class="badge text-bg-primary fw-normal px-3 py-1 rounded-3 mb-1">
+                                            {{ lec.start_time }} - {{ lec.end_time }} {{ lec.course.name }}
+                                            <br> {{ lec.room.name }}
+                                        </span>
+                                        {% endif %}
+
+                                    {% endfor %}
+
+                                </div>
                             </li>
+
                             <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12">
                                 <span class="mx-2  col-lg-1 col-sm-2  col-3">الجمعه</span>
                                 <div class="col-md-9 col-8">
 
-                                </div>
+                                    {% for lec in context.instructor_lectures_table %}
 
+                                        {% if lec.day_of_week == "Friday" %}
+                                        <span class="badge text-bg-primary fw-normal px-3 py-1 rounded-3 mb-1">
+                                            {{ lec.start_time }} - {{ lec.end_time }} {{ lec.course.name }}
+                                            <br> {{ lec.room.name }}
+                                        </span>
+                                        {% endif %}
+
+                                    {% endfor %}
+
+                                </div>
                             </li>
 
 
@@ -254,11 +460,10 @@
 
                         </ol>
 
-
                     </div>
 
-
                 </div>
+
             </div>
 
             <!--    ملخص غياب المحاضر -->
@@ -280,53 +485,24 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white shadow-sm">
-                                <tr class="text-nowrap text-center border-bottom border-2">
-                                    <th scope="row ">الاقتصاد الكلي</th>
-                                    <td>2</td>
-                                    <td>22</td>
-                                    <td>222</td>
-                                    <td>2252</td>
 
-                                </tr>
-                                <tr class="text-nowrap text-center  border-bottom border-2">
-                                    <th scope="row">الاقتصاد الجزئي</th>
-                                    <td>2</td>
-                                    <td>22</td>
-                                    <td>222</td>
-                                    <td>2252</td>
+                                {% for s in context.statistics %}
+                                    <tr class="text-nowrap text-center border-bottom border-2">
+                                        <th scope="row ">{{ s.course }}</th>
+                                        <td>{{ s.semester_lectures_num }}</td>
+                                        <td>{{ s.attendance }}</td>
+                                        <td>{{ s.absent }}</td>
+                                        <td>{{ s.next_lectures }}</td>
+                                    </tr>
+                                {% endfor %}
 
-                                </tr>
-                                <tr class="text-nowrap text-center  border-bottom border-2">
-                                    <th scope="row">المحاسبه الماليه</th>
-                                    <td>2</td>
-                                    <td>22</td>
-                                    <td>222</td>
-                                    <td>2252</td>
-
-                                </tr>
-                                <tr class="text-nowrap text-center">
-                                    <th scope="row">ادارة الأعمال</th>
-                                    <td>2</td>
-                                    <td>22</td>
-                                    <td>222</td>
-                                    <td>2252</td>
-
-                                </tr>
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
-
         </div>
-
-        <div dir="ltr" class="py-3 px-4">
-            <button type="submit" class="btn btn-primary px-4">حفظ</button>
-            <button type="reset" class="btn btn-light px-4 ">ألغاء</button>
-
-        </div>
-    </form>
+    </div>
 </div>
 
 

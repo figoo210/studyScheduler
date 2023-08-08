@@ -91,6 +91,7 @@ function getAutoFieldsByName(fieldId, selected) {
 // Course Selector Search
 function selectCourse(e) {
   let indx = e.parentNode.parentNode.id == "formRow" ? 0 : parseInt(e.parentNode.parentNode.id.split("-")[1]);
+  console.log("###############################");
   console.log(indx);
   let semester = document.getElementsByName("semester");
   let regulation = document.getElementsByName("regulation");
@@ -101,14 +102,13 @@ function selectCourse(e) {
   let department = document.getElementsByName("department")[0];
   let course = document.getElementsByName("course")[indx];
 
-  if (semester.value != "الترم" && regulation.value != "الائحة" && department != "") {
+  if (semester.value != "الترم" && regulation.value != "الائحة") {
     course.innerHTML = `<option selected disabled>المادة</option>`
     $.get("/api/courses", (data, status) => {
       for (let x = 0; x < data.length; x++) {
         if (
-          data[x]["semester"] == semester.value &&
-          data[x]["regulation_id"] == regulation.value &&
-          data[x]["department"] == department.value
+          data[x]["semester"] == semester.value || semester.value == "Summer" &&
+          data[x]["regulation_id"] == regulation.value
         ) {
           const option = document.createElement("option");
           option.value = data[x]["id"];
@@ -119,5 +119,68 @@ function selectCourse(e) {
     });
   }
 }
+
+function openCourseProfile(courseId) {
+  window.location.href = `/course/${courseId}`;
+}
+
+// Instructor Selector Search
+function selectInstructor(e, instructorId) {
+  e.addEventListener("click", (e) => {
+    let instructor = e.target.parentNode.parentNode.parentNode.children[2];
+    let resultBox = e.target.parentNode.parentNode.parentNode.children[1];
+    let inputText = e.target.parentNode.parentNode.parentNode.children[0];
+    instructor.value = instructorId;
+    inputText.value = e.target.textContent;
+    resultBox.innerHTML = "";
+  });
+}
+
+// Course Selector Search
+function selectCoursBySearch(e, courseId) {
+  e.addEventListener("click", (e) => {
+    let course = e.target.parentNode.parentNode.parentNode.children[2];
+    let resultBox = e.target.parentNode.parentNode.parentNode.children[1];
+    let inputText = e.target.parentNode.parentNode.parentNode.children[0];
+    course.value = courseId;
+    inputText.value = e.target.textContent;
+    resultBox.innerHTML = "";
+    console.log(course.value);
+  });
+}
+
+
+// General Search ##################################################################################################
+
+function generalSearch(e, endpoint, resultBoxId, executeFunction, isCustomFunction) {
+  e.addE
+  $.ajax({
+    type: 'POST',
+    url: endpoint,
+    data: {search_text: e.value, table_type: e.name},
+    dataType: 'json',
+    success: function(data) {
+      $(`#${resultBoxId}`).html("");
+      if (e.value != "") {
+        for (let index = 0; index < data.length; index++) {
+          let d = data[index]
+          let searchResultElement = document.createElement("li");
+          let searchResult = document.createElement("a");
+          // searchResult.setAttribute("href", "#");
+          searchResult.setAttribute("class", "cursor");
+          isCustomFunction ?
+            searchResult.setAttribute("onClick", executeFunction.replace(")", `, ${d.id})`))
+            : searchResult.setAttribute("onClick", `${executeFunction}(${d.id})`);
+          searchResult.textContent = d.name;
+          searchResultElement.appendChild(searchResult);
+          $(`#${resultBoxId}`).append(searchResultElement);
+        }
+      } else {
+        $(`#${resultBoxId}`).html("");
+      }
+    }
+  });
+}
+
 
 

@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session, redirect
+from flask import Flask, render_template, session, redirect
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -36,7 +36,7 @@ def create_app(config_class=Config):
         from course.model import Course, CourseUpdates
         from instructor_role.model import InstructorRole
         from instructor_time.model import InstructorTime
-        from lecture.model import Lecture
+        from lecture.model import Lecture, LectureAttendance
         from dashboard.model import SemesterSettings
         from instructor_course.model import InstructorCourse
         db.create_all()
@@ -50,6 +50,7 @@ def create_app(config_class=Config):
     from dashboard.error_view import bp as error_view
     from dashboard.main_view import bp as main_view
     from dashboard.settings_view import bp as settings_view
+    from dashboard.print_view import bp as print_view
     from department.view import bp as department_view
     from auth.view import bp as auth_view
     from course.view import bp as course_view
@@ -65,6 +66,7 @@ def create_app(config_class=Config):
     app.register_blueprint(error_view)
     app.register_blueprint(main_view)
     app.register_blueprint(settings_view)
+    app.register_blueprint(print_view)
     app.register_blueprint(auth_view)
     app.register_blueprint(course_view)
     app.register_blueprint(instructor_view)

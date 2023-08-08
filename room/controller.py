@@ -1,10 +1,10 @@
 from room.model import Room
 from building.model import Building
-from database import db
+from database import db, model_to_dict
 
 
 def get_room_by_id(id):
-    return Room.query.get(id)
+    return model_to_dict(Room.query.get(id))
 
 def get_all_rooms():
     rooms = []

@@ -1,0 +1,64 @@
+{% extends 'print/print_template.html' %}
+{% block content_block %}
+
+{% for building in context.buildings %}
+
+<div class="mb-5"><img src="{{ url_for('static', filename='img/logo.png') }}" class="img-fluid" alt="alex-logo"></div>
+<h5 class='text-center m-5'>متابعة الدراسة عن يوم
+    <strong>{{ context.days[context.lectures[0].day_of_week] }}</strong> الموافق
+    <strong id="date-title"></strong>
+</h5>
+
+<h4 class='text-center m-5'>{{ building.name }}</h4>
+<table class="table table-striped table-bordered">
+    <thead style="background-color: #111; color: #eee;" class="thead-light">
+        <tr>
+
+            <th scope="col" style="width: 15%;"><div class="d-flex justify-content-center align-items-center">المكان</div></th>
+            <th scope="col"><div class="d-flex justify-content-center align-items-center">المحاضرة</div></th>
+
+            <!--{% for h in context.hours %}
+            <th scope="col"></th>
+            {% endfor %}-->
+
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for room in context.rooms %}
+
+        {% if room.building_id == building.id %}
+        <tr>
+            <th scope="row"><div class="d-flex justify-content-center align-items-center">{{ room.name }}</div></th>
+
+            {% for lecture in context.lectures %}
+
+            <td scope="col" class="text-center" >
+                <div class="d-flex">
+                    {% if lecture.room_id == room.id %}
+                        <div class="bg-light border border-5" style="max-width: 200px; padding: 10px; font-weight: 900; border-radius: 10px;">
+                            {{ context.years[lecture.course.year] }}
+                            <br>{{ lecture.course.name }} قسم {{ lecture.course.department }}
+                            <br>د/ {{lecture.instructor.name}}
+                            <br>من {{lecture.start_time}} الى {{ lecture.end_time }}
+                        </div>
+                    {% endif %}
+                </div>
+            </td>
+
+            {% endfor %}
+
+        </tr>
+        {% endif %}
+
+        {% endfor %}
+
+    </tbody>
+</table>
+
+<div class="page-break"></div>
+
+{% endfor %}
+
+
+{% endblock %}

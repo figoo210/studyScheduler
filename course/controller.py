@@ -10,9 +10,30 @@ from utils.enums.Semester import Semester, get_translated_semesters
 def get_all_courses():
     return Course.query.all()
 
-def get_filtered_courses(semester, year, program, regulation_id, department_id):
+def get_filtered_courses(semester, year, program, regulation_id, department_id, table_type="lecture"):
     courses = []
-    for c in Course.query.filter_by(semester=semester, year=year, program=program, regulation_id=regulation_id, department_id=department_id).all():
+    if table_type == "section":
+        courses_query = Course.query.filter_by(
+            semester=semester,
+            year=year,
+            program=program,
+            regulation_id=regulation_id,
+            department_id=department_id,
+            has_section=True
+        ).all()
+        if not program:
+            courses_query = Course.query.filter_by(
+                semester=semester,
+                year=year,
+                regulation_id=regulation_id,
+                department_id=department_id,
+                has_section=True
+            ).all()
+    else:
+        courses_query = Course.query.filter_by(semester=semester, year=year, program=program, regulation_id=regulation_id, department_id=department_id).all()
+        if not program:
+            courses_query = Course.query.filter_by(semester=semester, year=year, regulation_id=regulation_id, department_id=department_id).all()
+    for c in courses_query:
         cdict = {
             "course": model_to_dict(c),
             "course_instructors": []
@@ -46,6 +67,16 @@ def get_all_courses_general():
         course['has_reverse'] = is_has_reverse(c.id)
         courses.append(course)
     return courses
+
+# Get course credit hrs by course id
+def get_credit_hrs(course_id):
+    course= Course.query.get(course_id)
+    return int(course.credit_hrs)
+
+
+def course_search(search_text):
+    results = Course.query.filter(Course.name.ilike(f'%{search_text}%')).all()
+    return [result.serialize() for result in results]
 
 
 # Update Coursse by id
@@ -97,7 +128,6 @@ def update_summer_semester(course_id, summer_semester):
     else:
         if course_update:
             cutd = db.session.query(CourseUpdates).get(key)
-            print("#################################: ", cutd)
             db.session.delete(cutd)
             db.session.commit()
 

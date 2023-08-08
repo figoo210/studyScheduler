@@ -170,6 +170,7 @@
                           <!-- Day Content -->
 
 
+
                         </div>
 
                         <div class="col-1 text-md-start text-end me-2">
@@ -199,7 +200,77 @@
             {% endfor %}
 
             {% else %}
-            <p>TEST</p>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingTwo">
+                <button onclick="handleTables(this)" class="accordion-button collapsed justify-content-between flex-wrap" type="button" data-bs-toggle="collapse" data-bs-target="#{{ language }}-NoProgram-{{ department.id }}" aria-expanded="false" aria-controls="{{ language }}-NoProgram-{{ department.id }}">
+                  <div class="row col-10 align-items-center text-right justify-content-between">
+                    <span class="col-6 fs-5" style="text-align: right;">جدول قسم {{ department.name }} {{ context.languages[language] }} </span>
+                    <div class="col-4 mb-md-0 mb-3">
+                      <input
+                        type="number"
+                        value=""
+                        class="form-control form-control-lg col-12"
+                        style="z-index: 1000;"
+                        id="groupsNum"
+                        min="1"
+                        name="groups_num"
+                        placeholder="عدد المجموعات"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-2">
+                    <span class="badge py-2 px-2 ms-md-3 fs-6" id="accordionStatus"></span>
+                  </div>
+                </button>
+              </h2>
+              <div id="{{ language }}-NoProgram-{{ department.id }}" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                <div class="accordion-body p-5" id="group-0">
+                  <form action="" class="text-center ">
+                    <h3 id="groupName" class="text-center mt-4 mb-3">مجموعة (1)</h3>
+                    <button
+                      type="button"
+                      class="btn btn-primary btn-lg mb-4"
+                      onclick="submitGroupTable(this);"
+                    >
+                      حفظ
+                    </button>
+                    <div class="alert" role="alert" id="alert"></div>
+                    <ul class="list-group rounded-4 ms-4">
+
+                      <!-- Day Container -->
+
+                      {% for day in context.weekDays %}
+                      <li class="list-group-item col-12 d-flex d-flex flex-wrap col-12 align-items-center day-{{ day }}">
+                        <span class="mx-2 col-lg-1 col-sm-2 col-3">{{ context.weekDays[day] }}</span>
+
+                        <div class="col-md-9 col-12 d-flex row flex-wrap" id="dayContent">
+                          <!-- Day Content -->
+
+
+                        </div>
+
+                        <div class="col-1 text-md-start text-end me-2">
+                          <input type="text" hidden name="day_of_week" name="{{ day }}">
+                          <i
+                            class="bi bi-plus-lg fs-3 cursor"
+                            style="color: #4372EA;"
+                            onclick="addCourseCard(this, '{{ day }}', {
+                              department_id: {{ department.id }},
+                              semester: '{{ context.semester }}',
+                              year: {{ context.year }},
+                              regulation_id: {{ context.regulation_id }}
+                            })"
+                          ></i>
+                        </div>
+                      </li>
+                      {% endfor %}
+
+
+                    </ul>
+                  </form>
+                </div>
+              </div>
+            </div>
             {% endif %}
 
 

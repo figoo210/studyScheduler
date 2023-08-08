@@ -1,385 +1,135 @@
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Material file">
-    <title>  ملف المادة</title>
- 
-    <link rel="stylesheet" href="css/all.min.css">
-<!-- link fontAwesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<!-- main css file -->
-    <link rel="stylesheet" href="css/subject.css">
-   <!-- bootstrap css file -->
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>    <!-- fontAwesome css file -->
-<style>
-  
-</style>
-</head>
+{% extends 'layout/base.html' %} {% block title_block %}
+  {{ context.course.name }}
+{% endblock %}
 
-<body>
-
-
-  <div class="container-fluid g-0 ">
-    <div class="p-3  Materialfile-bg">
-    
+{% block content %}
+  <div class="container-fluid g-0">
+    <div class="p-3 Materialfile-bg">
       <div class="my-5 mx-4">
-        <h2 class="fw-normal fs-3 ">ملف  الماده </h2>
+        <nav aria-label="breadcrumb" dir="rtl" lang="">
+          <ol class="breadcrumb" dir="rtl">
+            <li class="breadcrumb-item">
+              <a href="/courses" class="fw-normal text-secondary text-decoration-none">المواد</a>
+            </li>
+            <li class="breadcrumb-item active" id="bc-slash" aria-current="page">
+              <span class="px-2 fw-normal text-secondary">ملف المادة</span>
+            </li>
+          </ol>
+        </nav>
+        <h2 class="fw-normal fs-3">ملف المادة <strong>({{ context.course.name }})</strong></h2>
       </div>
-  
+
       <nav class="navbar navbar-expand-md bg-navber-search-andfillter">
         <div class="container-fluid">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
-            aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse " id="navbarScroll">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+          <div class="collapse navbar-collapse" id="navbarScroll">
             <div class="mt-md-0 mt-2 col-12 d-flex flex-wrap justify-content-between align-items-center">
-              <form class="d-flex nosubmit col-md-5 col-12 position-relative Materialfile" role="search">
-                <input id="search-input" class="form-control me-2 nosubmit col-12 rounded-5 px-3 py-2 input-search"
-                  type="text" placeholder="البحث" aria-label="Search">
-                <button onclick="filterTables()" id="search-button" class="position-absolute top-0 start-0 btn " type="button">
-                  <svg id="btnClick" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M2 22L4 20M3 11.5C3 12.7476 3.24573 13.9829 3.72315 15.1355C4.20057 16.2881 4.90033 17.3354 5.78249 18.2175C6.66464 19.0997 7.71192 19.7994 8.86451 20.2769C10.0171 20.7543 11.2524 21 12.5 21C13.7476 21 14.9829 20.7543 16.1355 20.2769C17.2881 19.7994 18.3354 19.0997 19.2175 18.2175C20.0997 17.3354 20.7994 16.2881 21.2769 15.1355C21.7543 13.9829 22 12.7476 22 11.5C22 8.98044 20.9991 6.56408 19.2175 4.78249C17.4359 3.00089 15.0196 2 12.5 2C9.98044 2 7.56408 3.00089 5.78249 4.78249C4.00089 6.56408 3 8.98044 3 11.5Z"
-                      stroke="#313135" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                </button>
+              <form class="w-100 d-flex doctor-form-search" role="search">
+
+                <div class="form-group d-flex justify-content-between w-100">
+
+                  <input
+                    type="text"
+                    class="cd-search doctor-text-search"
+                    placeholder="البحث"
+                    ar
+                    onkeyup="generalSearch(this, '/api/courses/search', 'searchBarResultBox', 'openCourseProfile', false)"
+                  />
+                  <ul id="searchBarResultBox"></ul>
+
+                  <div class="mt-md-0 mt-2">
+                    <i class="bi bi-printer-fill fs-3 cursor" onclick="printElem('print');"></i>
+                  </div>
+                </div>
+
               </form>
-              <div class="mt-md-0 mt-2 ">
-                <button type="button" class="btn btn-light ms-1" data-bs-toggle="modal" data-bs-target="#exampleModal"><img  src="/img/Group 2 (1).svg" alt="edit" /></button>
-                <button type="button" class="btn btn-light px-2 me-1"><img  src="/img/printer.svg" alt="print" ></button>
-  
-              </div>
             </div>
-  
           </div>
         </div>
       </nav>
-      
-        <div class="card  bg-transparent col-12 border-0 py-3">
-          <div class="row g-0  align-items-center  flex-wrap col-12 ">
-            
-            <div class=" col-12 text-sm-end text-center">
+
+      <div id="print">
+        <div class="card bg-transparent col-12 border-0 py-3">
+          <div class="row g-0 align-items-center flex-wrap col-12">
+            <div class="col-12 text-sm-end text-center">
               <div class="card-body d-flex flex-wrap">
-                <div class=" col-lg-3 col-sm-6 col-12 mb-3">
-                  <p class="card-text fw-normal fs-5  "><span class="color-title-name">مادة : </span>محاسبة اداريه
-                    </p>
-                  <p class="card-text fw-normal fs-5  "><span class="color-title-name">الفرقه : </span> الثالثة 
+                <div class="col-lg-3 col-sm-6 col-12 mb-3">
+                  <p class="card-text fw-normal fs-5">
+                    <span class="color-title-name">مادة:</span><strong>{{ context.course.name }}</strong>
                   </p>
-                  
-                </div>
-                <div class=" col-lg-3 col-sm-6 col-12 mb-3">
-                  <p class="card-text fw-normal fs-5 "><span class="color-title-name">الائحه : </span> الساعات المعتمده 
+                  <p class="card-text fw-normal fs-5">
+                    <span class="color-title-name">الفرقه:</span><strong>{{ context.course.year }}</strong>
                   </p>
-                  <p class="card-text fw-normal fs-5  "><span class="color-title-name"> اللغه: </span> عربي </p>
                 </div>
-                <div class=" col-lg-3 col-sm-6 col-12 mb-3">
-                    <p class="card-text fw-normal fs-5  "><span class="color-title-name">القسم : </span> المحاسبه 
-                    </p>
-                    <p class="card-text fw-normal fs-5  "><span class="color-title-name"> البرنامج: </span> انتظام و انتساب </p>
+                <div class="col-lg-3 col-sm-6 col-12 mb-3">
+                  <p class="card-text fw-normal fs-5">
+                    <span class="color-title-name">الائحه:</span><strong>{{ context.course.regulation }}</strong>
+                  </p>
+                  <p class="card-text fw-normal fs-5">
+                    <span class="color-title-name">سكشن:</span>{% if context.course.has_section %}
+                      <strong>نعم</strong>
+                    {% else %}
+                      <strong>لا</strong>
+                    {% endif %}
+                  </p>
                 </div>
-                <div class=" col-lg-3 col-sm-6 col-12 mb-3">
-                    <p class="card-text fw-normal fs-5  "><span class="color-title-name">الترم : </span>  الثاني
-                    </p>
-                    <p class="card-text fw-normal fs-5  "><span class="color-title-name">عدد الساعات: </span> (3) </p>
+                <div class="col-lg-3 col-sm-6 col-12 mb-3">
+                  <p class="card-text fw-normal fs-5">
+                    <span class="color-title-name">القسم:</span><strong>{{ context.course.department }}</strong>
+                  </p>
+                  <p class="card-text fw-normal fs-5">
+                    <span class="color-title-name">البرنامج:</span><strong>{{ context.programs[context.course.program] }}</strong>
+                  </p>
                 </div>
-  
+                <div class="col-lg-3 col-sm-6 col-12 mb-3">
+                  <p class="card-text fw-normal fs-5">
+                    <span class="color-title-name"></span><strong>{{ context.translated_semesters[context.course.semester] }}</strong>
+                  </p>
+                  <p class="card-text fw-normal fs-5">
+                    <span class="color-title-name">عدد الساعات:</span><strong>({{ context.course.credit_hrs }})</strong>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      
-      <div id="myTable " class="tableWrap">
-  
-        <!-- tabls -->
-        <div class="tab-pane fade show active  table-responsive Materialfile ">
-          <table class="table mb-0 caption-top">
-            <caption class="mb-0 pb-0 ps-4"> <span class="color-title-name">كود المادة :</span> Ac00030 <button type="button" class="btn btn-primary rounded-0 rounded-top me-3">انتظام</button></caption>
-            <thead class="">
-              <tr class="text-nowrap text-center ">
-                <th scope="col" class=" rounded-end-thead">القائم ع التدريس</th>
-                <th scope="col">المجموعة</th>
-                <th scope="col">اليوم</th>
-                <th scope="col">المكان</th>
-                <th scope="col">المعاد</th>
-              
-  
-              </tr>
-            </thead>
-  
-            <tbody>
-  
-  
-              <tr class="text-nowrap text-center align-self-stretch ">
-                <th>د / السيد الصيفي</th>
-                <td>1</td>
-                <td>الاحد</td>
-                <td>مدرج 3</td>
-                <td>2-5</td>
-               
-         
-  
-              </tr>
-              <tr class="text-nowrap text-center">
-                <th>د / محمد الشامي </th>
-                <td>2</td>
-                <td>الاحد</td>
-                <td>مدرج 3</td>
-                <td>2-5</td>
-               
-                
-  
-              </tr>
-              <tr class="text-nowrap text-center">
-                <th>د / اسامة الفيل</th>
-                <td>3</td>
-                <td>الاحد</td>
-                <td>مدرج 3</td>
-                <td>2-5</td>
-               
-                
-  
-              </tr>
-              <tr class="text-nowrap text-center">
-                <th>د / السيد السريتي</th>
-                <td>4</td>
-                <td>الاحد</td>
-                <td>مدرج 3</td>
-                <td>2-5</td>
-               
-  
-              </tr>
-              <tr class="text-nowrap text-center align-self-stretch ">
-                <th>د / السيد الصيفي</th>
-                <td>1</td>
-                <td>الاحد</td>
-                <td>مدرج 3</td>
-                <td>2-5</td>
-               
-         
-  
-              </tr>
-              <tr class="text-nowrap text-center">
-                <th>د / محمد الشامي </th>
-                <td>2</td>
-                <td>الاحد</td>
-                <td>مدرج 3</td>
-                <td>2-5</td>
-               
-                
-  
-              </tr>
-              <tr class="text-nowrap text-center">
-                <th>د / اسامة الفيل</th>
-                <td>3</td>
-                <td>الاحد</td>
-                <td>مدرج 3</td>
-                <td>2-5</td>
-               
-                
-  
-              </tr>
-              <tr class="text-nowrap text-center">
-                <th>د / السيد السريتي</th>
-                <td>4</td>
-                <td>الاحد</td>
-                <td>مدرج 3</td>
-                <td>2-5</td>
-               
-  
-              </tr>
-            </tbody>
-           
-  
-          </table>
-        </div>
-        <div class="tab-pane fade show active  table-responsive Materialfile">
-            <table class="table mb-0 caption-top ">
-              <caption class="mb-0 pb-0 ps-4"> <span class="color-title-name">كود المادة :</span>  Ac00030 <button type="button" class="btn btn-primary rounded-0 rounded-top me-3">انتساب</button></caption>
-              <thead >
-                <tr class="text-nowrap text-center ">
-                  <th scope="col" class=" rounded-end-thead">القائم ع التدريس</th>
-                  <th scope="col">المجموعة</th>
-                  <th scope="col">اليوم</th>
-                  <th scope="col">المكان</th>
-                  <th scope="col">المعاد</th>
-                
-  
+
+        <!-- table -->
+        <table class="table doctor-table cd-table order-table" id="dataTable">
+          <thead>
+            <tr style="border-radius: 50%;">
+              <th scope="col" class="rounded-end-thead" style="background-color: #7CCBFA; color: #000;">القائم ع التدريس</th>
+              <th scope="col" style="background-color: #7CCBFA; color: #000;">المجموعة</th>
+              <th scope="col" style="background-color: #7CCBFA; color: #000;">اليوم</th>
+              <th scope="col" style="background-color: #7CCBFA; color: #000;">المكان</th>
+              <th scope="col" style="background-color: #7CCBFA; color: #000;">المعاد</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if context.course_instructors %}
+              {% for cl in context.course_lectures %}
+                <tr>
+                  <td>{{ cl.instructor.name }}</td>
+                  <td>{{ loop.index }}</td>
+                  <td>{{ context.days[cl.day_of_week] }}</td>
+                  <td>{{ cl.room.name }}</td>
+                  <td>{{ cl.start_time }}</td>
                 </tr>
-              </thead>
-  
-              <tbody>
-  
-  
-                <tr class="text-nowrap text-center align-self-stretch ">
-                  <th>د / السيد الصيفي</th>
-                  <td>1</td>
-                  <td>الاحد</td>
-                  <td>مدرج 3</td>
-                  <td>2-5</td>
-                 
-           
-  
-                </tr>
-                <tr class="text-nowrap text-center">
-                  <th>د / محمد الشامي </th>
-                  <td>2</td>
-                  <td>الاحد</td>
-                  <td>مدرج 3</td>
-                  <td>2-5</td>
-                 
-                  
-  
-                </tr>
-                <tr class="text-nowrap text-center">
-                  <th>د / اسامة الفيل</th>
-                  <td>3</td>
-                  <td>الاحد</td>
-                  <td>مدرج 3</td>
-                  <td>2-5</td>
-                 
-                  
-  
-                </tr>
-                <tr class="text-nowrap text-center">
-                  <th>د / السيد السريتي</th>
-                  <td>4</td>
-                  <td>الاحد</td>
-                  <td>مدرج 3</td>
-                  <td>2-5</td>
-                 
-  
-                </tr>
-                <tr class="text-nowrap text-center align-self-stretch ">
-                  <th>د / السيد الصيفي</th>
-                  <td>1</td>
-                  <td>الاحد</td>
-                  <td>مدرج 3</td>
-                  <td>2-5</td>
-                 
-           
-  
-                </tr>
-                <tr class="text-nowrap text-center">
-                  <th>د / محمد الشامي </th>
-                  <td>2</td>
-                  <td>الاحد</td>
-                  <td>مدرج 3</td>
-                  <td>2-5</td>
-                 
-                  
-  
-                </tr>
-                <tr class="text-nowrap text-center">
-                  <th>د / اسامة الفيل</th>
-                  <td>3</td>
-                  <td>الاحد</td>
-                  <td>مدرج 3</td>
-                  <td>2-5</td>
-                 
-                  
-  
-                </tr>
-                <tr class="text-nowrap text-center">
-                  <th>د / السيد السريتي</th>
-                  <td>4</td>
-                  <td>الاحد</td>
-                  <td>مدرج 3</td>
-                  <td>2-5</td>
-                 
-  
-                </tr>
-              </tbody>
-             
-  
-            </table>
-          </div>
-     
-       
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="8">
+                  <h3 class="text-center">لا توجد بيانات</h3>
+                </td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
       </div>
-   
-
-
 
 
     </div>
 
-    <div dir="ltr" class="py-3 px-4 mx-4">
-      <button type="submit" class="btn btn-primary px-4 me-2">حفظ</button>
-      <button type="reset" class="btn btn-light px-4 ">ألغاء</button>
-
-    </div>
+    <div dir="ltr" class="py-5 mx-4"></div>
   </div>
-
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog  modal-dialog-centered ">
-    <div class="modal-content Materialfile-bg-modal">
-      <div class="modal-header flex-column border-0  align-items-start">
-        <small>تعديل</small>
-        <h1 class="modal-title fs-4" id="exampleModalLabel"> المواد</h1>
-        <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-      </div>
-      <div class="modal-body">
-        <form class="row g-3">
-          <div class="col-md-6">
-            <input type="text" class="form-control" id="validationDefault01"  required placeholder="“اسم المادة”">
-          </div>
-        
-      
-        
-          <div class="col-md-6">
-            <select class="form-select" id="validationDefault04" required>
-              <option selected disabled value=""> "اللائحة"</option>
-              <option>...</option>
-            </select>
-          </div>
-          
-             
-          <div class="col-md-6">
-            <select class="form-select" id="validationDefault04" required>
-              <option selected disabled value=""> "القسم"</option>
-              <option>...</option>
-            </select>
-          </div>
-              
-          <div class="col-md-6">
-            <select class="form-select" id="validationDefault04" required>
-              <option selected disabled value=""> "الترم"</option>
-              <option>...</option>
-            </select>
-          </div>
-              
-          <div class="col-md-6">
-            <select class="form-select" id="validationDefault04" required>
-              <option selected disabled value=""> "اللغة"</option>
-              <option>...</option>
-            </select>
-          </div>
-              
-          <div class="col-md-6">
-            <select class="form-select" id="validationDefault04" required>
-              <option selected disabled value=""> "البرنامج"</option>
-              <option>...</option>
-            </select>
-          </div>
-          <div class="col-12 d-flex flex-wrap justify-content-between mt-5 pt-5">
-            <button type="button" class="btn btn-outline-danger col-5-Materialfile mb-3" data-bs-dismiss="modal">الغاء</button>
-            <button class="btn btn-primary col-5-Materialfile mb-3" type="submit"> حفظ</button>
-
-          </div>
-        </form>
-      </div>
-      
-    </div>
-  </div>
-</div>
-    <script src="/js/subject.js"></script>
-</body>
-</html>
+{% endblock %}

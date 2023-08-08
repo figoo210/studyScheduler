@@ -24,6 +24,9 @@ def get_instructors_data():
         instructor_data['work_years'] = instructor.work_years
         instructor_data['department'] = Department.query.get(instructor.department_id).name
         instructor_data['role'] = instructor.instructor_role
+        instructor_data['instructor_times'] = [model_to_dict(x) for x in instructor.instructor_times]
+        instructor_data['instructor_courses'] = [model_to_dict(x) for x in instructor.instructor_courses]
+
         instructors_data.append(instructor_data)
 
     return instructors_data
@@ -54,19 +57,51 @@ def get_instructor_data(instructor_id):
     return instructor_data
 
 
-def get_filtered_instructors(department_id):
+def get_filtered_instructors(table_type):
     instructors = []
-    for c in Instructor.query.filter_by(department_id=department_id).all():
-        cdict = {
-            "instructor": model_to_dict(c),
-            "instructor_courses": [],
-            "instructor_times": []
-        }
-        for ci in c.instructor_courses:
-            cdict["instructor_courses"].append(model_to_dict(ci))
-        for ci in c.instructor_times:
-            cdict["instructor_times"].append(model_to_dict(ci))
-        instructors.append(cdict)
+    if table_type == "section":
+        for c in Instructor.query.filter_by(instructor_role="معيد").all():
+            cdict = {
+                "instructor": model_to_dict(c),
+                "instructor_courses": [],
+                "instructor_times": []
+            }
+            for ci in c.instructor_courses:
+                cdict["instructor_courses"].append(model_to_dict(ci))
+            for ci in c.instructor_times:
+                cdict["instructor_times"].append(model_to_dict(ci))
+            instructors.append(cdict)
+    else:
+        for c in Instructor.query.filter(Instructor.instructor_role!="معيد").all():
+            cdict = {
+                "instructor": model_to_dict(c),
+                "instructor_courses": [],
+                "instructor_times": []
+            }
+            for ci in c.instructor_courses:
+                cdict["instructor_courses"].append(model_to_dict(ci))
+            for ci in c.instructor_times:
+                cdict["instructor_times"].append(model_to_dict(ci))
+            instructors.append(cdict)
+    return instructors
+
+
+def instructor_search(table_type, search_text):
+    instructors = []
+    if table_type == "section":
+        for c in Instructor.query.filter(Instructor.instructor_role=="معيد", Instructor.name.ilike(f'%{search_text}%')).all():
+            cdict = {
+                "id": c.id,
+                "name": c.name
+            }
+            instructors.append(cdict)
+    else:
+        for c in Instructor.query.filter(Instructor.instructor_role!="معيد", Instructor.name.ilike(f'%{search_text}%')).all():
+            cdict = {
+                "id": c.id,
+                "name": c.name
+            }
+            instructors.append(cdict)
     return instructors
 
 

@@ -18,6 +18,9 @@ def get_departments():
         departments.append(department)
     return departments
 
+def get_department_by_id(department_id):
+    return Department.query.filter_by(id=department_id).first()
+
 def get_division_name(division_num):
     return arabic_divisions[division_num - 1]
 

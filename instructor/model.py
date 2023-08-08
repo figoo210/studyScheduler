@@ -18,7 +18,7 @@ class Instructor(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(120), unique=False, nullable=False)
     mac_address = db.Column(db.String(48), unique=True, nullable=True)
-    date_of_birth = db.Column(db.DateTime, unique=False, nullable=True)
+    date_of_birth = db.Column(db.String(10), unique=False, nullable=True)
     work_years = db.Column(db.Integer, unique=False, nullable=True)
 
     department_id = db.Column(db.Integer, db.ForeignKey("department.id"), nullable=False)

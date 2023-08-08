@@ -1,14 +1,15 @@
 from database import db
 from sqlalchemy.orm import backref
+from department.controller import get_department_by_id
 from utils.enums.Semester import Semester, SemesterEnum
 from utils.enums.Year import Division, DivisionEnum
-from utils.enums.Program import Program, ProgramEnum
+from utils.enums.Program import Program, ProgramEnum, get_translated_programs
 
 
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(120), unique=False, nullable=False)
-    code = db.Column(db.String(60), unique=True, nullable=False)
+    code = db.Column(db.String(60), unique=False, nullable=True)
     credit_hrs = db.Column(db.Integer, unique=False, nullable=False)
     semester = db.Column(SemesterEnum(Semester), default=Semester.first, nullable=False)
     year = db.Column(DivisionEnum(Division), default=Division.first, nullable=False)
@@ -21,6 +22,13 @@ class Course(db.Model):
 
     course_updates = db.relationship('CourseUpdates', backref=backref('course_update'), lazy=True)
     instructor_courses = db.relationship("InstructorCourse", backref=backref("course_with_instructors"), lazy=True)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': f"{self.name} ({self.credit_hrs}) {get_department_by_id(self.department_id).name} {get_translated_programs()[self.program]}"
+        }
+
 
 
 class CourseUpdates(db.Model):

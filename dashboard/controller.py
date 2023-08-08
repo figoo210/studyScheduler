@@ -81,6 +81,7 @@ def add_semester_settings(data):
 def get_current_semester():
     ss = SemesterSettings.query.order_by(SemesterSettings.id.desc()).first()
     data = {
+        "id": ss.id,
         "semester": ss.semester,
         "translated_semester": get_translated_semesters()[ss.semester],
         "start_date": ss.semester_start_date,

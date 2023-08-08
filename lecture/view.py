@@ -1,6 +1,7 @@
 import json
 from flask import Blueprint, redirect, render_template, request
-from lecture.controller import add_new_lecture, get_lectures, get_api_lectures_data, lecture_attend, lecture_absent
+from instructor.controller import get_instructors_data, get_instructors_name
+from lecture.controller import add_new_lecture, get_lecture_by_path, get_lectures, get_api_lectures_data, get_today_lectures, lecture_attend, lecture_absent, lectures_attendance, overwrite_group_table, replacement_lecture
 from regulation.controller import get_regulations
 from department.controller import get_all_divisions_departments
 from room.controller import get_all_rooms
@@ -11,6 +12,7 @@ from utils.enums.Semester import Semester, get_translated_semesters
 from utils.enums.Year import Division, get_translated_divisions
 from utils.enums.Language import get_translated_languages
 from utils.enums.WeekDay import get_translated_weekdays
+from utils.date_and_time import get_date_from_string
 
 
 PAGE = 'lecture'
@@ -18,40 +20,41 @@ PAGE = 'lecture'
 bp = Blueprint(PAGE, __name__, template_folder='templates')
 
 
-@bp.route(f'/{PAGE}/<id>', methods=["GET", "POST"])
-def handle_one(id):
-    """ get one item or post to update it """
-    context = {}
-    if request.method == 'POST':
-        return render_template(f'{PAGE}/{PAGE}.html')
-    else:
-        return render_template(f'{PAGE}/{PAGE}.html')
-
-
-
-@bp.route(f'/{PAGE}/absent/<id>/<check>', methods=["GET"])
-def set_absent_attendance(id, check):
+@bp.route(f'/{PAGE}/attend/<lecture_path>/<check>', methods=["GET"])
+def set_attendance(lecture_path, check):
     """ set_absent_attendance """
+    lp = lecture_path.split("_")[0]
+    d = get_date_from_string(lecture_path.split("_")[1])
     if check == "true":
-        id = tuple(map(str, id.split('-')))
-        lecture_absent(id)
+        lecture_attend(lp, date=d)
     else:
-        id = tuple(map(str, id.split('-')))
-        lecture_attend(id)
-    return redirect(f'{PAGE}/attendance')
+        lecture_absent(lp, date=d)
+    return redirect(f'/{PAGE}/attendance?date={lecture_path.split("_")[1]}')
 
 
-
-@bp.route(f'/{PAGE}/attendance', methods=["GET"])
-def get_absent_attendance():
+@bp.route(f'/{PAGE}/attendance', methods=["GET", "POST"])
+def get_attendance():
     """ get_absent_attendance """
     context = {}
-    context["lectures"] = get_lectures()
-    context["translated_year"] = get_translated_divisions()
-    context["translated_semesters"] = get_translated_semesters()
-    context["regulations"] = get_regulations()
-    context["rooms"] = get_all_rooms()
-    return render_template(f'{PAGE}/attendance.html', context=context)
+    if request.method == 'POST':
+        req = request.form.to_dict()
+        replacement_lecture(req)
+        return redirect(f'/{PAGE}/attendance')
+    else:
+        lectures_attendance()
+
+        date = None
+        if "date" in request.args:
+            date = request.args.get("date")
+
+        context["lectures"] = get_today_lectures(date)
+        context["translated_year"] = get_translated_divisions()
+        context["translated_semesters"] = get_translated_semesters()
+        context["regulations"] = get_regulations()
+        context["rooms"] = get_all_rooms()
+        context["instructors"] = get_instructors_data()
+        context["instructors_name"] = get_instructors_name()
+        return render_template(f'{PAGE}/attendance.html', context=context)
 
 
 @bp.route(f'/{PAGE}s', methods=["GET", "POST"])
@@ -61,6 +64,7 @@ def handle_mod():
     if request.method == 'POST':
         return render_template(f'{PAGE}/{PAGE}.html')
     else:
+        lectures_attendance()
         context["lectures"] = get_lectures()
         context["translated_year"] = get_translated_divisions()
         context["regulations"] = get_regulations()
@@ -71,6 +75,7 @@ def handle_mod():
 def new_lecture():
     """ add new """
     context = {}
+    context["lectures"] = get_lectures()
     context["divisions"] = get_all_divisions_departments()
     context["languages"] = get_translated_languages()
     context["programs"] = get_translated_programs()
@@ -92,6 +97,7 @@ def new_lecture():
         context["exec"] = req["exec"]
         return render_template(f'{PAGE}/new-{PAGE}.html', context=context)
     else:
+        lectures_attendance()
         return render_template(f'{PAGE}/new-{PAGE}.html', context=context)
 
 
@@ -113,59 +119,66 @@ def delete_one(id):
 def get_data():
     """ Get Data """
     req = request.form.to_dict()
-    return get_api_lectures_data(req["department_id"], Semester(req["semester"]), Division(int(req["year"])), req["regulation_id"], Program(req["program"]))
+    program = None
+    if "program" in req:
+        if req["program"] != "NoProgram":
+            program = Program(req["program"])
+    return get_api_lectures_data(req["department_id"], Semester(req["semester"]), Division(int(req["year"])), req["regulation_id"], program, "lecture")
 
+
+@bp.route(f'/{PAGE}s/data', methods=["GET"])
+def get_lectures_data():
+    """ Get Lectures Data """
+    return get_lectures()
+
+
+@bp.route(f'/{PAGE}/<path>', methods=["GET", "POST"])
+def handle_lecture_data_by_path(path):
+    if request.method == "POST":
+        pass
+    else:
+        return get_lecture_by_path(path)
 
 
 @bp.route(f'/{PAGE}/add', methods=["POST"])
 def add_lecture():
     """ add new """
-    context = {}
+    errors = []
     req = json.loads(list(request.form.to_dict().keys())[0])
+
+    # If this group table already exist remove it
+    overwrite_group_table(req[0])
+
     for r in req:
         if r["instructor"] == "" or r["course"] == "" or r["room"] == "" or r["startTime"] == "":
-            return {
-                "status": False,
+            errors.append({
                 "msg": "برجاء ملئ جميع البيانات قبل الحفظ",
                 "path": r["path"],
-            }
-        lectures = get_lectures()
-        for lecture in lectures:
-            lecture_range = int(lecture["course"]["credit_hrs"]) - 1 # before & after
-            r1 = int(r["startTime"].split(":")[0]) - lecture_range
-            r2 = int(r["startTime"].split(":")[0]) + lecture_range
-            time_range = [item for item in range(r1, r2+1)]
-            print("########################################: ", time_range)
+                "prepath": None
+            })
+        error, path, prepath = add_new_lecture(r)
+        if error:
+            errors.append({
+                "msg": error,
+                "path": path,
+                "prepath": prepath
+            })
 
-            if lecture["instructor_id"] == r["instructor"] and \
-                int(lecture["start_time"].split(":")[0]) in time_range and \
-                lecture["day_of_week"] == r["day"]:
-                return {
-                    "status": False,
-                    "msg": f"هذا المحاضر غير متاح في هذا الوقت لمادة {lecture['course'].name} لدكتور {lecture['instructor']['name']}",
-                    "path": r["path"],
-                }
-            if lecture["room_id"] == r["room"] and \
-                int(lecture["start_time"].split(":")[0]) in time_range and \
-                lecture["day_of_week"] == r["day"]:
-                return {
-                    "status": False,
-                    "msg": f"هذه المكان مشغول في هذا الوقت لمادة {lecture['course'].name} لدكتور {lecture['instructor']['name']}",
-                    "path": r["path"],
-                }
-            new_lecture = add_new_lecture(r)
-
-        if len(lectures) == 0:
-            new_lecture = add_new_lecture(r)
-
-
-    return {
-        "status": True,
-        "msg": "تم الحفظ"
-    }
+    if len(errors) > 0:
+        return {
+            "status": False,
+            "errors": errors
+        }
+    else:
+        return {
+            "status": True,
+            "msg": "تم الحفظ"
+        }
 
 # Need to check all primary keys with group num
 
 # Need to check room with day with start time
 
 # Need to check instructor with day with start time
+
+

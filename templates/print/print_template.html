@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- bootstrap link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.4/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}">
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.js') }}"></script>
+
+    <style type="text/css" media="print">
+      @page {
+        size: A4; /* auto is the initial value */
+        margin: 1mm; /* this affects the margin in the printer settings */
+        border: solid 5px #000;
+      }
+
+      .page-break {
+        page-break-before: always;
+      }
+
+      html {
+        background-color: #ffffff;
+        margin: 3px; /* this affects the margin on the html before sending to printer */
+        border: solid 5px #000;
+      }
+
+      body {
+        width: 210mm;
+        height: 296mm;
+        border: solid 5px #000;
+        direction: rtl;
+      }
+
+    </style>
+  </head>
+  <body>
+    {% if _target == 'print' %}
+      <script>
+        window.print()
+      </script>
+    {% endif %}
+
+    {% block content_block %}
+    {% endblock %}
+
+    <script src="{{ url_for('static', filename='js/printer.js') }}"></script>
+
+  </body>
+</html>

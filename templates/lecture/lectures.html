@@ -66,7 +66,7 @@
             {% endfor %}
           {% else %}
             <tr>
-              <td colspan="4">
+              <td colspan="6">
                 <h3 class="text-center">لا توجد بيانات</h3>
               </td>
             </tr>
@@ -87,7 +87,7 @@
               <span>اضافة قسم جديد</span>
             </p>
 
-            <form class="" action="{{ url_for('lecture.new_lecture') }}" method="post">
+            <form id="formModal" class="" action="{{ url_for('lecture.new_lecture') }}" method="post">
               <input hidden name="id" />
               <div class="row my-3">
                 <div class="col-12 col-md-6">
@@ -149,14 +149,14 @@
                   <h5 class="my-3">طريقة التنفيذ</h5>
                   <fieldset id="exec">
                     <h5><input type="radio" value="manual" name="exec" checked> يدوي</h5>
-                    <h5><input type="radio" value="auto" name="exec"> اوتوماتيك</h5>
+                    <!--<h5 class="my-2"><input type="radio" value="auto" name="exec"> اوتوماتيك</h5>-->
                   </fieldset>
                 </div>
               </div>
 
               <div class="row justify-content-around mt-5 pt-5">
                 <button type="button" class="btn btn-outline-danger btn-lg col-12 col-md-5" data-bs-dismiss="modal">الغاء</button>
-                <button type="submit" class="btn btn-primary btn-lg col-12 col-md-5">انشاء</button>
+                <button onclick="autoGenerate(this);" type="submit" class="btn btn-primary btn-lg col-12 col-md-5">انشاء</button>
               </div>
             </form>
           </div>

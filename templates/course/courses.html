@@ -51,8 +51,6 @@
               <i class="bi bi-plus" style="margin-left: 3px; left: 0"> </i>
               اضافة مادة جديدة</a>
           </div>
-          <div class="justify-content-end">
-          </div>
         </div>
       </form>
     </nav>
@@ -77,10 +75,10 @@
             <input id="tabsFilter" type="text" class="search-input" placeholder="الترم" />
           </th>
           <th>
-            <input type="text" class="search-input" placeholder="ترم معاكس" />
+            <input type="text" class="search-input" placeholder="عدد الساعات" />
           </th>
           <th>
-            <input type="text" class="search-input" placeholder="الترم الصيفي" />
+            <input type="text" class="search-input" placeholder="سكشن؟" />
           </th>
           <th></th>
         </tr>
@@ -88,12 +86,34 @@
       <tbody>
         {% if context.courses %} {% for course in context.courses %}
         <tr>
-          <td>{{ course.name }}</td>
+          <td>
+            <a href="/course/{{ course.id }}" style="text-decoration: none; color: #00008B;">
+              {{ course.name }}
+            </a>
+          </td>
           <td>{{ course.regulation }}</td>
           <td>{{ course.department }}</td>
           <td>{{ context.programs[course.program] }}</td>
           <td>{{ context.translated_semesters[course.semester] }}</td>
+          <td>{{ course.credit_hrs }}</td>
           <td>
+            {% if course.has_section %}
+              <i
+                class="bi bi-check-circle-fill text-success me-2"
+                style="font-size: 24px"
+                data-bs-toggle="modal"
+                data-bs-target="#staticBackdrop"
+              ></i>
+            {% else %}
+              <i
+                class="bi bi-x-circle-fill text-danger me-2"
+                style="font-size: 24px"
+                data-bs-toggle="modal"
+                data-bs-target="#staticBackdrop"
+              ></i>
+            {% endif %}
+          </td>
+          <!-- <td>
             <input
               type="checkbox"
               name="reverse_semester"
@@ -116,7 +136,7 @@
               value=""z
               autocomplete="off"
             />
-          </td>
+          </td> -->
           <td>
             <div class="d-flex">
               <div

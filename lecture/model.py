@@ -20,10 +20,20 @@ class Lecture(db.Model):
     day_of_week = db.Column(WeekDayEnum(WeekDay), primary_key=True)
     start_time = db.Column(db.String(5), primary_key=True)
 
+    path = db.Column(db.String(30), unique=False)
     group_num = db.Column(db.Integer, unique=False)
     language = db.Column(LanguageEnum(Language), default=Language.ar, nullable=False)
-    absent = db.Column(db.Boolean)
     is_section = db.Column(db.Boolean)
 
     dashboard_id = db.Column(db.Integer, db.ForeignKey('semester_settings.id'), nullable=False)
 
+
+class LectureAttendance(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    lecture = db.Column(db.String(120), unique=False, nullable=False)
+    lecture_path = db.Column(db.String(30), unique=False)
+    day_of_week = db.Column(WeekDayEnum(WeekDay))
+    date = db.Column(db.Date, nullable=False)
+    attended = db.Column(db.Boolean)
+    replacement = db.Column(db.Boolean)
+    online = db.Column(db.Boolean)

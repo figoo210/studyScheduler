@@ -1,14 +1,17 @@
 from flask import Blueprint, redirect, render_template, request
 import json
-from course.controller import get_all_courses_general, \
-    create_course, delete_course_by_id, update_reverse_semester, \
+from course.controller import course_search, get_all_courses_general, \
+    create_course, delete_course_by_id, get_course, update_reverse_semester, \
     update_course, update_summer_semester
 from dashboard.controller import get_semesters_dict, get_semesters_list
+from instructor_course.controller import get_all_course_instructors
+from lecture.controller import get_course_lectures_table
 from regulation.controller import get_regulations
 from department.controller import get_departments
 from utils.enums.Year import get_translated_divisions
-from utils.enums.Program import get_translated_programs
+from utils.enums.Program import get_translated_programs, Program
 from utils.enums.Semester import get_translated_semesters
+from utils.enums.WeekDay import get_translated_weekdays
 
 
 
@@ -29,6 +32,21 @@ def get_courses():
     context["regulations"] = get_regulations()
     context["departments"] = get_departments()
     return render_template(f'{PAGE}/courses.html', context=context)
+
+
+# Show one course
+@bp.route('/course/<id>', methods=["GET"])
+def get_one_course(id):
+    """ get one course  """
+    context = {}
+    context["translated_semesters"] = get_translated_semesters()
+    context["programs"] = get_translated_programs()
+    context["days"] = get_translated_weekdays()
+    context["courses"] = get_all_courses_general()
+    context["course"] = get_course(id)
+    context["course_instructors"] = get_all_course_instructors(id)
+    context["course_lectures"] = get_course_lectures_table(id)
+    return render_template(f'{PAGE}/course-profile.html', context=context)
 
 # Show Division courses
 @bp.route('/division/courses', methods=["GET"])
@@ -96,22 +114,46 @@ def new_coures():
     context = {}
     if request.method == 'POST':
         req = json.loads(request.form.to_dict()["data"])
-        print("#################: ", req)
         for e in req:
             has_section = False
             if "has_section" in e:
                 has_section = True
-            create_course(
-                e["name"],
-                e["code"],
-                e["credit_hrs"],
-                e["semester"],
-                int(e["year"]),
-                e["program"],
-                has_section,
-                e["regulation_id"],
-                e["department_id"]
-            )
+            if e["program"] == "Both":
+                create_course(
+                    e["name"],
+                    e["code"],
+                    e["credit_hrs"],
+                    e["semester"],
+                    int(e["year"]),
+                    Program.regularity,
+                    has_section,
+                    e["regulation_id"],
+                    e["department_id"]
+                )
+                create_course(
+                    e["name"],
+                    e["code"],
+                    e["credit_hrs"],
+                    e["semester"],
+                    int(e["year"]),
+                    Program.affiliation,
+                    has_section,
+                    e["regulation_id"],
+                    e["department_id"]
+                )
+            else:
+                create_course(
+                    e["name"],
+                    e["code"],
+                    e["credit_hrs"],
+                    e["semester"],
+                    int(e["year"]),
+                    e["program"],
+                    has_section,
+                    e["regulation_id"],
+                    e["department_id"]
+                )
+
         return redirect('/courses')
     else:
         context["semesters"] = get_semesters_list()
@@ -127,3 +169,9 @@ def new_coures():
 @bp.route('/api/courses', methods=["GET"])
 def get_courses_name():
     return get_all_courses_general()
+
+@bp.route('/api/courses/search', methods=["POST"])
+def search_courses():
+    search_text = request.form['search_text']
+    results = course_search(search_text)
+    return results

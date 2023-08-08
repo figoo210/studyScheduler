@@ -1,5 +1,10 @@
 from flask import Blueprint, render_template, redirect, request
-
+from course.controller import get_all_courses_general
+from dashboard.controller import get_current_semester
+from department.controller import get_departments
+from instructor.controller import get_instructors_data, get_instructors_name
+from regulation.controller import get_regulations
+from utils.enums.Language import get_translated_languages
 
 PAGE = 'report'
 
@@ -40,7 +45,14 @@ def show_weekly_report():
 def attendance_report():
     """ attendance_report """
     context = {}
-    return render_template(f'{PAGE}/attendance-report.html')
+    context["instructors"] = get_instructors_data()
+    context["instructors_name"] = get_instructors_name()
+    context["departments"] = get_departments()
+    context["courses"] = get_all_courses_general()
+    context["regulations"] = get_regulations()
+    context["languages"] = get_translated_languages()
+    context["semester"] = get_current_semester()
+    return render_template(f'{PAGE}/attendance-report.html', context=context)
 
 
 @bp.route(f'/form', methods=["GET"])
@@ -48,3 +60,7 @@ def get_form():
     """ get all items"""
     context = {}
     return render_template(f'{PAGE}/form.html')
+
+@bp.route('/pdf')
+def pdf():
+    return render_template("pdf.html")

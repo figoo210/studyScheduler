@@ -55,7 +55,7 @@ endblock %} {% block content %}
                   class="form-control form-control-lg col-12"
                   name="instructorName"
                   placeholder="إسم المحاضر"
-                  id="textSearchField"
+                  id="textSearchField" 
                   onkeyup="searchField('textSearchField')"
                 />
                 <ul id="searchResultBox"></ul>
@@ -150,7 +150,7 @@ endblock %} {% block content %}
                     required
                   >
                     <option selected disabled>المادة</option>
-                    <option disabled value="">برجاء اختيار الترم والائحة</option>
+                    <option disabled value="">برجاء اختيار الائحة</option>
                   </select>
                 </div>
                 <div class="col-12 col-sm-6 col-md-2  mb-3">
@@ -214,43 +214,37 @@ endblock %} {% block content %}
               </div>
 
               <div class="col-12 col-sm-6 col-md-1 mb-3">
-                <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true">
-                  <input
-                    type="text"
-                    class="form-control form-control-lg col-12"
-                    style="
-                      font-family: bootstrap-icons;
-                      border: 1px solid #4372EA;
-                      color: #4372EA;
-                      border-radius: .5rem;
-                    "
-                    placeholder="من  &#xF293;"
-                    name="startTime"
-                  />
-                  <span class="input-group-addon">
-                      <span class="glyphicon glyphicon-time"></span>
-                  </span>
-                </div>
+                <input
+                  type="time"
+                  class="form-control form-control-lg col-12"
+                  style="
+                    font-family: bootstrap-icons;
+                    border: 1px solid #4372EA;
+                    color: #4372EA;
+                    border-radius: .5rem;
+                    text-align: center;
+                  "
+                  dir="ltr"
+                  name="startTime"
+                  value="08:00"
+                />
               </div>
 
               <div class="col-12 col-sm-6 col-md-1 mb-3">
-                <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true">
-                  <input
-                    type="text"
-                    class="form-control form-control-lg col-12"
-                    style="
-                      font-family: bootstrap-icons;
-                      border: 1px solid #4372EA;
-                      color: #4372EA;
-                      border-radius: .5rem;
-                    "
-                    placeholder="إلى  &#xF293;"
-                    name="endTime"
-                  />
-                  <span class="input-group-addon">
-                      <span class="glyphicon glyphicon-time"></span>
-                  </span>
-                </div>
+                <input
+                  type="time"
+                  class="form-control form-control-lg col-12"
+                  style="
+                    font-family: bootstrap-icons;
+                    border: 1px solid #4372EA;
+                    color: #4372EA;
+                    border-radius: .5rem;
+                    text-align: center;
+                  "
+                  dir="ltr"
+                  name="endTime"
+                  value="08:00"
+                />
               </div>
 
               <div class="col-1 mb-md-0 mb-3 mb-3">
