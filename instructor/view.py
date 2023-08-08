@@ -118,6 +118,11 @@ def get_all_instructors():
     return get_instructors_data()
 
 
+@bp.route(f'/api/instructor/courses/<id>', methods=["GET"])
+def get_instructor_courses(id):
+    return get_instructor_lectures_table(id)
+
+
 @bp.route('/api/instructors/search', methods=["POST"])
 def search_courses():
     search_text = request.form['search_text']

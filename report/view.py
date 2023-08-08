@@ -3,6 +3,7 @@ from course.controller import get_all_courses_general
 from dashboard.controller import get_current_semester
 from department.controller import get_departments
 from instructor.controller import get_instructors_data, get_instructors_name
+from lecture.controller import get_lectures
 from regulation.controller import get_regulations
 from utils.enums.Language import get_translated_languages
 
@@ -45,13 +46,7 @@ def show_weekly_report():
 def attendance_report():
     """ attendance_report """
     context = {}
-    context["instructors"] = get_instructors_data()
-    context["instructors_name"] = get_instructors_name()
-    context["departments"] = get_departments()
-    context["courses"] = get_all_courses_general()
-    context["regulations"] = get_regulations()
-    context["languages"] = get_translated_languages()
-    context["semester"] = get_current_semester()
+    context["lectures"] = get_lectures()
     return render_template(f'{PAGE}/attendance-report.html', context=context)
 
 

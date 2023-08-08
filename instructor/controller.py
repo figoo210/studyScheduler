@@ -95,11 +95,19 @@ def instructor_search(table_type, search_text):
                 "name": c.name
             }
             instructors.append(cdict)
-    else:
+    elif table_type == "lecture":
         for c in Instructor.query.filter(Instructor.instructor_role!="معيد", Instructor.name.ilike(f'%{search_text}%')).all():
             cdict = {
                 "id": c.id,
                 "name": c.name
+            }
+            instructors.append(cdict)
+    else:
+        for c in Instructor.query.filter(Instructor.name.ilike(f'%{search_text}%')).all():
+            cdict = {
+                "id": c.id,
+                "name": c.name,
+                "role": c.instructor_role,
             }
             instructors.append(cdict)
     return instructors

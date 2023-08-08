@@ -13,156 +13,20 @@
     <!-- taps -->
     <h2 class="fw-normal fs-3 pt-4">الاستمارة </h2>
 
-    <form id="form-container needs-validation" novalidate>
-      <div id="form-1" class=" row g-0  align-items-start py-4">
-        <div class="row col-10 g-0 justify-content-between">
-          <div class="col-3 mb-md-0 mb-3">
-            <select
-              class="form-control form-control-lg col-12"
-              style="
-                font-family: bootstrap-icons;
-                border: 1px solid #ced4da;
-                color: #6c757d;
-                border-radius: .5rem;
-                min-height: 100%;
-              "
-              aria-label=".form-select-lg example"
-              name="department_id"
-              onchange=""
-            >
-              <option selected disabled>القسم</option>
+    <div class="my-5">
+      <input
+        type="text"
+        value=""
+        class="form-control form-control-lg col-12"
+        placeholder="إسم المحاضر"
+        id="textSearchField"
+        onkeyup="generalSearch(this, '/api/instructors/search', 'searchBarResultBox-454545', 'selectInstructorCourses', true)"
+      />
+      <ul id="searchBarResultBox-454545"></ul>
+      <input name="instructor" hidden value="" />
 
-              {% for department in context.departments %}
-              <option value="{{ department.id }}">{{ department.name }}</option>
-              {% endfor %}
-
-            </select>
-          </div>
-          <input
-            type="text"
-            value=""
-            class="{{ 'textSearchField-' + 'autoField' }}"
-            name="id"
-            hidden
-          />
-          <input
-            type="text"
-            value="/api/instructors"
-            id="{{ 'textSearchField-' + 'fullData' }}"
-            hidden
-          />
-          <div class="col-3 mb-md-0 mb-3">
-            <input
-              type="text"
-              value=""
-              class="form-control form-control-lg col-12"
-              style="
-                font-family: bootstrap-icons;
-                border: 1px solid #ced4da;
-                color: #6c757d;
-                border-radius: .5rem;
-                min-height: 100%;
-              "
-              name="instructorName"
-              placeholder="إسم المحاضر"
-              id="textSearchField"
-              onkeyup="searchField('textSearchField')"
-            />
-            <ul id="searchResultBox"></ul>
-            <input
-              hidden
-              id="{{ 'textSearchField-' + 'data' }}"
-              value="{{ context.instructors_name }}"
-            />
-          </div>
-          <div class="col-2 mb-md-0 mb-3">
-            <input
-              type="text"
-              value=""
-              class="form-control form-control-lg col-12 {{ 'textSearchField-' + 'autoField' }}"
-              style="
-                font-family: bootstrap-icons;
-                border: 1px solid #ced4da;
-                color: #6c757d;
-                border-radius: .5rem;
-                min-height: 100%;
-              "
-              name="role"
-              placeholder="الرتبة"
-              disabled
-            />
-          </div>
-          <div class="col-3 mb-md-0 mb-3">
-            <select
-              class="form-control form-control-lg col-12"
-              style="
-                font-family: bootstrap-icons;
-                border: 1px solid #ced4da;
-                color: #6c757d;
-                border-radius: .5rem;
-                min-height: 100%;
-              "
-              aria-label=".form-select-lg example"
-              name="course_id"
-            >
-              <option selected disabled>المادة</option>
-
-              {% for course in context.courses %}
-              <option value="{{ course.id }}">{{ course.name }}</option>
-              {% endfor %}
-
-            </select>
-          </div>
-        </div>
-        <div class="row col-10 g-0 justify-content-start my-3">
-          <div class="col-3 mb-md-0 mb-3">
-            <select
-              class="form-control form-control-lg col-12"
-              style="
-                font-family: bootstrap-icons;
-                border: 1px solid #ced4da;
-                color: #6c757d;
-                border-radius: .5rem;
-                min-height: 100%;
-              "
-              aria-label=".form-select-lg example"
-              name="regulation_id"
-            >
-              <option selected disabled>الائحة</option>
-
-              {% for regulation in context.regulations %}
-              <option value="{{ regulation.id }}">{{ regulation.name }}</option>
-              {% endfor %}
-
-            </select>
-          </div>
-          <div class="col-3 mb-md-0 mb-3 mx-4">
-            <select
-              class="form-control form-control-lg col-12"
-              style="
-                font-family: bootstrap-icons;
-                border: 1px solid #ced4da;
-                color: #6c757d;
-                border-radius: .5rem;
-                min-height: 100%;
-              "
-              aria-label=".form-select-lg example"
-              name="language_id"
-            >
-              <option selected disabled>اللغة</option>
-
-              {% for language in context.languages %}
-              <option value="{{ language }}">{{ context.languages[language] }}</option>
-              {% endfor %}
-
-            </select>
-          </div>
-        </div>
-
-
-      </div>
-
-    </form>
+      <ul class="mt-5" id="instructorCourses"></ul>
+    </div>
 
     <div class="bg-white p-4">
       <div class="d-flex justify-content-between align-items-center col-12 flex-wrap">

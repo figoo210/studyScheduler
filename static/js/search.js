@@ -136,6 +136,23 @@ function selectInstructor(e, instructorId) {
   });
 }
 
+function selectInstructorCourses(instructorId) {
+  $.get(`/api/instructor/courses/${instructorId}`, (data, status) => {
+    console.log(data);
+    /* for (let x = 0; x < data.length; x++) {
+      if (
+        data[x]["semester"] == semester.value || semester.value == "Summer" &&
+        data[x]["regulation_id"] == regulation.value
+      ) {
+        const option = document.createElement("option");
+        option.value = data[x]["id"];
+        option.textContent = data[x]["name"];
+        course.appendChild(option);
+      }
+    } */
+  });
+}
+
 // Course Selector Search
 function selectCoursBySearch(e, courseId) {
   e.addEventListener("click", (e) => {
@@ -153,7 +170,6 @@ function selectCoursBySearch(e, courseId) {
 // General Search ##################################################################################################
 
 function generalSearch(e, endpoint, resultBoxId, executeFunction, isCustomFunction) {
-  e.addE
   $.ajax({
     type: 'POST',
     url: endpoint,
@@ -171,7 +187,7 @@ function generalSearch(e, endpoint, resultBoxId, executeFunction, isCustomFuncti
           isCustomFunction ?
             searchResult.setAttribute("onClick", executeFunction.replace(")", `, ${d.id})`))
             : searchResult.setAttribute("onClick", `${executeFunction}(${d.id})`);
-          searchResult.textContent = d.name;
+          searchResult.textContent = d.role ? `${d.name} (${d.role})` : d.name;
           searchResultElement.appendChild(searchResult);
           $(`#${resultBoxId}`).append(searchResultElement);
         }
