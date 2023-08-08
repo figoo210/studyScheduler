@@ -339,6 +339,12 @@ def get_lecture_by_path(path):
             return l
 
 
+def get_lecture_attendance_by_path(path):
+    lecture_attendances = []
+    for la in LectureAttendance.query.filter(LectureAttendance.lecture_path == path).order_by(LectureAttendance.date).all():
+        lecture_attendances.append(model_to_dict(la))
+    return lecture_attendances
+
 def delete_time(bid):
     """
     Delete a Time from the database.

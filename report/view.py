@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, redirect, request
-from course.controller import get_all_courses_general
+from course.controller import get_all_courses_general, get_course
 from dashboard.controller import get_current_semester
 from department.controller import get_departments
 from instructor.controller import get_instructors_data, get_instructors_name
-from lecture.controller import get_lectures
+from lecture.controller import get_lecture_attendance_by_path, get_lecture_by_path, get_lectures
 from regulation.controller import get_regulations
 from utils.enums.Language import get_translated_languages
 
@@ -59,3 +59,14 @@ def get_form():
 @bp.route('/pdf')
 def pdf():
     return render_template("pdf.html")
+
+
+
+@bp.route(f'/api/attendance-report/<id>/<path>', methods=["GET"])
+def get_instructor_courses(id, path):
+    return {
+        "course": get_course(int(id)),
+        "lecture": get_lecture_by_path(path),
+        "lecture_attendance": get_lecture_attendance_by_path(path)
+    }
+

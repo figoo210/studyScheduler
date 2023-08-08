@@ -136,20 +136,35 @@ function selectInstructor(e, instructorId) {
   });
 }
 
-function selectInstructorCourses(instructorId) {
+function selectInstructorCourses(e, instructorId) {
+  let instructor = e.parentNode.parentNode.parentNode.children[2];
+  let resultBox = e.parentNode.parentNode.parentNode.children[1];
+  let inputText = e.parentNode.parentNode.parentNode.children[0];
+  instructor.value = instructorId;
+  inputText.value = e.textContent.split(" (")[0];
+  resultBox.innerHTML = "";
+
+  document.getElementById("instructor_name").textContent = e.textContent.split(" (")[0];
+  document.getElementById("instructor_role").textContent = e.textContent.split(" (")[1].replace(")", "");
+  const listCont = document.getElementById("instructorCourses");
+  listCont.innerHTML = "";
   $.get(`/api/instructor/courses/${instructorId}`, (data, status) => {
+    for (let x = 0; x < data.length; x++) {
+      const d = data[x];
+      listCont.innerHTML += `
+        <li class='row my-3'>
+          <div class='col-9'>${d.course.name} - ${d.path_data.year_trans} قسم ${d.course.department} ${d.path_data.language_trans} ${d.path_data.program_trans}</div>
+          <button class='btn btn-secondary col-3' type='button' onClick='fillAttendanceReport(${d.course_id}, "${d.path}")'>اختيار</button>
+        </li><hr>
+      `
+    }
+  });
+}
+
+function fillAttendanceReport(courseId, path) {
+  console.log(courseId, path);
+  $.get(`/api/attendance-report/${id}/${path}`, (data, status) => {
     console.log(data);
-    /* for (let x = 0; x < data.length; x++) {
-      if (
-        data[x]["semester"] == semester.value || semester.value == "Summer" &&
-        data[x]["regulation_id"] == regulation.value
-      ) {
-        const option = document.createElement("option");
-        option.value = data[x]["id"];
-        option.textContent = data[x]["name"];
-        course.appendChild(option);
-      }
-    } */
   });
 }
 

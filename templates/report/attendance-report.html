@@ -20,7 +20,7 @@
         class="form-control form-control-lg col-12"
         placeholder="إسم المحاضر"
         id="textSearchField"
-        onkeyup="generalSearch(this, '/api/instructors/search', 'searchBarResultBox-454545', 'selectInstructorCourses', true)"
+        onkeyup="generalSearch(this, '/api/instructors/search', 'searchBarResultBox-454545', 'selectInstructorCourses(this)', true)"
       />
       <ul id="searchBarResultBox-454545"></ul>
       <input name="instructor" hidden value="" />
@@ -50,13 +50,13 @@
         <div class="col-2"></div>
         <div class="col-sm-5 col-12">
           <p class="card-text fw-bold fs-5 m-0"><span class="color-title-name">الاسم : أ/ </span><span
-              class="nameDr"></span> </p>
+              class="nameDr" id="instructor_name"></span> </p>
           <p class="card-text fw-bold fs-5 m-0"><span class="color-title-name"> المادة : </span> <span
-              class="matrial"></span> </p>
+              class="course"></span></p>
         </div>
         <div class="col-sm-5 col-12">
           <p class="card-text fw-bold fs-5 m-0"><span class="color-title-name"> الوظيفة : </span><span
-              class=""></span>
+              class="instructor_role" id="instructor_role"></span>
 
           </p>
           <p class="card-text fw-bold fs-5 m-0"><span class="color-title-name"> عدد الساعات : ( <span class=""></span>
@@ -107,43 +107,45 @@
 
       </div>
 
-      <div class="">
+      <div class="px-5">
 
-        <div>
-          <pre
-            class="card-text fs-5 m-0" dir="rtl"><span class="color-title-name fw-bold">اجمالي عدد الساعات: </span><span>     ساعة</span></pre>
+        <div class="text-right my-3">
+          <p class="card-text fs-5 m-0 text-right" dir="rtl">
+            <span class="color-title-name fw-bold text-right" dir="rtl">اجمالي عدد الساعات: </span>
+            <span dir="rtl"> ساعة</span>
+          </p>
         </div>
-        <div class="card-text  fs-5 m-0"><span class="color-title-name fw-normal">قمت انا
-            ................................................. بتدريس عدد ...... ساعة والتي بيانها اعلاه ومسئول عنها.
+
+        <div class="card-text fs-5 my-3">
+          <span class="color-title-name fw-normal">
+            قمت انا .................................................................................. بتدريس عدد ............ ساعة والتي بيانها اعلاه ومسئول عنها.
           </span>
         </div>
 
-        <div class="card-text  fs-5 m-0 p-5">
-          <p class="text-sm-end text-center"><span class="color-title-name fw-bold me-sm-4">قسم الشئون العامة</span>
-          <br><span>..................................</span></p>
-           <p class=" text-center fw-normal">يعتمد وتصرف،،،،</p>
+        <div class="card-text fs-5 my-3">
+          <p class="text-sm-end text-center">
+            <span class="color-title-name fw-bold">قسم الشئون العامة</span>
+            <br><span>..........................................</span>
+          </p>
+          <p class=" text-center fw-normal">يعتمد وتصرف،،،،</p>
           <p class="text-sm-start text-center">
-            <span class="color-title-name fw-bold text-center ms-sm-5"">  عميد الكلية
-              </span>
-            <br><span>.................................</span></p>
+            <span class="color-title-name fw-bold text-center mx-3"">عميد الكلية</span>
+            <br><span>...................................</span>
+          </p>
         </div>
-        <hr class=" border border-black border-1 opacity-75 ">
+
+        <div class="mt-5"></div>
+        <hr>
+
         <div class=" fs-5 fw-normal tex-end">
-              <p class="m-0">عدد الساعات : ..............................................
-              </p>
-              <p class="m-0">
-                اجمالي المكافأة : ............................................
-
-              </p>
-              <p class="m-0">
-                فئة الساعة : .................................................
-
-              </p>
+          <p class="m-0 my-1">عدد الساعات :</p>
+          <p class="m-0 my-1">اجمالي المكافأة :</p>
+          <p class="m-0 my-1">فئة الساعة :</p>
         </div>
+
       </div>
 
     </div>
-
 
   </div>
 
