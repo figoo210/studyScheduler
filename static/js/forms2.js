@@ -64,6 +64,9 @@ function instructorAssignFormSubmit(e) {
 
   let courses = document.getElementsByName("course");
   for (let i = 0; i < courses.length; i++) {
+    if (courses[i].value == "المادة") {
+      break;
+    }
     let groups_num = document.getElementsByName("groupsNumber")[i].value;
     instructor_course.push({
       instructor_id: formData.get("id"),
@@ -76,6 +79,9 @@ function instructorAssignFormSubmit(e) {
   for (let i = 0; i < weekDay.length; i++) {
     let startTime = document.getElementsByName("startTime")[i].value;
     let endTime = document.getElementsByName("endTime")[i].value;
+    if (weekDay[i].value == "اليوم") {
+      break;
+    }
     instructor_time.push({
       instructor_id: formData.get("id"),
       day_of_week: weekDay[i].value,
