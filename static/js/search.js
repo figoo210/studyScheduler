@@ -163,8 +163,47 @@ function selectInstructorCourses(e, instructorId) {
 
 function fillAttendanceReport(courseId, path) {
   console.log(courseId, path);
-  $.get(`/api/attendance-report/${id}/${path}`, (data, status) => {
+  $.get(`/api/attendance-report/${courseId}/${path}`, (data, status) => {
     console.log(data);
+    document.getElementById("language").textContent = data.lecture.path_data.language_trans;
+    document.getElementById("regulation").textContent = data.lecture.path_data.regulation_trans;
+    document.getElementById("semester").textContent = data.course.semester_ar;
+    document.getElementById("course").textContent = data.course.name;
+    document.getElementById("credit_hrs").textContent = data.course.credit_hrs;
+    const table_data = document.getElementById("table_data");
+    const table_data2 = document.getElementById("table_data2");
+    table_data.innerHTML = "";
+    table_data2.innerHTML = "";
+    let counter = 0;
+    for (let i = 0; i < data.lecture_attendance.length; i++) {
+      const element = data.lecture_attendance[i];
+
+      if (i >= 7) {
+        table_data2.innerHTML += `
+          <tr class="text-center">
+            <td scope="row">${element.date}</td>
+            <td>${data.lecture.start_time}</td>
+            <td>${data.lecture.end_time}</td>
+            <td>${data.course.credit_hrs}</td>
+            <td></td>
+          </tr>
+        `;
+      } else {
+        table_data.innerHTML += `
+          <tr class="text-center">
+            <td scope="row">${element.date}</td>
+            <td>${data.lecture.start_time}</td>
+            <td>${data.lecture.end_time}</td>
+            <td>${data.course.credit_hrs}</td>
+            <td></td>
+          </tr>
+        `;
+      }
+
+      counter++;
+
+    }
+    document.getElementById("total_hrs").textContent = `${counter * parseInt(data.course.credit_hrs)} ساعة`;
   });
 }
 

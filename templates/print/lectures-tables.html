@@ -1,0 +1,130 @@
+{% extends 'print/print_template.html' %}
+{% block content_block %}
+
+{% for division in context.divisions_department %}
+
+{% for department in context.divisions_department[division].departments %}
+
+
+{% for lang in context.languages %}
+
+{% if lang == "ar" %}
+
+{% for program in context.programs %}
+
+{% if program != "Open Education" %}
+
+{% for groups in department.groups %}
+    {% if groups.year == division and groups.language == lang and groups.program == program %}
+
+        {% for group in groups.groups_num %}
+            <div class="mb-5"><img src="{{ url_for('static', filename='img/logo.png') }}" class="img-fluid" alt="alex-logo"></div>
+            <h4 class='text-center my-2 fw-bold'>جدول الفرقة {{ context.divisions_department[division].name }} قسم {{ department.name }} {{ context.languages[lang] }} {{ context.programs[program] }} </h4>
+            <h5 class='text-center my-3 fw-bold'>مجموعة ({{ group + 1 }})</h5>
+            <div class="w-100 p-2">
+                <table class="table table-striped table-bordered">
+                    <thead style="background-color: #111; color: #eee;" class="thead-light">
+                        <tr>
+                            <th scope="col" style="width: 15%;"><div class="d-flex justify-content-center align-items-center">اليوم</div></th>
+                            <th scope="col"><div class="d-flex justify-content-center align-items-center">المحاضرات</div></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for day in context.days %}
+                            <tr>
+                                <th scope="row">{{ context.days[day] }}</th>
+                                <td scope="col" class="text-center" >
+                                    <div class="d-flex">
+                                        {% for lecture in context.lectures %}
+                                            {% if lecture.path_data.year == division and lecture.path_data.language == lang and lecture.path_data.program == program and lecture.path_data.department_id == department.id and lecture.path_data.group_num == group and lecture.path_data.day == day %}
+                                                <div class="bg-light border border-5 mx-1" style="max-width: 200px; padding: 10px; font-weight: 900; border-radius: 10px;">
+                                                    {{ lecture.course.name }}
+                                                    <br>د/ {{lecture.instructor.name}}
+                                                    <br>من {{lecture.start_time}} الى {{ lecture.end_time }}
+                                                    <br>{{lecture.room.name}}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="page-break"></div>
+        {% endfor %}
+
+    {% endif %}
+{% endfor %}
+
+{% endif %}
+
+{% endfor %}
+
+{% else %}
+
+
+{% for groups in department.groups %}
+    {% if groups.year == division and groups.language == lang and groups.program == "NoProgram" %}
+
+        {% for group in groups.groups_num %}
+            <div class="mb-5"><img src="{{ url_for('static', filename='img/logo.png') }}" class="img-fluid" alt="alex-logo"></div>
+            <h4 class='text-center my-2 fw-bold'>جدول الفرقة {{ context.divisions_department[division].name }} قسم {{ department.name }} {{ context.languages[lang] }}</h4>
+            <h5 class='text-center my-3 fw-bold'>مجموعة ({{ group + 1 }}) </h5>
+            <div class="w-100 p-2">
+                <table class="table table-striped table-bordered">
+                    <thead style="background-color: #111; color: #eee;" class="thead-light">
+                        <tr>
+                            <th scope="col" style="width: 15%;"><div class="d-flex justify-content-center align-items-center">اليوم</div></th>
+                            <th scope="col"><div class="d-flex justify-content-center align-items-center">المحاضرات</div></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for day in context.days %}
+                            <tr>
+                                <th scope="row">{{ context.days[day] }}</th>
+                                <td scope="col" class="text-center" >
+                                    <div class="d-flex">
+                                        {% for lecture in context.lectures %}
+                                            {% if lecture.path_data.year == division and lecture.path_data.language == lang and lecture.path_data.program == "NoProgram" and lecture.path_data.department_id == department.id and lecture.path_data.group_num == group and lecture.path_data.day == day %}
+                                                <div class="bg-light border border-5 mx-1" style="max-width: 200px; padding: 10px; font-weight: 900; border-radius: 10px;">
+                                                    {{ lecture.course.name }}
+                                                    <br>د/ {{lecture.instructor.name}}
+                                                    <br>من {{lecture.start_time}} الى {{ lecture.end_time }}
+                                                    <br>{{lecture.room.name}}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="page-break"></div>
+        {% endfor %}
+
+    {% endif %}
+{% endfor %}
+
+
+{% endif %}
+
+{% endfor %}
+
+{% endfor %}
+
+{% endfor %}
+
+
+
+{% endblock %}

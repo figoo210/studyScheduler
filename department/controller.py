@@ -1,7 +1,11 @@
 from flask import flash
+from dashboard.model import SemesterSettings
 from department.model import Department, DivisionDepartments
-
-from utils.enums.Year import Division as Division_Enum
+from lecture.model import Lecture
+from utils.enums.Year import Division as Division_Enum, get_translated_divisions
+from utils.enums.Language import get_translated_languages
+from utils.enums.Program import get_translated_programs
+from utils.enums.Semester import get_translated_semesters
 
 from database import db
 
@@ -44,6 +48,50 @@ def get_department_divisions(department_id):
         divisions.append(division)
     return divisions
 
+
+def department_groups_num(path_base, year):
+    ss = SemesterSettings.query.order_by(SemesterSettings.id.desc()).first()
+    curr_semester = {
+        "id": ss.id,
+        "semester": ss.semester,
+        "translated_semester": get_translated_semesters()[ss.semester],
+        "start_date": ss.semester_start_date,
+        "end_date": ss.semester_end_date
+    }
+    counter = 0
+    while True:
+        lecture = Lecture.query.filter(Lecture.path.ilike(f'%{path_base}-{counter}%{year}'), Lecture.dashboard_id==curr_semester["id"]).first()
+        if lecture:
+            counter = counter + 1
+        else:
+            break
+    return counter
+
+
+def get_department_groups(year, department_id):
+    groups = []
+    for lang in get_translated_languages():
+        if lang == "ar":
+            for program in get_translated_programs():
+                if program != "Open Education":
+                    path_base = f"{lang}-{program}-{department_id}-group"
+                    groups.append({
+                        "year": year,
+                        "language": lang,
+                        "program": program,
+                        "groups_num": list(range(department_groups_num(path_base=path_base, year=year)))
+                    })
+        else:
+            path_base = f"{lang}-NoProgram-{department_id}-group"
+            groups.append({
+                "year": year,
+                "language": lang,
+                "program": "NoProgram",
+                "groups_num": list(range(department_groups_num(path_base=path_base, year=year)))
+            })
+    return groups
+
+
 # Get all divisions departments
 def get_all_divisions_departments():
     dd1 = []
@@ -63,7 +111,8 @@ def get_all_divisions_departments():
                 "name": department.name,
                 "count": dd.students_count,
                 "courses": department.courses,
-                "instructors": department.instructors
+                "instructors": department.instructors,
+                "groups": get_department_groups(year=y, department_id=dd.department_id)
             }
             if y == "1": dd1.append(department_dict)
             if y == "2": dd2.append(department_dict)

@@ -6,6 +6,9 @@ from instructor.controller import get_instructors_data, get_instructors_name
 from lecture.controller import get_lecture_attendance_by_path, get_lecture_by_path, get_lectures
 from regulation.controller import get_regulations
 from utils.enums.Language import get_translated_languages
+from utils.enums.Year import get_translated_divisions
+from utils.enums.WeekDay import get_translated_weekdays
+from utils.enums.Semester import get_translated_semesters
 
 PAGE = 'report'
 
@@ -46,7 +49,11 @@ def show_weekly_report():
 def attendance_report():
     """ attendance_report """
     context = {}
-    context["lectures"] = get_lectures()
+    context["current_semester"] = get_current_semester()
+    context["days"] = get_translated_weekdays()
+    context["years"] = get_translated_divisions()
+    context["languages"] = get_translated_languages()
+    context["semesters"] = get_translated_semesters()
     return render_template(f'{PAGE}/attendance-report.html', context=context)
 
 

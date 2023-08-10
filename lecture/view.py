@@ -113,6 +113,19 @@ def delete_one(id):
     return redirect(f'/{PAGE}')
 
 
+@bp.route(f'/print/{PAGE}s', methods=["GET"])
+def print_lectures():
+    """ Get Lectures Data """
+    context = {}
+    context["divisions_department"] = get_all_divisions_departments()
+    context["lectures"] = get_lectures()
+    context["languages"] = get_translated_languages()
+    context["programs"] = get_translated_programs()
+    context["days"] = get_translated_weekdays()
+    return render_template("print/lectures-tables.html", context=context, _target="print")
+
+
+
 # API
 
 @bp.route(f'/{PAGE}/data', methods=["POST"])

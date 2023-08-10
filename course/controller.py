@@ -185,6 +185,7 @@ def get_course(course_id):
     else:
         course["has_section"] = 0
     course["semester"] = str(c.semester)
+    course["semester_ar"] = get_translated_semesters()[c.semester]
     course["regulation_id"] = c.regulation_id
     course["regulation"] = Regulation.query.get(c.regulation_id).name
     course["year"] = str(c.year.value)

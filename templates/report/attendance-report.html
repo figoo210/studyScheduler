@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %} {% block title_block %}
-  استمارة غياب المحاضرين
+  استمارة مكافأت المحاضرين
 {% endblock %}
 
 {% block custom_style %}
@@ -28,10 +28,14 @@
       <ul class="mt-5" id="instructorCourses"></ul>
     </div>
 
-    <div class="bg-white p-4">
-      <div class="d-flex justify-content-between align-items-center col-12 flex-wrap">
+    <div class="text-left my-3 d-flex justify-content-end">
+      <i class="bi bi-printer-fill fs-1 cursor text-primary" onclick="printElem('print');"></i>
+    </div>
+
+    <div class="bg-white p-1" id="print">
+      <div class="d-flex justify-content-between align-items-center col-12 flex-wrap" style="max-height: 150px;">
         <figure class="figure col-auto">
-          <img src="{{ url_for('static', filename='img/logo.png') }}" class="img-fluid" alt="alex-logo">
+          <img src="{{ url_for('static', filename='img/logo.png') }}" width="100%" height="100px" alt="alex-logo">
           <figcaption class="figure-caption text-black  fs-6 m-3 fw-bold">قــســــــم الـشــئـــــون الــعـــــامـــة
           </figcaption>
         </figure>
@@ -41,25 +45,25 @@
       </div>
       <div class="d-flex flex-column justify-content-center align-items-center col-12">
         <p class="m-0 fw-normal fs-6">استمارة طلب مكافأت تدريس محاضرات</p>
-        <p class="m-0 fw-bold fs-6">(شعبة اللغة <span class="lang"></span>) ساعات معتمدة</p>
-        <p class="m-0 fw-bold fs-6"><ins>عن الفصل الدراسي الثاني 2022/2023</ins></p>
+        <p class="m-0 fw-bold fs-6">(شعبة اللغة <span id="language"></span>) <span id="regulation"></span></p>
+        <p class="m-0 fw-bold fs-6"><ins>عن <span id="semester"></span> 2023/2024</ins></p>
       </div>
 
 
-      <div class=" d-flex flex-wrap justify-content-center align-items-center col-12 my-3">
-        <div class="col-2"></div>
-        <div class="col-sm-5 col-12">
-          <p class="card-text fw-bold fs-5 m-0"><span class="color-title-name">الاسم : أ/ </span><span
-              class="nameDr" id="instructor_name"></span> </p>
-          <p class="card-text fw-bold fs-5 m-0"><span class="color-title-name"> المادة : </span> <span
-              class="course"></span></p>
+      <div class=" d-flex flex-wrap justify-content-center align-items-center col-11 my-3 m-auto">
+        <!-- <div class="col-2"></div> -->
+        <div class="col-12 row">
+          <p class="card-text fw-bold fs-5 m-0 col-7"><span class="color-title-name">الاسم : أ/ </span>
+            <span id="instructor_name"></span> </p>
+          <p class="card-text fw-bold fs-5 m-0 col-5"><span class="color-title-name">المادة : </span>
+            <span id="course"></span></p>
         </div>
-        <div class="col-sm-5 col-12">
-          <p class="card-text fw-bold fs-5 m-0"><span class="color-title-name"> الوظيفة : </span><span
-              class="instructor_role" id="instructor_role"></span>
+        <div class="col-12 row">
+          <p class="card-text fw-bold fs-5 m-0 col-7"><span class="color-title-name">الوظيفة : </span>
+            <span class="instructor_role" id="instructor_role"></span>
 
           </p>
-          <p class="card-text fw-bold fs-5 m-0"><span class="color-title-name"> عدد الساعات : ( <span class=""></span>
+          <p class="card-text fw-bold fs-5 m-0 col-5"><span class="color-title-name">عدد الساعات : ( <span id="credit_hrs"></span>
               ) ساعة </span> </p>
         </div>
 
@@ -68,10 +72,10 @@
 
       <!-- taples -->
 
-      <div class="d-flex col-12 table-responsive-md flex-wrap px-4">
+      <div class="d-flex col-12 table-responsive-md flex-wrap justify-content-around align-items-start tableWidth">
 
-        <div class="col-12">
-          <table class="table ">
+        <div class="col-6 ">
+          <table class="table table-striped">
             <thead>
               <tr class="text-center ">
                 <th rowspan="2"  > التاريخ</th>
@@ -86,20 +90,36 @@
 
               </tr>
             </thead>
-            <tbody>
-              <tr class="text-center">
-                <td scope="row">3/2/2023</td>
-                <td>2</td>
-                <td>5</td>
-                <td>3</td>
-                <td></td>
-
-              </tr>
-            </tbody>
+            <tbody id="table_data"></tbody>
             <tfoot>
               <tr class="text-center">
                 <td class="text-center">الاجمالي</td>
-                <td colspan="4"></td>
+                <td colspan="4" id="table_total"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div class="col-6 " >
+          <table class="table table-striped">
+            <thead>
+              <tr class="text-center ">
+                <th rowspan="2"  > التاريخ</th>
+                <th colspan="2" >المحاضرات</th>
+
+                <th rowspan="2">عدد الساعات</th>
+                <th rowspan="2">التوقيع</th>
+              </tr>
+              <tr class="text-center">
+                <th>من</th>
+                <th>إلى</th>
+
+              </tr>
+            </thead>
+            <tbody id="table_data2"></tbody>
+            <tfoot>
+              <tr class="text-center">
+                <td class="text-center">الاجمالي</td>
+                <td colspan="4" id="table_total"></td>
               </tr>
             </tfoot>
           </table>
@@ -109,38 +129,37 @@
 
       <div class="px-5">
 
-        <div class="text-right my-3">
+        <div class="text-right my-2">
           <p class="card-text fs-5 m-0 text-right" dir="rtl">
-            <span class="color-title-name fw-bold text-right" dir="rtl">اجمالي عدد الساعات: </span>
-            <span dir="rtl"> ساعة</span>
+            <span class="color-title-name fw-bold text-right">اجمالي عدد الساعات: </span>
+            <span id="total_hrs"></span>
           </p>
         </div>
 
-        <div class="card-text fs-5 my-3">
+        <div class="card-text fs-5 mb-2">
           <span class="color-title-name fw-normal">
-            قمت انا .................................................................................. بتدريس عدد ............ ساعة والتي بيانها اعلاه ومسئول عنها.
+            قمت انا ........................................................................... بتدريس عدد ............ ساعة والتي بيانها اعلاه ومسئول عنها.
           </span>
         </div>
 
-        <div class="card-text fs-5 my-3">
-          <p class="text-sm-end text-center">
+        <div class="card-text fs-5 d-flex justify-content-between align-items-center w-100 my-2">
+          <p class="text-center col-4">
             <span class="color-title-name fw-bold">قسم الشئون العامة</span>
-            <br><span>..........................................</span>
+            <br><span>...............................................</span>
           </p>
-          <p class=" text-center fw-normal">يعتمد وتصرف،،،،</p>
-          <p class="text-sm-start text-center">
+          <p class=" text-center fw-normal col-4">يعتمد وتصرف،،،،</p>
+          <p class="text-center col-4">
             <span class="color-title-name fw-bold text-center mx-3"">عميد الكلية</span>
-            <br><span>...................................</span>
+            <br><span>...............................................</span>
           </p>
         </div>
 
-        <div class="mt-5"></div>
         <hr>
 
         <div class=" fs-5 fw-normal tex-end">
-          <p class="m-0 my-1">عدد الساعات :</p>
-          <p class="m-0 my-1">اجمالي المكافأة :</p>
-          <p class="m-0 my-1">فئة الساعة :</p>
+          <p class="m-0 mb-1">عدد الساعات :</p>
+          <p class="m-0 mb-1">اجمالي المكافأة :</p>
+          <p class="m-0">فئة الساعة :</p>
         </div>
 
       </div>

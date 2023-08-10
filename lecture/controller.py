@@ -14,7 +14,7 @@ from dashboard.controller import get_current_semester
 from instructor_course.controller import get_instructor_course_by_id
 from room.controller import get_all_rooms, get_room_by_id
 from building.controller import get_buildings
-from utils.date_and_time import add_time_hours, delete_time_minutes, get_date_from_string, get_day_name, get_day_name_from_string_date, get_day_of_week_dates
+from utils.date_and_time import add_time_hours, delete_time_minutes, get_date_from_string, get_day_name, get_day_name_from_string_date, get_day_of_week_dates, get_string_from_date
 from utils.enums.WeekDay import get_translated_weekdays
 from utils.enums.Language import get_translated_languages
 from utils.enums.Program import get_translated_programs
@@ -86,7 +86,7 @@ def read_lecture_path(path):
         "language_trans": get_translated_languages()[pdl[0]],
         "program": pdl[1],
         "program_trans": trans_program,
-        "department_id": pdl[2],
+        "department_id": int(pdl[2]),
         "department": Department.query.get(pdl[2]).name,
         "group_num": int(pdl[4]),
         "day": pdl[5],
@@ -341,8 +341,11 @@ def get_lecture_by_path(path):
 
 def get_lecture_attendance_by_path(path):
     lecture_attendances = []
-    for la in LectureAttendance.query.filter(LectureAttendance.lecture_path == path).order_by(LectureAttendance.date).all():
-        lecture_attendances.append(model_to_dict(la))
+    for la in LectureAttendance.query.filter(LectureAttendance.lecture_path == path, LectureAttendance.attended == True) \
+        .order_by(LectureAttendance.date).all():
+        la_dict = model_to_dict(la)
+        la_dict["date"] = get_string_from_date(la_dict["date"])
+        lecture_attendances.append(la_dict)
     return lecture_attendances
 
 def delete_time(bid):

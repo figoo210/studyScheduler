@@ -238,7 +238,7 @@ function printElem(el) {
         @page
         {
           size:  auto;   /* auto is the initial value */
-          margin: 0mm;  /* this affects the margin in the printer settings */
+          margin: 0;  /* this affects the margin in the printer settings */
         }
 
         html
@@ -247,18 +247,26 @@ function printElem(el) {
           margin: 0px;  /* this affects the margin on the html before sending to printer */
         }
 
+        @page :first {
+          margin-top: 0;
+        }
+
+        .tableWidth {
+          transform: scale(0.99) !important;
+        }
+
         body
         {
-          border: solid 5px #000 ;
-          height: 100vh;
-          margin: 10mm 15mm 10mm 15mm; /* margin you want for the content */
+          margin: 30px 15px;
         }
+
+
       </style>
     `
     $('body').empty().html(printcontent);
     $('html').attr("xmlns", "http://www.w3.org/1999/xhtml");
     $('head').append(headerStyle);
-    $('body').prepend("<h1 class='text-center m-5'>" + document.title + "</h1>");
+    // $('body').prepend("<h1 class='text-center m-5'>" + document.title + "</h1>");
     window.print();
     window.location.reload();
   });

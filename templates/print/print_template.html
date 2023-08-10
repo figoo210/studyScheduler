@@ -7,35 +7,60 @@
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.js') }}"></script>
 
     <style type="text/css" media="print">
-      @page {
-        size: A4; /* auto is the initial value */
-        margin: 1mm; /* this affects the margin in the printer settings */
-        border: solid 5px #000;
-      }
+      @page
+        {
+          size:  auto;   /* auto is the initial value */
+          margin: 0;  /* this affects the margin in the printer settings */
+          padding: 30px 15px;
+        }
+
+      @page :right
+        {
+          size:  auto;   /* auto is the initial value */
+          margin: 0;  /* this affects the margin in the printer settings */
+          padding: 30px 15px;
+        }
+
+      @page :left
+        {
+          size:  auto;   /* auto is the initial value */
+          margin: 0;  /* this affects the margin in the printer settings */
+          padding: 30px 15px;
+        }
+
+      html
+        {
+          background-color: #FFFFFF;
+          margin: 0px;  /* this affects the margin on the html before sending to printer */
+        }
+
+      @page :first {
+          margin-top: 0;
+        }
 
       .page-break {
-        page-break-before: always;
-      }
+          page-break-before: always;
+        }
 
-      html {
-        background-color: #ffffff;
-        margin: 3px; /* this affects the margin on the html before sending to printer */
-        border: solid 5px #000;
-      }
-
-      body {
-        width: 210mm;
-        height: 296mm;
-        border: solid 5px #000;
-        direction: rtl;
-      }
-
+      body
+        {
+          margin: 30px 15px;
+          direction: rtl;
+        }
     </style>
   </head>
   <body>
     {% if _target == 'print' %}
       <script>
-        window.print()
+        async function printPage() {
+          window.print();
+          await new Promise(resolve => {
+            window.addEventListener('afterprint', resolve);
+          });
+          window.history.back();
+        }
+
+        printPage();
       </script>
     {% endif %}
 
