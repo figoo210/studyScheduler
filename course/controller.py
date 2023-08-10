@@ -19,7 +19,7 @@ def get_filtered_courses(semester, year, program, regulation_id, department_id, 
             program=program,
             regulation_id=regulation_id,
             department_id=department_id,
-            has_section=True
+            # has_section=True
         ).all()
         if not program:
             courses_query = Course.query.filter_by(
@@ -27,7 +27,7 @@ def get_filtered_courses(semester, year, program, regulation_id, department_id, 
                 year=year,
                 regulation_id=regulation_id,
                 department_id=department_id,
-                has_section=True
+                # has_section=True
             ).all()
     else:
         courses_query = Course.query.filter_by(semester=semester, year=year, program=program, regulation_id=regulation_id, department_id=department_id).all()

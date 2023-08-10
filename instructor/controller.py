@@ -60,7 +60,7 @@ def get_instructor_data(instructor_id):
 def get_filtered_instructors(table_type):
     instructors = []
     if table_type == "section":
-        for c in Instructor.query.filter_by(instructor_role="معيد").all():
+        for c in Instructor.query.all():
             cdict = {
                 "instructor": model_to_dict(c),
                 "instructor_courses": [],
@@ -72,7 +72,7 @@ def get_filtered_instructors(table_type):
                 cdict["instructor_times"].append(model_to_dict(ci))
             instructors.append(cdict)
     else:
-        for c in Instructor.query.filter(Instructor.instructor_role!="معيد").all():
+        for c in Instructor.query.all():
             cdict = {
                 "instructor": model_to_dict(c),
                 "instructor_courses": [],
@@ -89,14 +89,14 @@ def get_filtered_instructors(table_type):
 def instructor_search(table_type, search_text):
     instructors = []
     if table_type == "section":
-        for c in Instructor.query.filter(Instructor.instructor_role=="معيد", Instructor.name.ilike(f'%{search_text}%')).all():
+        for c in Instructor.query.filter(Instructor.name.ilike(f'%{search_text}%')).all():
             cdict = {
                 "id": c.id,
                 "name": c.name
             }
             instructors.append(cdict)
     elif table_type == "lecture":
-        for c in Instructor.query.filter(Instructor.instructor_role!="معيد", Instructor.name.ilike(f'%{search_text}%')).all():
+        for c in Instructor.query.filter(Instructor.name.ilike(f'%{search_text}%')).all():
             cdict = {
                 "id": c.id,
                 "name": c.name
