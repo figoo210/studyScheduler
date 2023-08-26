@@ -5,6 +5,7 @@ from regulation.model import Regulation
 from dashboard.model import SemesterSettings
 from database import db, model_to_dict
 from utils.enums.Semester import Semester, get_translated_semesters
+from utils.enums.Year import Division
 
 
 def get_all_courses():
@@ -16,23 +17,12 @@ def get_filtered_courses(semester, year, program, regulation_id, department_id, 
         courses_query = Course.query.filter_by(
             semester=semester,
             year=year,
-            program=program,
             regulation_id=regulation_id,
             department_id=department_id,
             # has_section=True
         ).all()
-        if not program:
-            courses_query = Course.query.filter_by(
-                semester=semester,
-                year=year,
-                regulation_id=regulation_id,
-                department_id=department_id,
-                # has_section=True
-            ).all()
     else:
-        courses_query = Course.query.filter_by(semester=semester, year=year, program=program, regulation_id=regulation_id, department_id=department_id).all()
-        if not program:
-            courses_query = Course.query.filter_by(semester=semester, year=year, regulation_id=regulation_id, department_id=department_id).all()
+        courses_query = Course.query.filter_by(semester=semester, year=year, regulation_id=regulation_id, department_id=department_id).all()
     for c in courses_query:
         cdict = {
             "course": model_to_dict(c),
@@ -60,13 +50,14 @@ def get_all_courses_general():
         course["semester"] = str(c.semester)
         course["regulation_id"] = c.regulation_id
         course["regulation"] = Regulation.query.get(c.regulation_id).name
-        course["year"] = c.year
+        course["year"] = str(Division(c.year).value)
         course['department_id'] = c.department_id
         course['department'] = Department.query.get(c.department_id).name
         course['has_summer'] = is_has_summer(c.id)
         course['has_reverse'] = is_has_reverse(c.id)
         courses.append(course)
     return courses
+
 
 # Get course credit hrs by course id
 def get_credit_hrs(course_id):

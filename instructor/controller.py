@@ -12,6 +12,7 @@ def get_string_hash(s, length=5):
     sc = hashlib.shake_256(s.encode("utf-8")).hexdigest(length=length)
     return sc
 
+
 def get_instructors_data():
     instructors = Instructor.query.all()
     instructors_data = []
@@ -31,12 +32,14 @@ def get_instructors_data():
 
     return instructors_data
 
+
 def get_instructors_name():
     instructors = Instructor.query.all()
     instructors_data = []
     for instructor in instructors:
         instructors_data.append(instructor.name)
     return instructors_data
+
 
 def get_instructor_data(instructor_id):
     instructor = Instructor.query.get(instructor_id)
@@ -53,6 +56,7 @@ def get_instructor_data(instructor_id):
     instructor_data['instructor_times'] = [model_to_dict(x) for x in instructor.instructor_times]
 
     instructor_data['instructor_courses'] = [model_to_dict(x) for x in instructor.instructor_courses]
+    instructor_data['instructor_courses_len'] = len(instructor_data['instructor_courses'])
 
     return instructor_data
 
@@ -117,6 +121,7 @@ def delete_instructor(instructor_id):
     instructor = Instructor.query.get(instructor_id)
     db.session.delete(instructor)
     db.session.commit()
+
 
 def add_new_instructor(data):
     instructor = Instructor(

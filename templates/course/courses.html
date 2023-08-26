@@ -69,7 +69,7 @@
             <input type="text" class="search-input" placeholder="القسم" />
           </th>
           <th>
-            <input type="text" class="search-input" placeholder="البرنامج" />
+            <input type="text" class="search-input" placeholder="الفرقة" />
           </th>
           <th>
             <input id="tabsFilter" type="text" class="search-input" placeholder="الترم" />
@@ -93,7 +93,7 @@
           </td>
           <td>{{ course.regulation }}</td>
           <td>{{ course.department }}</td>
-          <td>{{ context.programs[course.program] }}</td>
+          <td>{{ context.years[course.year] }}</td>
           <td>{{ context.translated_semesters[course.semester] }}</td>
           <td>{{ course.credit_hrs }}</td>
           <td>

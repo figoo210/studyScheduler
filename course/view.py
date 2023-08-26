@@ -7,7 +7,7 @@ from dashboard.controller import get_semesters_dict, get_semesters_list
 from instructor_course.controller import get_all_course_instructors
 from lecture.controller import get_course_lectures_table
 from regulation.controller import get_regulations
-from department.controller import get_departments
+from department.controller import get_arabic_divisions, get_departments
 from utils.enums.Year import get_translated_divisions
 from utils.enums.Program import get_translated_programs, Program
 from utils.enums.Semester import get_translated_semesters
@@ -27,6 +27,7 @@ def get_courses():
     context["semesters"] = get_semesters_list()
     context["dsemesters"] = get_semesters_dict()
     context["translated_semesters"] = get_translated_semesters()
+    context["years"] = get_translated_divisions()
     context["programs"] = get_translated_programs()
     context["courses"] = get_all_courses_general()
     context["regulations"] = get_regulations()
@@ -53,13 +54,18 @@ def get_one_course(id):
 def get_division_courses():
     """ get all courses  """
     context = {}
-    context["semesters"] = get_semesters_list()
-    context["dsemesters"] = get_semesters_dict()
-    context["translated_semesters"] = get_translated_semesters()
-    context["programs"] = get_translated_programs()
-    context["courses"] = get_all_courses_general()
-    context["regulations"] = get_regulations()
+
+    context["semesters"] = get_semesters_dict()
+
+    # Get departments data
     context["departments"] = get_departments()
+    context["arabic_divisions"] = get_arabic_divisions()
+
+    # Get regulations data
+    context["regulations"] = get_regulations()
+
+    context["courses"] = get_all_courses_general()
+
     return render_template(f'{PAGE}/division-courses.html', context=context)
 
 # popup

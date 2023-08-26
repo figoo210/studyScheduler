@@ -7,7 +7,7 @@ from instructor_role.controller import get_roles
 from instructor_course.controller import add_new_instructor_course, delete_instructor_course_by_id
 from instructor_time.controller import add_new_time, delete_time
 from department.controller import get_departments
-from lecture.controller import get_instructor_lectures_statistics, get_instructor_lectures_table, lectures_attendance
+from lecture.controller import get_instructor_lectures_statistics, get_instructor_lectures_table, get_lecture_attendance_to_date, lectures_attendance
 from regulation.controller import get_regulations
 from dashboard.controller import get_current_semester
 
@@ -109,6 +109,20 @@ def get_instructor(id):
         context["instructor_lectures_table"] = get_instructor_lectures_table(id)
         context["statistics"] = get_instructor_lectures_statistics(id)
         return render_template(f'{PAGE}/{PAGE}-profile.html', context=context)
+
+
+@bp.route(f'/{PAGE}/<id>/courses', methods=["GET", "POST"])
+def get_all_instructor_courses(id):
+    """ get all items or post to add new """
+    context = {}
+    if request.method == 'POST':
+        return redirect(f'/{PAGE}/{id}')
+    else:
+        lectures_attendance()
+        context["instructor"] = get_instructor_data(id)
+        context["instructor_lectures"] = get_instructor_lectures_table(id)
+        context["attendance"] = get_lecture_attendance_to_date()
+        return render_template(f'{PAGE}/{PAGE}-courses.html', context=context)
 
 
 # Instructors API

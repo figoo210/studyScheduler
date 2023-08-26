@@ -40,9 +40,10 @@
             <a class="btn btn-primary px-4" href="/instructor/new">
               <i class="bi bi-plus" style="margin-left: 3px; left: 0;">
             </i> اضافة محاضرين</a>
-            <a class="btn btn-primary me-2" href="/instructor/assign">
+            <!-- <a class="btn btn-primary me-2" href="/instructor/assign">
               <i class="bi bi-plus" style="margin-left: 3px;">
-            </i> اضافة المواد للمحاضرين</a>
+            </i> اضافة المواد للمحاضرين</a> -->
+            <!-- <a class="btn btn-success me-2" href="#">طباعة جدول المحاضرين</a> -->
           </div>
         </div>
       </form>
@@ -69,6 +70,8 @@
             />
           </th>
           <th></th>
+          <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -85,6 +88,12 @@
             <td>{{ instructor.role }}</td>
             <td>{{ instructor.department }}</td>
             <td>{{ instructor.secuirty_code or "لا توجد معلومات" }}</td>
+            <td>
+              <a class="btn btn-outline-secondary px-4" href="/instructor/{{instructor.id}}/courses">تقرير تفصيلي</a>
+            </td>
+            <td>
+              <a class="btn btn-outline-success px-4" href="/instructor/{{instructor.id}}#print">جدول المحاضرات</a>
+            </td>
             <td>
               <i
                 class="bi bi-trash text-danger me-2 cursor"

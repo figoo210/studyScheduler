@@ -266,7 +266,7 @@ function printElem(el) {
     $('body').empty().html(printcontent);
     $('html').attr("xmlns", "http://www.w3.org/1999/xhtml");
     $('head').append(headerStyle);
-    // $('body').prepend("<h1 class='text-center m-5'>" + document.title + "</h1>");
+    $('body').prepend(`<div class="mb-5"><img src="{{ url_for('static', filename='img/logo.png') }}" class="img-fluid" alt="alex-logo"></div>`);
     window.print();
     window.location.reload();
   });

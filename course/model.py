@@ -26,7 +26,7 @@ class Course(db.Model):
     def serialize(self):
         return {
             'id': self.id,
-            'name': f"{self.name} ({self.credit_hrs}) {get_department_by_id(self.department_id).name} {get_translated_programs()[self.program]}"
+            'name': f"{self.name} ({self.credit_hrs}) {get_department_by_id(self.department_id).name}"
         }
 
 

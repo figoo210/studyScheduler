@@ -124,6 +124,10 @@ function openCourseProfile(courseId) {
   window.location.href = `/course/${courseId}`;
 }
 
+function openInstructorReport(instructorId) {
+  window.location.href = `/instructor/${instructorId}/courses`;
+}
+
 // Instructor Selector Search
 function selectInstructor(e, instructorId) {
   e.addEventListener("click", (e) => {

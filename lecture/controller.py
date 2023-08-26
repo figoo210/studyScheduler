@@ -11,7 +11,7 @@ from sqlalchemy import func
 from course.controller import get_course, get_credit_hrs, get_filtered_courses
 from instructor.controller import get_filtered_instructors, get_instructor_data
 from dashboard.controller import get_current_semester
-from instructor_course.controller import get_instructor_course_by_id
+from instructor_course.controller import add_new_instructor_course, get_instructor_course_by_id
 from room.controller import get_all_rooms, get_room_by_id
 from building.controller import get_buildings
 from utils.date_and_time import add_time_hours, delete_time_minutes, get_date_from_string, get_day_name, get_day_name_from_string_date, get_day_of_week_dates, get_string_from_date
@@ -46,7 +46,6 @@ def lectures_attendance():
                 LectureAttendance.query.filter(LectureAttendance.lecture_path == la.lecture_path).delete()
                 db.session.commit()
                 print("DELETED: ", la.lecture_path)
-
 
 
 def overwrite_group_table(data):
@@ -169,6 +168,8 @@ def add_new_lecture(data):
         .filter_by(course_id=data['course'], instructor_id=data['instructor'])\
         .order_by(InstructorCourse.id.desc())\
         .first()
+    if not instructor_course:
+        instructor_course = add_new_instructor_course(data['instructor'], data['course'], 1)
     current_dashboard = SemesterSettings.query.order_by(SemesterSettings.id.desc()).first()
 
     # Check if all data are similar but in different group save it, else return
@@ -309,7 +310,7 @@ def get_instructor_lectures_statistics(id):
             semester_lectures_num = len(get_day_of_week_dates(curr_semester["start_date"], curr_semester["end_date"], il["day_of_week"]))
             for la in LectureAttendance.query.filter_by(lecture_path=il["path"]).all():
                 present = datetime.now()
-                if la.date < present.date():
+                if la.date <= present.date():
                     if la.attended == True:
                         attendance = attendance + 1
                     else:
@@ -347,6 +348,18 @@ def get_lecture_attendance_by_path(path):
         la_dict["date"] = get_string_from_date(la_dict["date"])
         lecture_attendances.append(la_dict)
     return lecture_attendances
+
+
+def get_lecture_attendance_to_date():
+    lecture_attendances = []
+    for la in LectureAttendance.query.order_by(LectureAttendance.date).all():
+        present = datetime.now()
+        if la.date <= present.date():
+            la_dict = model_to_dict(la)
+            la_dict["date"] = get_string_from_date(la_dict["date"])
+            lecture_attendances.append(la_dict)
+    return lecture_attendances
+
 
 def delete_time(bid):
     """

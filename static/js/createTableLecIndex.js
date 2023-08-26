@@ -59,9 +59,9 @@ let courseCard = (instructorsData, coursesData, buildingsData, roomsData) => {
         name="lecture"
         placeholder="إسم المحاضر"
         id="textSearchField"
-        onkeyup="generalSearch(this, '/api/instructors/search', 'searchBarResultBox-${counter}', 'selectInstructor(this)', true)"
+        onkeyup="generalSearch(this, '/api/instructors/search', 'searchBar2ResultBox-${counter}', 'selectInstructor(this)', true)"
       />
-      <ul id="searchBarResultBox-${counter}"></ul>
+      <ul id="searchBar2ResultBox-${counter}"></ul>
       <input name="instructor" hidden value="" />
     </li>
     <li class="list-group-item bg-primary px-1 border-0" style="padding: 0.2rem;">
@@ -126,7 +126,7 @@ let courseCard = (instructorsData, coursesData, buildingsData, roomsData) => {
 let coursesHandler = (e) => {
   let options = e.getElementsByTagName("option");
   let instructorId = e.parentNode.parentNode.querySelector(`[name=instructor]`).value;
-  for (let i = 1; i < options.length; i++) {
+  /* for (let i = 1; i < options.length; i++) {
     const option = options[i];
     let instructorIds = option.getAttribute("instructorId").split(",");
     if (instructorIds.includes(instructorId)) {
@@ -134,7 +134,7 @@ let coursesHandler = (e) => {
     } else {
       option.style.display = "none";
     }
-  }
+  } */
 };
 
 const weekDays = [
@@ -491,33 +491,35 @@ $(document).ready(function() {
     for (let i = 0; i < dataList.length; i++) {
       const data = dataList[i];
       let accord = document.querySelector(`[data-bs-target='#${data.path_data.language}-${data.path_data.program}-${data.path_data.department_id}']`);
-      let accordContainer = document.getElementById(`${data.path_data.language}-${data.path_data.program}-${data.path_data.department_id}`);
-      let groupsNum = accord.querySelector('#groupsNum');
-      if (groupsNum.value == "" || !groupsNum.value) {
-        groupsNum.value = data.path_data.no_of_groups;
+      if (accord) {
+        let accordContainer = document.getElementById(`${data.path_data.language}-${data.path_data.program}-${data.path_data.department_id}`);
+        let groupsNum = accord.querySelector('#groupsNum');
+        if (groupsNum.value == "" || !groupsNum.value) {
+          groupsNum.value = data.path_data.no_of_groups;
+        }
+        let group_0 = accordContainer.querySelector(`#group-0`);
+
+        let groupNum = parseInt(data.path_data.group_num);
+        groupNum > 0 && addNewGroup(groupNum, groupNum + 1, accordContainer, group_0.innerHTML);
+
+        let group = accordContainer.querySelector(`#group-${groupNum}`);
+        let dayContainer = group.querySelector(`.day-${data.path_data.day}`).querySelector("#dayContent");
+        addCourseCardValues(dayContainer, {
+          department_id: data.path_data.department_id,
+          semester: document.getElementById("semester").value,
+          year: data.path_data.year,
+          regulation_id: document.getElementById("regulation_id").value,
+          program: data.path_data.program
+        }, {
+          instructor_name: data.instructor.name,
+          instructor_id: data.instructor_id,
+          course_name: data.course.name,
+          course_id: data.course_id,
+          room_name: data.room.name,
+          room_id: data.room_id,
+          start_time: data.start_time
+        });
       }
-      let group_0 = accordContainer.querySelector(`#group-0`);
-
-      let groupNum = parseInt(data.path_data.group_num);
-      groupNum > 0 && addNewGroup(groupNum, groupNum + 1, accordContainer, group_0.innerHTML);
-
-      let group = accordContainer.querySelector(`#group-${groupNum}`);
-      let dayContainer = group.querySelector(`.day-${data.path_data.day}`).querySelector("#dayContent");
-      addCourseCardValues(dayContainer, {
-        department_id: data.path_data.department_id,
-        semester: document.getElementById("semester").value,
-        year: data.path_data.year,
-        regulation_id: document.getElementById("regulation_id").value,
-        program: data.path_data.program
-      }, {
-        instructor_name: data.instructor.name,
-        instructor_id: data.instructor_id,
-        course_name: data.course.name,
-        course_id: data.course_id,
-        room_name: data.room.name,
-        room_id: data.room_id,
-        start_time: data.start_time
-      });
     }
   })
   .catch((err) => {

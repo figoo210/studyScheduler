@@ -7,6 +7,7 @@ def add_new_instructor_course(instructor_id, course_id, groups_num):
     instructor_course = InstructorCourse(instructor_id=instructor_id, course_id=course_id, groups_num=groups_num)
     db.session.add(instructor_course)
     db.session.commit()
+    return instructor_course
 
 
 # Get all Instructor Courses
